@@ -2,11 +2,14 @@
 
 namespace Tests\Src;
 
+use DOMDocument;
+use DOMXPath;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\RequestOptions;
 use Src\PriceFetcher;
 use Tests\TestCase;
 
@@ -76,5 +79,35 @@ class PriceFetcherTest extends TestCase
         $this->app->bind(ClientInterface::class, function () use ($client) {
             return $client;
         });
+    }
+
+    /** @test */
+    public function itCanGetTextByQueryFromUrl(): void
+    {
+        $this->bindMockGuzzleClient([
+            new Response(200, [], '<html><body><div id="pull-right-price" class="pull-right "><span class="value">149.99</span><span class="currency">$</span></div></div></body></html>'),
+        ]);
+
+        $client = resolve(PriceFetcher::class);
+
+        $client->loadHtmlByUrl('https://www.some-page.com/with/a/price');
+
+        $this->assertEquals('149.99', $client->getInnerTextByXPathQuery('//div[@id="pull-right-price"]/span[@class="value"]'));
+    }
+
+    /** @test */
+    public function itTestingGround(): void
+    {
+          $this->markTestSkipped();
+//        $url = 'https://www.amazon.ca/gp/product/B07TKDPKVF?pf_rd_r=VWQKSYN6K3D4JF8318H6&pf_rd_p=05326fd5-c43e-4948-99b1-a65b129fdd73';
+//        $url = 'https://www.costco.ca/arcan-3-ton-professional-grade-hybrid-service-jack.product.100317470.html';
+//        $url = 'http://www.google.ca';
+//        /** @var PriceFetcher $client */
+//        $client = resolve(PriceFetcher::class);
+//        $client->getHtmlWithGuzzle($url));
+//        dd($client->getHtmlWithCurl($url));
+//        $client->loadHtmlByUrl($url);
+//        dd($client->getInnerTextByXPathQuery('//div[@id="pull-right-price"]/span[@class="value"]'));
+//        dd($client->getInnerTextById('priceblock_ourprice'));
     }
 }

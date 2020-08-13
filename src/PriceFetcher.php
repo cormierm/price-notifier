@@ -22,9 +22,36 @@ class PriceFetcher
 
     public function loadHtmlByUrl(string $url): self
     {
-        $this->html = (string) $this->client->get($url)->getBody();
+        $this->html = $this->getHtmlWithCurl($url);
 
         return $this;
+    }
+
+    public function getHtmlWithCurl(string $url): string
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+//        curl_setopt($ch, CURLOPT_USERAGENT, config('pcn.fetcher.user_agent'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_ENCODING , "gzip");
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, config('pcn.fetcher.timeout'));
+        $data = curl_exec($ch);
+        curl_close($ch);
+
+        return $data;
+    }
+
+    public function getHtmlWithGuzzle(string $url): string
+    {
+        return (string)$this->client->request('GET', $url, [
+            'headers' => [
+                'User-Agent' => config('pcn.fetcher.user_agent'),
+            ]
+        ])->getBody();
     }
 
     // //span[@class="p13n-sc-price"]
@@ -57,7 +84,7 @@ class PriceFetcher
 
     private function xpathQuery($query)
     {
-        $doc = new DOMDocument('1.0');
+        $doc = new DOMDocument();
         $searchPage = mb_convert_encoding($this->html, 'HTML-ENTITIES', "UTF-8");
         @$doc->loadHTML($searchPage);
         $xpath = new DOMXpath($doc);
