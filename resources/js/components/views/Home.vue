@@ -11,8 +11,8 @@
                             {{ props.row.name }}
                         </b-table-column>
 
-                        <b-table-column field="last_updated" label="Last Updated">
-                            {{ props.row.last_updated }}
+                        <b-table-column field="last_updated" label="Last Synced">
+                            {{ props.row.last_sync }}
                         </b-table-column>
 
                         <b-table-column field="value" label="Value">
@@ -20,7 +20,7 @@
                         </b-table-column>
 
                         <b-table-column field="tools" label="Tools" centered>
-                            <b-button type="is-default" icon-right="refresh" @click="refresh(props.row.id)"/>
+                            <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
                             <b-button type="is-default" icon-right="pencil" />
                             <b-button type="is-danger" icon-right="delete" />
                         </b-table-column>
@@ -44,14 +44,19 @@ export default {
     },
     data() {
         return {
+            loading: {
+                watchers: {
+
+                },
+            },
             columns: [
                 {
                     field: 'name',
                     label: 'Name',
                 },
                 {
-                    field: 'updated_at',
-                    label: 'Updated at',
+                    field: 'last_sync',
+                    label: 'Last Synced',
                 },
                 {
                     field: 'value',
@@ -65,19 +70,33 @@ export default {
             return this.watchers.map((watcher) => {
                 return {
                     ...watcher,
-                    last_updated: moment(watcher.updated_at).fromNow(),
+                    last_sync: moment.utc(watcher.last_sync).fromNow(),
                 }
             })
         }
     },
     methods: {
+        updateLoadingWatcher(id, state) {
+            this.loading = {
+                ...this.loading,
+                watchers: {
+                    ...this.loading.watchers,
+                    [id]: state,
+                },
+            };
+        },
         refresh(id) {
+            this.updateLoadingWatcher(id, true);
             axios.get(`/watcher/${id}/sync`)
-                .then((response) => {
-                    console.log(response.data);
+                .then(({data}) => {
+                    
+
                 })
                 .catch((err) => {
                     console.log(err);
+                })
+                .finally(() => {
+                    this.updateLoadingWatcher(id, false);
                 });
         }
     }

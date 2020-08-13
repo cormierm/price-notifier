@@ -13,6 +13,8 @@ class Watcher extends Model
         'user_id',
         'query_type',
         'query',
+        'last_sync',
+        'value',
     ];
 
     public function user(): BelongsTo

@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function() {
     Route::prefix('watcher')->namespace('Watcher')->name('watcher.')->group(function() {
         Route::get('create', 'Create')->name('create');
         Route::post('/', 'Store')->name('store');
+        Route::get('{watcher}/sync', 'Sync')->name('sync');
     });
 });
 

@@ -19,6 +19,8 @@ class CreateWatchersTable extends Migration
             $table->string('url');
             $table->string('query_type');
             $table->string('query');
+            $table->dateTime('last_sync')->nullable();
+            $table->string('value')->nullable();
             $table->unsignedInteger('user_id');
             $table->timestamps();
         });
