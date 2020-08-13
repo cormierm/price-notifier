@@ -1,6 +1,14 @@
 <template>
     <form class="wrapper-form" action="">
         <b-field
+            label="Name"
+            :type="formErrors['name'] ? 'is-danger' : 'is-default'"
+            :message="formErrors['name']"
+        >
+            <b-input v-model="name"></b-input>
+        </b-field>
+
+        <b-field
             label="Url"
             :type="formErrors['url'] ? 'is-danger' : 'is-default'"
             :message="formErrors['url']"
@@ -41,6 +49,7 @@ export default {
     data() {
         return {
             loading: false,
+            name: '',
             query: '',
             queryType: null,
             url: '',
@@ -66,6 +75,8 @@ export default {
             this.loading = true;
 
             axios.post('/watcher', {
+                _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                name: this.name,
                 url: this.url,
                 query: this.query,
                 query_type: this.queryType,
@@ -75,6 +86,11 @@ export default {
                 if (err.response.status === 422) {
                     this.formErrors = err.response.data.errors;
                 } else {
+                    this.$buefy.toast.open({
+                        duration: 5000,
+                        message: err,
+                        type: 'is-danger'
+                    });
                     console.error(err);
                 }
             });

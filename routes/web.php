@@ -21,6 +21,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('watcher')->namespace('Watcher')->name('watcher.')->group(function() {
+Route::prefix('watcher')->namespace('Watcher')->name('watcher.')->middleware('auth')->group(function() {
     Route::get('create', 'Create')->name('create');
+    Route::post('/', 'Store')->name('store');
 });
