@@ -19,9 +19,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware('auth')->group(function() {
+    Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('watcher')->namespace('Watcher')->name('watcher.')->middleware('auth')->group(function() {
-    Route::get('create', 'Create')->name('create');
-    Route::post('/', 'Store')->name('store');
+    Route::prefix('watcher')->namespace('Watcher')->name('watcher.')->group(function() {
+        Route::get('create', 'Create')->name('create');
+        Route::post('/', 'Store')->name('store');
+    });
 });
+
