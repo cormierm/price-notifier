@@ -2,14 +2,11 @@
 
 namespace Tests\Src;
 
-use DOMDocument;
-use DOMXPath;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\RequestOptions;
 use Src\PriceFetcher;
 use Tests\TestCase;
 
@@ -98,7 +95,16 @@ class PriceFetcherTest extends TestCase
     /** @test */
     public function itTestingGround(): void
     {
-          $this->markTestSkipped();
+//        $this->markTestSkipped();
+        // ct
+        $url = 'https://www.canadiantire.ca/en/pdp/dyson-cyclone-v10-motorhead-cordless-vacuum-0438161p.html#srp';
+        $client = resolve(PriceFetcher::class);
+//        dd($client->getHtmlWithBrowserShot($url));
+
+        $client->loadHtmlByUrl($url);
+//        dd($client->getInnerTextByXPathQuery('//div[@id="pull-right-price"]/span[@class="value"]'));
+        dd($client->getInnerTextByClass('price__reg-value'));
+//
 //        $url = 'https://www.amazon.ca/gp/product/B07TKDPKVF?pf_rd_r=VWQKSYN6K3D4JF8318H6&pf_rd_p=05326fd5-c43e-4948-99b1-a65b129fdd73';
 //        $url = 'https://www.costco.ca/arcan-3-ton-professional-grade-hybrid-service-jack.product.100317470.html';
 //        $url = 'http://www.google.ca';

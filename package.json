@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "buefy": "^0.8.20",
-        "moment": "^2.27.0"
+        "moment": "^2.27.0",
+        "puppeteer": "^5.2.1"
     }
 }
