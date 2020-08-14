@@ -52,10 +52,14 @@ class UpdateWatcher implements ShouldQueue
             $rawValue = $parser->nodeValueByXPathQuery($query);
             $formattedValue = PriceHelper::numbersFromText($rawValue);
 
-            $this->watcher->update([
-                'last_sync' => Carbon::now(),
-                'value' => $formattedValue,
-            ]);
+            if ($formattedValue) {
+                $this->watcher->update([
+                    'last_sync' => Carbon::now(),
+                    'value' => $formattedValue,
+                ]);
+            } else {
+                $this->error = 'Formatted value was empty. Found node value: ' . $rawValue;
+            }
         } catch(Exception $e) {
             $this->error = $e->getMessage();
         }
