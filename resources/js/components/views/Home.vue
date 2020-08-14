@@ -15,8 +15,8 @@
                             {{ props.row.last_sync }}
                         </b-table-column>
 
-                        <b-table-column field="value" label="Value">
-                            {{ props.row.value }}
+                        <b-table-column field="value" label="Value" centered>
+                            {{ props.row.value ? props.row.value : '-' }}
                         </b-table-column>
 
                         <b-table-column field="tools" label="Tools" centered>
@@ -42,8 +42,12 @@ export default {
             default: () => ([])
         }
     },
+    mounted() {
+        this.watchersList = this.watchers;
+    },
     data() {
         return {
+            watchersList: [],
             loading: {
                 watchers: {
 
@@ -67,10 +71,10 @@ export default {
     },
     computed: {
         tableData() {
-            return this.watchers.map((watcher) => {
+            return this.watchersList.map((watcher) => {
                 return {
                     ...watcher,
-                    last_sync: moment.utc(watcher.last_sync).fromNow(),
+                    last_sync: watcher.last_sync ? moment.utc(watcher.last_sync).fromNow() : 'Never',
                 }
             })
         }
@@ -79,6 +83,7 @@ export default {
         deleteWatcher(id) {
             axios.delete(`/watcher/${id}`)
                 .then(({data}) => {
+                    this.watchersList = this.watchersList.filter((watcher) => (watcher.id !== id));
                     this.$buefy.toast.open({
                         message: data.message,
                         type: 'is-success'
@@ -93,7 +98,7 @@ export default {
                     console.log(err);
                 });
         },
-        updateLoadingWatcher(id, state) {
+        loadingWatcher(id, state) {
             this.loading = {
                 ...this.loading,
                 watchers: {
@@ -103,17 +108,19 @@ export default {
             };
         },
         refresh(id) {
-            this.updateLoadingWatcher(id, true);
+            this.loadingWatcher(id, true);
             axios.get(`/watcher/${id}/sync`)
                 .then(({data}) => {
-
-
+                    this.watchersList = [
+                        ...this.watchersList.filter((watcher) => (watcher.id !== id)),
+                        data.watcher
+                    ];
                 })
                 .catch((err) => {
                     console.log(err);
                 })
                 .finally(() => {
-                    this.updateLoadingWatcher(id, false);
+                    this.loadingWatcher(id, false);
                 });
         }
     }
