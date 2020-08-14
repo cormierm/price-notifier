@@ -15,7 +15,6 @@ class Store extends Controller
             'name' => $request->input('name'),
             'url' => $request->input('url'),
             'user_id' => $request->user()->id,
-            'query_type' => $request->input('query_type'),
             'query'  => $request->input('query'),
         ]);
 

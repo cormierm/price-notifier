@@ -12,7 +12,6 @@ class Watcher extends Model
         'name',
         'url',
         'user_id',
-        'query_type',
         'query',
         'last_sync',
         'value',

@@ -13,7 +13,6 @@ class Update extends Controller
     {
         $watcher->update([
             'name' => $request->input('name'),
-            'query_type' => $request->input('query_type'),
             'query' => $request->input('query'),
             'url' => $request->input('url'),
         ]);

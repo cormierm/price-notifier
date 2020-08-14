@@ -17,7 +17,6 @@ class UpdateWatcherTest extends TestCase
     public function itCanUpdateWatcher(): void
     {
         $watcher = factory(Watcher::class)->create([
-            'query_type' => 'query',
             'query' => '//div[@id="pull-right-price"]/span[@class="value"]',
         ]);
         $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">149.99</span><span class="currency">$</span></div></div></body></html>';
@@ -39,7 +38,6 @@ class UpdateWatcherTest extends TestCase
     {
         $rawValue = 'CDN$ 149.99';
         $watcher = factory(Watcher::class)->create([
-            'query_type' => 'query',
             'query' => '//div[@id="pull-right-price"]/span[@class="value"]',
         ]);
         $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">' . $rawValue . '</span><span class="currency">$</span></div></div></body></html>';

@@ -5,7 +5,7 @@
             :type="formErrors['name'] ? 'is-danger' : 'is-default'"
             :message="formErrors['name']"
         >
-            <b-input v-model="name"></b-input>
+            <b-input v-model="name" placeholder="Product Name"></b-input>
         </b-field>
 
         <b-field
@@ -13,26 +13,11 @@
             :type="formErrors['url'] ? 'is-danger' : 'is-default'"
             :message="formErrors['url']"
         >
-            <b-input v-model="url"></b-input>
+            <b-input v-model="url" placeholder="https://www.example.com/product.html"></b-input>
         </b-field>
 
         <b-field
-            label="Query Type"
-            :type="formErrors['query_type'] ? 'is-danger' : 'is-default'"
-            :message="formErrors['query_type']"
-        >
-            <b-select placeholder="Select a query type" v-model="queryType">
-                <option
-                    v-for="option in queryTypes"
-                    :value="option.value"
-                    :key="option.value">
-                    {{ option.name }}
-                </option>
-            </b-select>
-        </b-field>
-
-        <b-field
-            label="Query"
+            label="XPath Query"
             :type="formErrors['query'] ? 'is-danger' : 'is-default'"
             :message="formErrors['query']"
         >
@@ -61,7 +46,6 @@ export default {
             this.id = this.watcher.id;
             this.name = this.watcher.name;
             this.query = this.watcher.query;
-            this.queryType = this.watcher.query_type;
             this.url = this.watcher.url;
         }
     },
@@ -70,24 +54,9 @@ export default {
             loading: false,
             id: null,
             name: '',
-            query: '',
-            queryType: null,
+            query: '//div[@id="price"]',
             url: '',
             formErrors: {},
-            queryTypes: [
-                {
-                    name: 'Class',
-                    value: 'class'
-                },
-                {
-                    name: 'Id',
-                    value: 'id'
-                },
-                {
-                    name: 'Query',
-                    value: 'query'
-                },
-            ],
         };
     },
     methods: {
@@ -108,7 +77,6 @@ export default {
                 name: this.name,
                 url: this.url,
                 query: this.query,
-                query_type: this.queryType,
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {
@@ -131,7 +99,6 @@ export default {
                 name: this.name,
                 url: this.url,
                 query: this.query,
-                query_type: this.queryType,
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {

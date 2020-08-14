@@ -40,16 +40,8 @@ class UpdateWatcher implements ShouldQueue
         try {
             $html = $fetcher->getHtmlFromUrl($this->watcher->url);
 
-            if ($this->watcher->query_type === 'class') {
-                $query = '//*[@class="' . $this->watcher->query . '"]';
-            } elseif ($this->watcher->query_type === 'id') {
-                $query = '//*[@id="' . $this->watcher->query . '"]';
-            } else {
-                $query = $this->watcher->query;
-            }
-
             $parser = new HtmlParser($html);
-            $rawValue = $parser->nodeValueByXPathQuery($query);
+            $rawValue = $parser->nodeValueByXPathQuery($this->watcher->query);
             $formattedValue = PriceHelper::numbersFromText($rawValue);
 
             if ($formattedValue) {
