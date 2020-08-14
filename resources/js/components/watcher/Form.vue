@@ -39,16 +39,36 @@
             <b-input v-model="query"></b-input>
         </b-field>
 
-        <b-button type="is-info" @click="submit">Create</b-button>
+        <b-button type="is-info" @click="submit">{{ type }}</b-button>
     </form>
 </template>
 
 <script>
 export default {
-    name: "wrapper-form",
+    name: "watcher-form",
+    props: {
+        watcher: {
+            type: Object,
+            default: null,
+        },
+        type: {
+            type: String,
+            default: 'Create',
+        }
+    },
+    mounted() {
+        if (this.watcher) {
+            this.id = this.watcher.id;
+            this.name = this.watcher.name;
+            this.query = this.watcher.query;
+            this.queryType = this.watcher.query_type;
+            this.url = this.watcher.url;
+        }
+    },
     data() {
         return {
             loading: false,
+            id: null,
             name: '',
             query: '',
             queryType: null,
@@ -74,6 +94,15 @@ export default {
         submit() {
             this.loading = true;
 
+            if (this.id) {
+                this.create();
+            } else {
+                this.update();
+            }
+
+            this.loading = false;
+        },
+        create() {
             axios.post('/watcher', {
                 _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 name: this.name,
@@ -81,7 +110,7 @@ export default {
                 query: this.query,
                 query_type: this.queryType,
             }).then(() => {
-                window.location = '/';
+                window.location = '/home';
             }).catch((err) => {
                 if (err.response.status === 422) {
                     this.formErrors = err.response.data.errors;
@@ -94,9 +123,30 @@ export default {
                     console.error(err);
                 }
             });
-
-            this.loading = false;
         },
+        update() {
+            axios.post(`/watcher/${this.id}`, {
+                _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                id: this.id,
+                name: this.name,
+                url: this.url,
+                query: this.query,
+                query_type: this.queryType,
+            }).then(() => {
+                window.location = '/home';
+            }).catch((err) => {
+                if (err.response.status === 422) {
+                    this.formErrors = err.response.data.errors;
+                } else {
+                    this.$buefy.toast.open({
+                        duration: 5000,
+                        message: err,
+                        type: 'is-danger'
+                    });
+                    console.error(err);
+                }
+            });
+        }
     }
 }
 </script>

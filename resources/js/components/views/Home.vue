@@ -21,7 +21,7 @@
 
                         <b-table-column field="tools" label="Tools" centered>
                             <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
-                            <b-button type="is-default" icon-right="pencil" />
+                            <a :href="`/watcher/${props.row.id}/edit`"><b-button type="is-default" icon-right="pencil"/></a>
                             <b-button type="is-danger" icon-right="delete" />
                         </b-table-column>
                     </template>
@@ -89,7 +89,7 @@ export default {
             this.updateLoadingWatcher(id, true);
             axios.get(`/watcher/${id}/sync`)
                 .then(({data}) => {
-                    
+
 
                 })
                 .catch((err) => {
