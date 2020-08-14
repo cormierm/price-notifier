@@ -8,7 +8,7 @@
                 <b-table :data="tableData" class="watcher-table">
                     <template slot-scope="props">
                         <b-table-column field="name" label="Name">
-                            {{ props.row.name }}
+                            <a :href="props.row.url">{{ props.row.name }}</a>
                         </b-table-column>
 
                         <b-table-column field="last_updated" label="Last Synced">
