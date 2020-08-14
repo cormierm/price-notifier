@@ -14,7 +14,6 @@ $factory->define(Watcher::class, function (Faker $faker) {
         'user_id' => function () {
             return factory(User::class)->create()->id;
         },
-        'query_type' => $faker->word,
         'query' => $faker->word,
         'last_sync' => Carbon::now(),
         'value' => (string) $faker->randomFloat(2, 1, 1000)

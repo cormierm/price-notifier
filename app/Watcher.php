@@ -24,6 +24,11 @@ class Watcher extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function lastLog(): ?WatcherLog
+    {
+        return $this->logs()->latest('created_at')->first();
+    }
+
     public function logs(): HasMany
     {
         return $this->hasMany(WatcherLog::class);
