@@ -23,6 +23,10 @@
                             {{ props.row.value ? props.row.value : '-' }}
                         </b-table-column>
 
+                        <b-table-column field="alert_value" label="Alert Value" centered>
+                            {{ props.row.alert_value ? props.row.alert_value : '-' }}
+                        </b-table-column>
+
                         <b-table-column field="last_updated" label="Last Synced">
                             {{ props.row.last_sync }}
                         </b-table-column>

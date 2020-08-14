@@ -16,6 +16,7 @@ class Update extends Controller
             'query' => $request->input('query'),
             'url' => $request->input('url'),
             'interval_id' => $request->input('interval_id'),
+            'alert_value' => $request->input('alert_value'),
         ]);
 
         return new JsonResponse([

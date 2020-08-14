@@ -17,6 +17,7 @@ class Store extends Controller
             'user_id' => $request->user()->id,
             'query'  => $request->input('query'),
             'interval_id' => $request->input('interval_id'),
+            'alert_value' => $request->input('alert_value'),
         ]);
 
         return new JsonResponse([

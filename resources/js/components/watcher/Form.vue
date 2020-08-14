@@ -39,6 +39,14 @@
             </b-select>
         </b-field>
 
+        <b-field
+            label="Alert Value"
+            :type="formErrors['alert_value'] ? 'is-danger' : 'is-default'"
+            :message="formErrors['alert_value']"
+        >
+            <b-input v-model="alertValue" placeholder="5.00"></b-input>
+        </b-field>
+
         <b-button type="is-info" @click="submit" :loading="loading">{{ type }}</b-button>
     </form>
 </template>
@@ -67,6 +75,7 @@ export default {
             this.interval = this.watcher.interval_id;
             this.query = this.watcher.query;
             this.url = this.watcher.url;
+            this.alertValue = this.watcher.alert_value;
         }
     },
     data() {
@@ -75,6 +84,7 @@ export default {
             id: null,
             name: '',
             interval: null,
+            alertValue: '',
             query: '//div[@id="price"]',
             url: '',
             formErrors: {},
@@ -99,6 +109,7 @@ export default {
                 interval_id: this.interval,
                 url: this.url,
                 query: this.query,
+                alert_value: this.alertValue
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {
@@ -122,6 +133,7 @@ export default {
                 interval_id: this.interval,
                 url: this.url,
                 query: this.query,
+                alert_value: this.alertValue
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {

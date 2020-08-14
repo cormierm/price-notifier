@@ -17,6 +17,7 @@ class Watcher extends Model
         'initial_value',
         'interval_id',
         'value',
+        'alert_value',
     ];
 
     public function user(): BelongsTo
