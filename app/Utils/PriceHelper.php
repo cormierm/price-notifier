@@ -4,7 +4,7 @@ namespace App\Utils;
 
 class PriceHelper
 {
-    public function numbersFromText(string $text): string
+    public static function numbersFromText(string $text): string
     {
         if (!$text) {
             return '';

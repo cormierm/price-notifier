@@ -13,9 +13,7 @@ class PriceHelperTest extends TestCase
     {
         $text = 'CDN$ 23,432,4343.334';
 
-        $helper = new PriceHelper;
-
-        $this->assertEquals(234324343.33, $helper->numbersFromText($text));
+        $this->assertEquals(234324343.33, PriceHelper::numbersFromText($text));
     }
 
     /** @test */
@@ -23,8 +21,6 @@ class PriceHelperTest extends TestCase
     {
         $text = '';
 
-        $helper = new PriceHelper;
-
-        $this->assertEquals('', $helper->numbersFromText($text));
+        $this->assertEquals('', PriceHelper::numbersFromText($text));
     }
 }
