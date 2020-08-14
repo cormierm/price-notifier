@@ -11,7 +11,7 @@ class Store extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
-        Watcher::create([
+        $watcher = Watcher::create([
             'name' => $request->input('name'),
             'url' => $request->input('url'),
             'user_id' => $request->user()->id,
@@ -20,8 +20,8 @@ class Store extends Controller
         ]);
 
         return new JsonResponse([
-            'status' => 'successful',
-            'message' => 'successfully created user'
+            'message' => 'Successfully created watcher',
+            'watcher' => $watcher
         ]);
     }
 }

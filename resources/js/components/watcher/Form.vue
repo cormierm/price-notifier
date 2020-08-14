@@ -39,7 +39,7 @@
             <b-input v-model="query"></b-input>
         </b-field>
 
-        <b-button type="is-info" @click="submit">{{ type }}</b-button>
+        <b-button type="is-info" @click="submit" :loading="loading">{{ type }}</b-button>
     </form>
 </template>
 
@@ -95,9 +95,9 @@ export default {
             this.loading = true;
 
             if (this.id) {
-                this.create();
-            } else {
                 this.update();
+            } else {
+                this.create();
             }
 
             this.loading = false;
@@ -125,7 +125,7 @@ export default {
             });
         },
         update() {
-            axios.post(`/watcher/${this.id}`, {
+            axios.put(`/watcher/${this.id}`, {
                 _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 id: this.id,
                 name: this.name,
