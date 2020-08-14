@@ -49,6 +49,12 @@ class UpdateWatcher implements ShouldQueue
                     'last_sync' => Carbon::now(),
                     'value' => $formattedValue,
                 ]);
+
+                if (!$this->watcher->initial_value) {
+                    $this->watcher->update([
+                        'initial_value' => $formattedValue,
+                    ]);
+                }
             } else {
                 $this->error = 'Formatted value was empty. Found node value: ' . $rawValue;
             }

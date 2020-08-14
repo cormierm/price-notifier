@@ -15,6 +15,10 @@
                             {{ props.row.last_sync }}
                         </b-table-column>
 
+                        <b-table-column field="initial_value" label="Initial Value" centered>
+                            {{ props.row.initial_value ? props.row.initial_value : '-' }}
+                        </b-table-column>
+
                         <b-table-column field="value" label="Value" centered>
                             {{ props.row.value ? props.row.value : '-' }}
                         </b-table-column>
