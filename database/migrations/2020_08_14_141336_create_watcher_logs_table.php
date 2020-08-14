@@ -15,11 +15,11 @@ class CreateWatcherLogsTable extends Migration
     {
         Schema::create('watcher_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('value');
-            $table->string('raw_value');
-            $table->unsignedInteger('status_code');
+            $table->unsignedInteger('watcher_id');
+            $table->string('formatted_value')->nullable();
+            $table->string('raw_value')->nullable();
             $table->unsignedInteger('duration');
-            $table->text('error');
+            $table->text('error')->nullable();
             $table->timestamps();
         });
     }
