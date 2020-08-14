@@ -11,8 +11,8 @@
                             <a :href="props.row.url">{{ props.row.name }}</a>
                         </b-table-column>
 
-                        <b-table-column field="last_updated" label="Last Synced">
-                            {{ props.row.last_sync }}
+                        <b-table-column field="interval" label="Interval" centered>
+                            {{ props.row.interval ? props.row.interval.name : 'None' }}
                         </b-table-column>
 
                         <b-table-column field="initial_value" label="Initial Value" centered>
@@ -21,6 +21,10 @@
 
                         <b-table-column field="value" label="Value" centered>
                             {{ props.row.value ? props.row.value : '-' }}
+                        </b-table-column>
+
+                        <b-table-column field="last_updated" label="Last Synced">
+                            {{ props.row.last_sync }}
                         </b-table-column>
 
                         <b-table-column field="tools" label="Tools" centered>

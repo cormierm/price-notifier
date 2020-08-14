@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <watcher-form></watcher-form>
+                <watcher-form :intervals="{{ $intervals }}"></watcher-form>
             </div>
         </div>
     </div>

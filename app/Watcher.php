@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Watcher extends Model
 {
@@ -16,6 +15,7 @@ class Watcher extends Model
         'query',
         'last_sync',
         'initial_value',
+        'interval_id',
         'value',
     ];
 
@@ -29,8 +29,8 @@ class Watcher extends Model
         return $this->hasMany(WatcherLog::class);
     }
 
-    public function interval(): HasOne
+    public function interval(): BelongsTo
     {
-        return $this->hasOne(Interval::class);
+        return $this->belongsTo(Interval::class);
     }
 }

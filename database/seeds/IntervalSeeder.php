@@ -30,7 +30,7 @@ class IntervalSeeder extends Seeder
         ]);
         DB::table('intervals')->insert([
             'name' => '10 mins',
-            'minutes' => 1,
+            'minutes' => 10,
         ]);
         DB::table('intervals')->insert([
             'name' => '15 mins',

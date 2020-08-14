@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function index(Request $request): Renderable
     {
         return view('home', [
-            'watchers' => $request->user()->watchers,
+            'watchers' => $request->user()->watchers()->with('interval')->get()
         ]);
     }
 }

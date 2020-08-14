@@ -24,6 +24,21 @@
             <b-input v-model="query"></b-input>
         </b-field>
 
+        <b-field
+            label="Interval"
+            :type="formErrors['interval_id'] ? 'is-danger' : 'is-default'"
+            :message="formErrors['interval_id']"
+        >
+            <b-select placeholder="Select an interval" v-model="interval">
+                <option
+                    v-for="option in intervals"
+                    :value="option.id"
+                    :key="option.id">
+                    {{ option.name }}
+                </option>
+            </b-select>
+        </b-field>
+
         <b-button type="is-info" @click="submit" :loading="loading">{{ type }}</b-button>
     </form>
 </template>
@@ -32,6 +47,10 @@
 export default {
     name: "watcher-form",
     props: {
+        intervals: {
+            type: Array,
+            required: true
+        },
         watcher: {
             type: Object,
             default: null,
@@ -45,6 +64,7 @@ export default {
         if (this.watcher) {
             this.id = this.watcher.id;
             this.name = this.watcher.name;
+            this.interval = this.watcher.interval_id;
             this.query = this.watcher.query;
             this.url = this.watcher.url;
         }
@@ -54,6 +74,7 @@ export default {
             loading: false,
             id: null,
             name: '',
+            interval: null,
             query: '//div[@id="price"]',
             url: '',
             formErrors: {},
@@ -75,6 +96,7 @@ export default {
             axios.post('/watcher', {
                 _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 name: this.name,
+                interval_id: this.interval,
                 url: this.url,
                 query: this.query,
             }).then(() => {
@@ -97,6 +119,7 @@ export default {
                 _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 id: this.id,
                 name: this.name,
+                interval_id: this.interval,
                 url: this.url,
                 query: this.query,
             }).then(() => {
