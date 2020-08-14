@@ -17,7 +17,6 @@ class StoreTest extends TestCase
         $data = [
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
-            'query_type' => 'class',
             'query' => 'some-class',
         ];
 

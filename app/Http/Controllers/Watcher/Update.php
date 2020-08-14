@@ -3,21 +3,15 @@
 namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Watcher\UpdateRequest;
 use App\Watcher;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class Update extends Controller
 {
-    public function __invoke(Request $request, Watcher $watcher): JsonResponse
+    public function __invoke(UpdateRequest $request, Watcher $watcher): JsonResponse
     {
-        $watcher->update([
-            'name' => $request->input('name'),
-            'query' => $request->input('query'),
-            'url' => $request->input('url'),
-            'interval_id' => $request->input('interval_id'),
-            'alert_value' => $request->input('alert_value'),
-        ]);
+        $watcher->update($request->validated());
 
         return new JsonResponse([
             'message' => 'Successfully updated',

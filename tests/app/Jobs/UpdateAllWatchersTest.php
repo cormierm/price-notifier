@@ -28,7 +28,7 @@ class UpdateAllWatchersTest extends TestCase
 
         factory(WatcherLog::class)->create([
             'watcher_id' => $watchers->first()->id,
-            'created_at' => Carbon::now()->subMinutes($minutes - 5)
+            'created_at' => Carbon::now()->subMinutes($minutes + 5)
         ]);
         $this->expectsJobs(UpdateWatcher::class);
 
