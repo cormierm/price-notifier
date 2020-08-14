@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function() {
     Route::prefix('watcher')->namespace('Watcher')->name('watcher.')->group(function() {
         Route::post('/', 'Store')->name('store');
         Route::get('create', 'Create')->name('create');
+        Route::delete('{watcher}', 'Destroy')->name('destroy');
         Route::put('{watcher}', 'Update')->name('update');
         Route::get('{watcher}/edit', 'Edit')->name('edit');
         Route::get('{watcher}/sync', 'Sync')->name('sync');

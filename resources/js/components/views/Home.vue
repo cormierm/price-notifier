@@ -22,7 +22,7 @@
                         <b-table-column field="tools" label="Tools" centered>
                             <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
                             <a :href="`/watcher/${props.row.id}/edit`"><b-button type="is-default" icon-right="pencil"/></a>
-                            <b-button type="is-danger" icon-right="delete" />
+                            <b-button type="is-danger" icon-right="delete" @click="deleteWatcher(props.row.id)" />
                         </b-table-column>
                     </template>
                 </b-table>
@@ -76,6 +76,23 @@ export default {
         }
     },
     methods: {
+        deleteWatcher(id) {
+            axios.delete(`/watcher/${id}`)
+                .then(({data}) => {
+                    this.$buefy.toast.open({
+                        message: data.message,
+                        type: 'is-success'
+                    })
+                })
+                .catch((err) => {
+                    this.$buefy.toast.open({
+                        duration: 5000,
+                        message: 'Error deleting watcher.',
+                        type: 'is-danger'
+                    });
+                    console.log(err);
+                });
+        },
         updateLoadingWatcher(id, state) {
             this.loading = {
                 ...this.loading,
