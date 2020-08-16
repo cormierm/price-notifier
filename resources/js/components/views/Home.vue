@@ -8,7 +8,10 @@
                 <b-table :data="tableData" class="watcher-table">
                     <template slot-scope="props">
                         <b-table-column field="name" label="Name">
-                            <a :href="props.row.url">{{ props.row.name }}</a>
+                            <div class="name-field">
+                                <a :href="props.row.url">{{ props.row.name }}</a>
+                                <span>{{ props.row.url_domain }}</span>
+                            </div>
                         </b-table-column>
 
                         <b-table-column field="interval" label="Interval" centered>
@@ -32,9 +35,11 @@
                         </b-table-column>
 
                         <b-table-column field="tools" label="Tools" centered>
-                            <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
-                            <a :href="`/watcher/${props.row.id}/edit`"><b-button type="is-default" icon-right="pencil"/></a>
-                            <b-button type="is-danger" icon-right="delete" @click="deleteWatcher(props.row.id)" />
+                            <div class="tool-buttons">
+                                <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
+                                <a :href="`/watcher/${props.row.id}/edit`"><b-button type="is-default" icon-right="pencil"/></a>
+                                <b-button type="is-danger" icon-right="delete" @click="deleteWatcher(props.row.id)" />
+                            </div>
                         </b-table-column>
                     </template>
                 </b-table>
@@ -139,8 +144,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .watcher-table {
         width: 80%;
+    }
+    .name-field {
+        display: flex;
+        flex-direction: column;
+        span {
+            color: #666;
+            font-size: 0.7em;
+        }
+    }
+    .tool-buttons {
+        display: flex;
     }
 </style>

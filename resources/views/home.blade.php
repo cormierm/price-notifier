@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <home :watchers="{{ $watchers }}"></home>
+    <home :watchers="{{ json_encode($watchers) }}"></home>
 @endsection

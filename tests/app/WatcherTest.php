@@ -43,4 +43,14 @@ class WatcherTest extends TestCase
 
         $this->assertNull($watcher->lastLog());
     }
+
+    /** @test */
+    public function itCanParseDomainFromUrl(): void
+    {
+        $watcher = factory(Watcher::class)->create([
+            'url' => 'https://www.foobar.com/something/else/index.html',
+        ]);
+
+        $this->assertEquals('foobar.com', $watcher->urlDomain());
+    }
 }
