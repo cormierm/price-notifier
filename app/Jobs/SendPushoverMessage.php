@@ -22,11 +22,21 @@ class SendPushoverMessage implements ShouldQueue
      * @var string
      */
     private $message;
+    /**
+     * @var string
+     */
+    private $title;
+    /**
+     * @var string
+     */
+    private $url;
 
-    public function __construct(User $user, string $message)
+    public function __construct(User $user, string $title, string $message, string $url)
     {
         $this->user = $user;
         $this->message = $message;
+        $this->title = $title;
+        $this->url = $url;
     }
 
     public function handle(ClientInterface $client): void
@@ -35,7 +45,10 @@ class SendPushoverMessage implements ShouldQueue
             'form_params' => [
                 'token' => $this->user->pushover_api_token,
                 'user' => $this->user->pushover_user_key,
+                'title' => $this->title,
                 'message' => $this->message,
+                'url' => $this->url,
+                'sound' => 'cashregister'
             ]
         ]);
     }

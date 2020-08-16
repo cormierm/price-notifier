@@ -45,6 +45,8 @@ class UpdateWatcher implements ShouldQueue
             $formattedValue = PriceHelper::numbersFromText($rawValue);
 
             if ($formattedValue) {
+                $this->sendAlerts($formattedValue);
+
                 $this->watcher->update([
                     'last_sync' => Carbon::now(),
                     'value' => $formattedValue,
@@ -69,5 +71,21 @@ class UpdateWatcher implements ShouldQueue
             'duration' => Carbon::now()->diffInMilliseconds($startTime),
             'error' => $this->error,
         ]);
+    }
+
+    private function sendAlerts(string $formattedValue)
+    {
+        $alertPrice = number_format($this->watcher->alert_value, 2);
+        $oldPrice = number_format($this->watcher->value, 2);
+        $newPrice = number_format($formattedValue, 2);
+
+        if ($alertPrice && $newPrice && $oldPrice !== $newPrice && $newPrice < $alertPrice) {
+            SendPushoverMessage::dispatch(
+                $this->watcher->user,
+                'New Price Alert!',
+                "{$this->watcher->name}\n\${$newPrice}",
+                $this->watcher->url
+            );
+        }
     }
 }

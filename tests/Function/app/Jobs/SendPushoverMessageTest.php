@@ -19,7 +19,7 @@ class SendPushoverMessageTest extends TestCase
             'pushover_api_token' => env('PUSHOVER_API_TOKEN'),
         ]);
 
-        SendPushoverMessage::dispatch($user, 'Hellooooooo!');
+        SendPushoverMessage::dispatch($user, 'Some Title', 'Hellooooooo!', 'http://foobar.com/asdflkjdf');
     }
 
 }

@@ -2,7 +2,9 @@
 
 namespace Tests\App\Jobs;
 
+use App\Jobs\SendPushoverMessage;
 use App\Jobs\UpdateWatcher;
+use App\User;
 use App\Utils\HtmlFetcher;
 use App\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -68,5 +70,28 @@ class UpdateWatcherTest extends TestCase
         UpdateWatcher::dispatch($watcher);
 
         $this->assertNotNull($watcher->logs->first()->error);
+    }
+
+    /** @test */
+    public function itSendsAlertWhenValueIsLessThanAlertValue(): void
+    {
+        $rawValue = '50.00';
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'value' => '110.00',
+            'alert_value' => '100.00',
+        ]);
+        $html = '<html><body><span class="value">' . $rawValue . '</span></body></html>';
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url)->andReturn($html);
+
+            return $mock;
+        });
+
+        $this->expectsJobs(SendPushoverMessage::class);
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
     }
 }
