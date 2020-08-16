@@ -11,4 +11,9 @@ class Template extends Model
         'xpath_name',
         'xpath_value',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

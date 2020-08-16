@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -22,7 +22,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function watchers()
+    public function templates(): HasMany
+    {
+        return $this->hasMany(Template::class);
+    }
+
+    public function watchers(): HasMany
     {
         return $this->hasMany(Watcher::class);
     }
