@@ -161,7 +161,7 @@ export default {
                 interval_id: this.interval,
                 url: this.url,
                 query: this.xpathValue,
-                xpath_title: this.xpathTitle,
+                xpath_name: this.xpathTitle,
                 initial_value: this.initialValue,
                 alert_value: this.alertValue
             }).then(() => {
@@ -186,7 +186,7 @@ export default {
                 _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 url: this.url,
                 xpath_value: this.xpathValue,
-                xpath_title: this.xpathTitle,
+                xpath_name: this.xpathTitle,
             }).then(({data}) => {
                 this.testResults = data;
                 this.name = this.testResults.title;

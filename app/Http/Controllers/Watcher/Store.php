@@ -18,7 +18,19 @@ class Store extends Controller
             'query'  => $request->input('query'),
             'interval_id' => $request->input('interval_id'),
             'alert_value' => $request->input('alert_value'),
+            'initial_value' => $request->input('initial_value'),
         ]);
+
+        $request->user()->templates()->updateOrCreate(
+            [
+                'domain' => $watcher->urlDomain(),
+                'user_id' => $request->user()->id
+            ],
+            [
+                'xpath_value' => $request->input('query'),
+                'xpath_name' => $request->input('xpath_name')
+            ]
+        );
 
         return new JsonResponse([
             'message' => 'Successfully created watcher',
