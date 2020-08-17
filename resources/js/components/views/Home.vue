@@ -47,8 +47,8 @@
 
                         <b-table-column field="tools" centered>
                             <div class="tool-buttons">
-                                <b-button type="is-default" icon-right="information-outline" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
                                 <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
+                                <a :href="`/watcher/${props.row.id}`"><b-button type="is-default" icon-right="information-outline"/></a>
                                 <a :href="`/watcher/${props.row.id}/edit`"><b-button type="is-default" icon-right="pencil"/></a>
                                 <b-button type="is-danger" icon-right="delete" @click="deleteWatcher(props.row.id)" />
                             </div>

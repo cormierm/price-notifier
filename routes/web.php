@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function() {
         Route::post('check', 'Check')->name('check');
         Route::get('create', 'Create')->name('create');
         Route::delete('{watcher}', 'Destroy')->name('destroy');
+        Route::get('{watcher}', 'Show')->name('show');
         Route::put('{watcher}', 'Update')->name('update');
         Route::get('{watcher}/edit', 'Edit')->name('edit');
         Route::get('{watcher}/sync', 'Sync')->name('sync');
