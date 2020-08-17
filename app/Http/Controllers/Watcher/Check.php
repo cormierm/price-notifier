@@ -27,8 +27,8 @@ class Check extends Controller
             return new JsonResponse([
                 'value' => $formattedValue,
                 'raw_value' => $rawValue,
-                'title' =>  $request->input('xpath_title')
-                    ? $parser->nodeValueByXPathQuery($request->input('xpath_title'))
+                'title' =>  $request->input('xpath_name')
+                    ? $parser->nodeValueByXPathQuery($request->input('xpath_name'))
                     : '',
             ]);
         } catch(Exception $e) {

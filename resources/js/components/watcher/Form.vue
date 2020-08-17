@@ -45,11 +45,11 @@
             </b-field>
 
             <b-field
-                label="Title XPath Query"
-                :type="formErrors['xpath_title'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['xpath_title']"
+                label="Name XPath Query"
+                :type="formErrors['xpath_name'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['xpath_name']"
             >
-                <b-input v-model="xpathTitle"></b-input>
+                <b-input v-model="xpathName"></b-input>
             </b-field>
 
             <b-field
@@ -132,7 +132,7 @@ export default {
             initialValue: '',
             alertValue: '',
             xpathValue: '//span[@id="price"]',
-            xpathTitle: '//span[@class="title"]',
+            xpathName: '//title',
             url: '',
             formErrors: {},
         };
@@ -161,7 +161,7 @@ export default {
                 interval_id: this.interval,
                 url: this.url,
                 query: this.xpathValue,
-                xpath_name: this.xpathTitle,
+                xpath_name: this.xpathName,
                 initial_value: this.initialValue,
                 alert_value: this.alertValue
             }).then(() => {
@@ -186,7 +186,7 @@ export default {
                 _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 url: this.url,
                 xpath_value: this.xpathValue,
-                xpath_name: this.xpathTitle,
+                xpath_name: this.xpathName,
             }).then(({data}) => {
                 this.testResults = data;
                 this.name = this.testResults.title;
@@ -210,7 +210,7 @@ export default {
                 url: this.url,
             }).then(({data}) => {
                 this.xpathValue = data.xpath_value;
-                this.xpathTitle = data.xpath_name;
+                this.xpathName = data.xpath_name;
                 this.check();
             }).catch((err) => {
                 console.log(err);
@@ -224,7 +224,7 @@ export default {
                 interval_id: this.interval,
                 url: this.url,
                 query: this.xpathValue,
-                xpath_title: this.xpathTitle,
+                xpath_name: this.xpathName,
                 initial_value: this.initialValue,
                 alert_value: this.alertValue
             }).then(() => {
