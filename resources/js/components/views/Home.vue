@@ -34,24 +34,20 @@
                             </b-select>
                         </b-table-column>
 
-                        <b-table-column field="initial_value" label="Initial Value" centered>
-                            {{ props.row.initial_value ? props.row.initial_value : '-' }}
+                        <b-table-column field="value" label="Current"  width="120" centered>
+                            <div class="value-field">
+                                {{ props.row.value ? props.row.value : '-' }}
+                                <span>{{ props.row.last_sync }}</span>
+                            </div>
                         </b-table-column>
 
-                        <b-table-column field="value" label="Value" centered>
-                            {{ props.row.value ? props.row.value : '-' }}
-                        </b-table-column>
-
-                        <b-table-column field="alert_value" label="Alert Value" centered>
+                        <b-table-column field="alert_value" label="Alert" centered>
                             {{ props.row.alert_value ? props.row.alert_value : '-' }}
                         </b-table-column>
 
-                        <b-table-column field="last_updated" label="Last Synced">
-                            {{ props.row.last_sync }}
-                        </b-table-column>
-
-                        <b-table-column field="tools" label="Tools" centered>
+                        <b-table-column field="tools" centered>
                             <div class="tool-buttons">
+                                <b-button type="is-default" icon-right="information-outline" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
                                 <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
                                 <a :href="`/watcher/${props.row.id}/edit`"><b-button type="is-default" icon-right="pencil"/></a>
                                 <b-button type="is-danger" icon-right="delete" @click="deleteWatcher(props.row.id)" />
@@ -171,7 +167,7 @@ export default {
     .watcher-table {
         width: 80%;
     }
-    .name-field {
+    .name-field, .value-field {
         display: flex;
         flex-direction: column;
         span {
