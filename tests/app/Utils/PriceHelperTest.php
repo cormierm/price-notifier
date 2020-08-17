@@ -17,6 +17,14 @@ class PriceHelperTest extends TestCase
     }
 
     /** @test */
+    public function itCanParseNumbersFromTextWithNbsp(): void
+    {
+        $text = 'CDN$&nbsp;2.48';
+
+        $this->assertEquals(2.48, PriceHelper::numbersFromText($text));
+    }
+
+    /** @test */
     public function itReturnsEmptyStringWhenPassedEmptyString(): void
     {
         $text = '';
