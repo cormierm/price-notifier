@@ -4,10 +4,9 @@
             <b-message v-if="testResults.error" title="Danger" type="is-danger" aria-close-label="Close message">
                 {{ testResults.error }}
             </b-message>
-            <b-message v-else title="Success" type="is-success" aria-close-label="Close message">
-                Value: {{ testResults.value }}<br>
-                Value before formatting: {{ testResults.raw_value }}<br>
-                Title: {{ testResults.title }}<br>
+            <b-message v-else title="Found results" type="is-success" aria-close-label="Close message">
+                {{ testResults.title }}<br>
+                Value: {{ testResults.value }}
             </b-message>
         </div>
 
@@ -17,7 +16,12 @@
                 :type="formErrors['url'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['url']"
             >
-                <b-input v-model="url" placeholder="https://www.example.com/product.html"></b-input>
+                <b-input
+                    v-model="url"
+                    placeholder="https://www.example.com/product.html"
+                    @input="autoFill"
+                    :loading="loadingTemplate"
+                ></b-input>
             </b-field>
 
             <b-field
@@ -25,7 +29,11 @@
                 :type="formErrors['name'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['name']"
             >
-                <b-input v-model="name" placeholder="Product Name"></b-input>
+                <b-input
+                    v-model="name"
+                    placeholder="Product Name"
+                    :loading="loadingTemplate"
+                ></b-input>
             </b-field>
 
             <b-field
@@ -66,16 +74,26 @@
             >
                 <b-input v-model="alertValue" placeholder="5.00"></b-input>
             </b-field>
+
+            <b-field
+                label="Initial Value"
+                :type="formErrors['initial_value'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['initial_value']"
+            >
+                <b-input v-model="initialValue" placeholder="0.00"></b-input>
+            </b-field>
         </form>
 
         <div class="buttons">
-            <b-button :loading="loading" @click="check">Test</b-button>
+            <b-button :loading="loading || loadingTemplate" @click="check">Check</b-button>
             <b-button type="is-info" @click="submit" :loading="loading">{{ type }}</b-button>
         </div>
     </div>
 </template>
 
 <script>
+import debounce from 'lodash/debounce';
+
 export default {
     name: "watcher-form",
     props: {
@@ -100,15 +118,18 @@ export default {
             this.xpathValue = this.watcher.query;
             this.url = this.watcher.url;
             this.alertValue = this.watcher.alert_value;
+            this.initialValue = this.watcher.initial_value;
         }
     },
     data() {
         return {
             testResults: null,
             loading: false,
+            loadingTemplate: false,
             id: null,
             name: '',
             interval: null,
+            initialValue: '',
             alertValue: '',
             xpathValue: '//span[@id="price"]',
             xpathTitle: '//span[@class="title"]',
@@ -117,6 +138,12 @@ export default {
         };
     },
     methods: {
+        autoFill: debounce(function () {
+            if (!this.id) {
+                this.testResults = null;
+                this.templateSearch();
+            }
+        }, 300),
         submit() {
             this.loading = true;
 
@@ -130,12 +157,12 @@ export default {
         },
         create() {
             axios.post('/watcher', {
-                _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 name: this.name,
                 interval_id: this.interval,
                 url: this.url,
                 query: this.xpathValue,
                 xpath_title: this.xpathTitle,
+                initial_value: this.initialValue,
                 alert_value: this.alertValue
             }).then(() => {
                 window.location = '/home';
@@ -153,8 +180,8 @@ export default {
             });
         },
         check() {
-            this.loading = true;
             this.testResults = null;
+            this.initialValue = '';
             axios.post('/watcher/check', {
                 _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 url: this.url,
@@ -162,6 +189,8 @@ export default {
                 xpath_title: this.xpathTitle,
             }).then(({data}) => {
                 this.testResults = data;
+                this.name = this.testResults.title;
+                this.initialValue = this.testResults.value;
             }).catch((err) => {
                 if (err.response.status === 400) {
                     this.testResults = err.response.data;
@@ -171,18 +200,32 @@ export default {
                     }
                 }
             }).finally(() => {
-                this.loading = false;
+                this.loadingTemplate = false;
+            });
+        },
+        templateSearch() {
+            this.testResults = null;
+            this.loadingTemplate = true;
+            axios.post('/template/search-by-url', {
+                url: this.url,
+            }).then(({data}) => {
+                this.xpathValue = data.xpath_value;
+                this.xpathTitle = data.xpath_name;
+                this.check();
+            }).catch((err) => {
+                console.log(err);
+                this.loadingTemplate = false;
             });
         },
         update() {
             axios.put(`/watcher/${this.id}`, {
-                _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 id: this.id,
                 name: this.name,
                 interval_id: this.interval,
                 url: this.url,
                 query: this.xpathValue,
                 xpath_title: this.xpathTitle,
+                initial_value: this.initialValue,
                 alert_value: this.alertValue
             }).then(() => {
                 window.location = '/home';
