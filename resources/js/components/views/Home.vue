@@ -5,9 +5,13 @@
                     <a href="/watcher/create">Add Price Watcher</a>
             </div>
             <div class="row justify-content-center">
-                <b-table :data="tableData" class="watcher-table">
+                <b-table :data="tableData" class="watcher-table" default-sort="id">
                     <template slot-scope="props">
-                        <b-table-column field="name" label="Name">
+                        <b-table-column field="id" label="ID" width="40" sortable numeric>
+                            {{ props.row.id }}
+                        </b-table-column>
+
+                        <b-table-column field="name" label="Name" sortable>
                             <div class="name-field">
                                 <a :href="props.row.url">{{ props.row.name }}</a>
                                 <span>{{ props.row.url_domain }}</span>
@@ -15,7 +19,19 @@
                         </b-table-column>
 
                         <b-table-column field="interval" label="Interval" centered>
-                            {{ props.row.interval ? props.row.interval.name : 'None' }}
+                            <b-select
+                                placeholder="None"
+                                :value="props.row.interval_id"
+                                @input="updateInterval(props.row.id, $event)"
+                                :loading="loadingInterval[props.row.id]"
+                            >
+                                <option
+                                    v-for="option in intervals"
+                                    :value="option.id"
+                                    :key="option.id">
+                                    {{ option.name }}
+                                </option>
+                            </b-select>
                         </b-table-column>
 
                         <b-table-column field="initial_value" label="Initial Value" centered>
@@ -57,6 +73,10 @@ export default {
         watchers: {
             type: Array,
             default: () => ([])
+        },
+        intervals: {
+            type: Array,
+            required: true
         }
     },
     mounted() {
@@ -70,20 +90,7 @@ export default {
 
                 },
             },
-            columns: [
-                {
-                    field: 'name',
-                    label: 'Name',
-                },
-                {
-                    field: 'last_sync',
-                    label: 'Last Synced',
-                },
-                {
-                    field: 'value',
-                    label: 'Value',
-                }
-            ]
+            loadingInterval: {}
         };
     },
     computed: {
@@ -97,6 +104,22 @@ export default {
         }
     },
     methods: {
+        updateInterval(watcherId, intervalId) {
+            this.loadingInterval = {
+                ...this.loadingInterval,
+                [watcherId]: true
+            }
+            axios.put(`/watcher/${watcherId}`, {
+                interval_id: intervalId,
+            }).catch((err) => {
+                console.error(err);
+            }).finally(() => {
+                this.loadingInterval = {
+                    ...this.loadingInterval,
+                    [watcherId]: false
+                }
+            });
+        },
         deleteWatcher(id) {
             axios.delete(`/watcher/${id}`)
                 .then(({data}) => {
