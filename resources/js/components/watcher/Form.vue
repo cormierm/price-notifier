@@ -77,8 +77,8 @@
         </form>
 
         <div class="buttons">
-            <b-button :loading="loading || loadingTemplate" @click="check">Check</b-button>
-            <b-button type="is-info" @click="submit" :loading="loading">{{ type }}</b-button>
+            <b-button :loading="loadingCheck" @click="check">Check</b-button>
+            <b-button type="is-info" @click="submit">{{ type }}</b-button>
         </div>
     </div>
 </template>
@@ -127,6 +127,11 @@ export default {
             formErrors: {},
         };
     },
+    computed: {
+        loadingCheck() {
+            return this.loading || this.loadingTemplate;
+        }
+    },
     methods: {
         autoFill: debounce(function () {
             if (!this.id) {
@@ -170,6 +175,7 @@ export default {
         },
         check() {
             this.testResults = null;
+            this.loading = true;
             axios.post('/watcher/check', {
                 url: this.url,
                 xpath_value: this.xpathValue,
@@ -186,7 +192,7 @@ export default {
                     }
                 }
             }).finally(() => {
-                this.loadingTemplate = false;
+                this.loading = false;
             });
         },
         templateSearch() {
