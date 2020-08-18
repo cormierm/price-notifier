@@ -1,12 +1,16 @@
 <template>
     <div>
+        <b-message v-if="template && !testResults" :title="`Found previous queries for ${template.domain}`" type="is-success" aria-close-label="Close message">
+            Auto filling xpath queries and checking...
+        </b-message>
         <div v-if="testResults">
             <b-message v-if="testResults.error" title="Danger" type="is-danger" aria-close-label="Close message">
                 {{ testResults.error }}
             </b-message>
-            <b-message v-else title="Found results" type="is-success" aria-close-label="Close message">
-                {{ testResults.title }}<br>
-                Value: {{ testResults.value }}
+            <b-message v-else title="Found xpath query results" type="is-success" aria-close-label="Close message">
+                {{ testResults.title }}<br><br>
+                Value: <strong>{{ testResults.value }}</strong>
+                <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">Update Name</b-button>
             </b-message>
         </div>
 
@@ -20,7 +24,6 @@
                     v-model="url"
                     placeholder="https://www.example.com/product.html"
                     @input="autoFill"
-                    :loading="loadingTemplate"
                 ></b-input>
             </b-field>
 
@@ -125,6 +128,7 @@ export default {
             xpathName: '//title',
             url: '',
             formErrors: {},
+            template: null,
         };
     },
     computed: {
@@ -139,6 +143,9 @@ export default {
                 this.templateSearch();
             }
         }, 300),
+        autoFillName() {
+            this.name = this.testResults.title;
+        },
         submit() {
             this.loading = true;
 
@@ -182,7 +189,6 @@ export default {
                 xpath_name: this.xpathName,
             }).then(({data}) => {
                 this.testResults = data;
-                this.name = this.testResults.title;
             }).catch((err) => {
                 if (err.response.status === 400) {
                     this.testResults = err.response.data;
@@ -196,16 +202,18 @@ export default {
             });
         },
         templateSearch() {
-            this.testResults = null;
             this.loadingTemplate = true;
+            this.template = null;
             axios.post('/template/search-by-url', {
                 url: this.url,
             }).then(({data}) => {
                 this.xpathValue = data.xpath_value;
                 this.xpathName = data.xpath_name;
+                this.template = data;
                 this.check();
             }).catch((err) => {
                 console.log(err);
+            }).finally(() => {
                 this.loadingTemplate = false;
             });
         },
