@@ -47,7 +47,7 @@ class CheckTest extends TestCase
         $this->actingAs($user)->post(route('watcher.check'), [
             'url' => 'http://foobar.com',
             'xpath_value' => $xpath,
-            'xpath_title' => $xpathTitle,
+            'xpath_name' => $xpathTitle,
         ])
             ->assertSuccessful()
             ->assertJson([
