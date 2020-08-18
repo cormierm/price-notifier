@@ -10,6 +10,7 @@ class WatcherResource extends JsonResource
     {
         return array_merge($this->resource->load('interval')->toArray(), [
             'url_domain' => $this->resource->urlDomain(),
+            'status' => $this->status
         ]);
     }
 }

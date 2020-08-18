@@ -6,7 +6,12 @@
                 <a href="/watcher/create"><b-button icon-left="plus">Add New Watcher</b-button></a>
             </div>
             <div class="row justify-content-center">
-                <b-table :data="tableData" class="watcher-table" default-sort="id">
+                <b-table
+                    :data="tableData"
+                    class="watcher-table"
+                    default-sort="id"
+                    :row-class="(row) => `is-${row.status}`"
+                >
                     <template slot-scope="props">
                         <b-table-column field="id" label="ID" width="40" sortable numeric>
                             {{ props.row.id }}
@@ -24,6 +29,7 @@
                                 :intervals="intervals"
                                 :watcher-id="props.row.id"
                                 :value="props.row.interval_id"
+                                @update="updateWatcherList"
                             />
                         </b-table-column>
 
@@ -133,14 +139,17 @@ export default {
                 },
             };
         },
+        updateWatcherList(updatedWatcher) {
+            this.watchersList = [
+                ...this.watchersList.filter((watcher) => (watcher.id !== updatedWatcher.id)),
+                updatedWatcher
+            ];
+        },
         refresh(id) {
             this.loadingWatcher(id, true);
             axios.get(`/watcher/${id}/sync`)
                 .then(({data}) => {
-                    this.watchersList = [
-                        ...this.watchersList.filter((watcher) => (watcher.id !== id)),
-                        data.watcher
-                    ];
+                    this.updateWatcherList(data.watcher);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -165,5 +174,15 @@ export default {
 
     .tool-buttons {
         display: flex;
+    }
+</style>
+
+<style>
+    tr.is-error {
+        background: #ffd4d4;
+    }
+    tr.is-disabled {
+        background: #f6f6f6;
+        color: #4c4c4c;
     }
 </style>

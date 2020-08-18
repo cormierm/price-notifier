@@ -42,8 +42,8 @@ export default {
             this.loading = true;
             axios.put(`/watcher/${watcherId}`, {
                 interval_id: intervalId,
-            }).then(() => {
-                this.$emit('update', intervalId);
+            }).then(({data}) => {
+                this.$emit('update', data.watcher);
             }).catch((err) => {
                 this.$buefy.toast.open('Error updating watcher interval!');
                 console.error(err);
