@@ -1,8 +1,9 @@
 <template>
     <div>
         <div class="container">
-            <div class="row justify-content-end">
-                    <a href="/watcher/create">Add Price Watcher</a>
+            <div class="row justify-content-between">
+                <h1 class="title">Watchers</h1>
+                <a href="/watcher/create"><b-button icon-left="plus">Add New Watcher</b-button></a>
             </div>
             <div class="row justify-content-center">
                 <b-table :data="tableData" class="watcher-table" default-sort="id">
@@ -24,6 +25,10 @@
                                 :watcher-id="props.row.id"
                                 :value="props.row.interval_id"
                             />
+                        </b-table-column>
+
+                        <b-table-column field="initial_value" label="Original" centered>
+                            {{ props.row.initial_value ? props.row.initial_value : '-' }}
                         </b-table-column>
 
                         <b-table-column field="value" label="Current"  width="120" centered>
@@ -149,10 +154,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .watcher-table {
-        width: 80%;
-    }
-
     .name-field, .value-field {
         display: flex;
         flex-direction: column;
@@ -161,6 +162,7 @@ export default {
             font-size: 0.7em;
         }
     }
+
     .tool-buttons {
         display: flex;
     }
