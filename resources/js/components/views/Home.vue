@@ -19,19 +19,11 @@
                         </b-table-column>
 
                         <b-table-column field="interval" label="Interval" centered>
-                            <b-select
-                                placeholder="None"
+                            <interval-select
+                                :intervals="intervals"
+                                :watcher-id="props.row.id"
                                 :value="props.row.interval_id"
-                                @input="updateInterval(props.row.id, $event)"
-                                :loading="loadingInterval[props.row.id]"
-                            >
-                                <option
-                                    v-for="option in intervals"
-                                    :value="option.id"
-                                    :key="option.id">
-                                    {{ option.name }}
-                                </option>
-                            </b-select>
+                            />
                         </b-table-column>
 
                         <b-table-column field="value" label="Current"  width="120" centered>
@@ -50,7 +42,7 @@
                                 <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
                                 <a :href="`/watcher/${props.row.id}`"><b-button type="is-default" icon-right="information-outline"/></a>
                                 <a :href="`/watcher/${props.row.id}/edit`"><b-button type="is-default" icon-right="pencil"/></a>
-                                <b-button type="is-danger" icon-right="delete" @click="deleteWatcher(props.row.id)" />
+                                <b-button type="is-danger" icon-right="delete" @click="confirmDeleteWatcher(props.row)" />
                             </div>
                         </b-table-column>
                     </template>
@@ -62,9 +54,11 @@
 
 <script>
 import moment from 'moment';
+import IntervalSelect from "../watcher/IntervalSelect";
 
 export default {
     name: "Home",
+    components: { IntervalSelect },
     props: {
         watchers: {
             type: Array,
@@ -82,11 +76,8 @@ export default {
         return {
             watchersList: [],
             loading: {
-                watchers: {
-
-                },
+                watchers: {},
             },
-            loadingInterval: {}
         };
     },
     computed: {
@@ -100,21 +91,15 @@ export default {
         }
     },
     methods: {
-        updateInterval(watcherId, intervalId) {
-            this.loadingInterval = {
-                ...this.loadingInterval,
-                [watcherId]: true
-            }
-            axios.put(`/watcher/${watcherId}`, {
-                interval_id: intervalId,
-            }).catch((err) => {
-                console.error(err);
-            }).finally(() => {
-                this.loadingInterval = {
-                    ...this.loadingInterval,
-                    [watcherId]: false
-                }
-            });
+        confirmDeleteWatcher(watcher) {
+            this.$buefy.dialog.confirm({
+                title: 'Deleting watcher',
+                message: `Are you sure you want to <b>delete</b> this watcher?<br><strong>${watcher.name}</strong><br>This action cannot be undone.`,
+                confirmText: 'Delete Watcher',
+                type: 'is-danger',
+                hasIcon: true,
+                onConfirm: () => this.deleteWatcher(watcher.id)
+            })
         },
         deleteWatcher(id) {
             axios.delete(`/watcher/${id}`)
@@ -167,6 +152,7 @@ export default {
     .watcher-table {
         width: 80%;
     }
+
     .name-field, .value-field {
         display: flex;
         flex-direction: column;
