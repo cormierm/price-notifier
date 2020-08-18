@@ -53,4 +53,30 @@ class WatcherTest extends TestCase
 
         $this->assertEquals('foobar.com', $watcher->urlDomain());
     }
+
+    /** @test */
+    public function itReturnsStatusErrorIfLastLogHasError(): void
+    {
+        $log = factory(WatcherLog::class)->create([
+            'error' => 'Some error'
+        ]);
+
+        $this->assertEquals('error', $log->watcher->status);
+    }
+
+    /** @test */
+    public function itReturnsStatusDisabledIfNoIntervalSet(): void
+    {
+        $watcher = factory(Watcher::class)->state('disabled')->create();
+
+        $this->assertEquals('disabled', $watcher->status);
+    }
+
+    /** @test */
+    public function itReturnsStatusOkayIfNoLastLogErrorAndIntervalHasMinutesSet(): void
+    {
+        $watcher = factory(Watcher::class)->create();
+
+        $this->assertEquals('ok', $watcher->status);
+    }
 }

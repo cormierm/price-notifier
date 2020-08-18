@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Interval;
 use App\User;
 use App\Watcher;
 use Carbon\Carbon;
@@ -16,6 +17,15 @@ $factory->define(Watcher::class, function (Faker $faker) {
         },
         'query' => $faker->word,
         'last_sync' => Carbon::now(),
-        'value' => (string) $faker->randomFloat(2, 1, 1000)
+        'value' => (string) $faker->randomFloat(2, 1, 1000),
+        'interval_id' => function () {
+            return factory(Interval::class)->create()->id;
+        }
+    ];
+});
+
+$factory->state(Watcher::class, 'disabled', function () {
+    return [
+        'interval_id' => null,
     ];
 });
