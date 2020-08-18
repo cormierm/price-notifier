@@ -74,14 +74,6 @@
             >
                 <b-input v-model="alertValue" placeholder="5.00"></b-input>
             </b-field>
-
-            <b-field
-                label="Initial Value"
-                :type="formErrors['initial_value'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['initial_value']"
-            >
-                <b-input v-model="initialValue" placeholder="0.00"></b-input>
-            </b-field>
         </form>
 
         <div class="buttons">
@@ -118,7 +110,6 @@ export default {
             this.xpathValue = this.watcher.query;
             this.url = this.watcher.url;
             this.alertValue = this.watcher.alert_value;
-            this.initialValue = this.watcher.initial_value;
         }
     },
     data() {
@@ -129,7 +120,6 @@ export default {
             id: null,
             name: '',
             interval: null,
-            initialValue: '',
             alertValue: '',
             xpathValue: '//span[@id="price"]',
             xpathName: '//title',
@@ -162,7 +152,6 @@ export default {
                 url: this.url,
                 query: this.xpathValue,
                 xpath_name: this.xpathName,
-                initial_value: this.initialValue,
                 alert_value: this.alertValue
             }).then(() => {
                 window.location = '/home';
@@ -181,16 +170,13 @@ export default {
         },
         check() {
             this.testResults = null;
-            this.initialValue = '';
             axios.post('/watcher/check', {
-                _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 url: this.url,
                 xpath_value: this.xpathValue,
                 xpath_name: this.xpathName,
             }).then(({data}) => {
                 this.testResults = data;
                 this.name = this.testResults.title;
-                this.initialValue = this.testResults.value;
             }).catch((err) => {
                 if (err.response.status === 400) {
                     this.testResults = err.response.data;
@@ -225,7 +211,6 @@ export default {
                 url: this.url,
                 query: this.xpathValue,
                 xpath_name: this.xpathName,
-                initial_value: this.initialValue,
                 alert_value: this.alertValue
             }).then(() => {
                 window.location = '/home';

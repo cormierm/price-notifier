@@ -75,6 +75,10 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itSendsAlertWhenValueIsLessThanAlertValue(): void
     {
+//        $user = factory(User::class)->create([
+//            'pushover_user_key' => env('PUSHOVER_USER_KEY'),
+//            'pushover_api_token' => env('PUSHOVER_API_TOKEN'),
+//        ]);
         $rawValue = '50.00';
         $watcher = factory(Watcher::class)->create([
             'query' => '//span[@class="value"]',
