@@ -31,11 +31,11 @@ Route::middleware('auth')->group(function() {
         Route::post('/', 'Store')->name('store');
         Route::post('check', 'Check')->name('check');
         Route::get('create', 'Create')->name('create');
-        Route::delete('{watcher}', 'Destroy')->name('destroy');
-        Route::get('{watcher}', 'Show')->name('show');
-        Route::put('{watcher}', 'Update')->name('update');
-        Route::get('{watcher}/edit', 'Edit')->name('edit');
-        Route::get('{watcher}/sync', 'Sync')->name('sync');
+        Route::delete('{watcher}', 'Destroy')->middleware('can:update,watcher');
+        Route::get('{watcher}', 'Show')->name('show')->middleware('can:view,watcher');
+        Route::put('{watcher}', 'Update')->name('update')->middleware('can:update,watcher');
+        Route::get('{watcher}/edit', 'Edit')->name('edit')->middleware('can:update,watcher');
+        Route::get('{watcher}/sync', 'Sync')->name('sync')->middleware('can:update,watcher');
     });
 });
 

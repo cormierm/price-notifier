@@ -20,6 +20,10 @@ class Watcher extends Model
         'alert_value',
     ];
 
+    protected $casts = [
+        'user_id' => 'int',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
