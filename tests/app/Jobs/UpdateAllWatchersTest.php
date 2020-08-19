@@ -68,5 +68,4 @@ class UpdateAllWatchersTest extends TestCase
         $job = new UpdateAllWatchers;
         $job->handle();
     }
-
 }

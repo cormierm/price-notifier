@@ -24,5 +24,4 @@ class EditTest extends TestCase
             ->assertViewIs('watcher.edit')
             ->assertViewHas('watcher', $watcher);
     }
-
 }

@@ -23,5 +23,4 @@ class SendPushoverMessageTest extends TestCase
 
         SendPushoverMessage::dispatch($user, 'Some Title', 'Hellooooooo!', 'http://foobar.com/asdflkjdf');
     }
-
 }

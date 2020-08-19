@@ -2,7 +2,6 @@
 
 namespace Tests\App\Http\Controllers\Watcher;
 
-use App\Interval;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -55,5 +54,4 @@ class StoreTest extends TestCase
             'user_id' => $user->id
         ]);
     }
-
 }

@@ -18,7 +18,7 @@ class UpdateAllWatchers implements ShouldQueue
     {
         $watchers = Watcher::all();
 
-        $watchers->each(function($watcher) {
+        $watchers->each(function ($watcher) {
 
             $lastLog = $watcher->lastLog();
 

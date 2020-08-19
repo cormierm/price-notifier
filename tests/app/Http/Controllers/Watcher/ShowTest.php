@@ -22,5 +22,4 @@ class ShowTest extends TestCase
             ->assertViewIs('watcher.show')
             ->assertViewHas('watcher', $watcher);
     }
-
 }

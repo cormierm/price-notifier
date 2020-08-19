@@ -49,7 +49,8 @@ class Watcher extends Model
         return str_replace('www.', '', parse_url($this->url, PHP_URL_HOST));
     }
 
-    public function getStatusAttribute() {
+    public function getStatusAttribute()
+    {
         if (!$this->interval || !$this->interval->minutes) {
             return 'disabled';
         }

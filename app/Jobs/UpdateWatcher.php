@@ -60,7 +60,7 @@ class UpdateWatcher implements ShouldQueue
             } else {
                 $this->error = 'Formatted value was empty. Found node value: ' . $rawValue;
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->error = $e->getMessage();
         }
 

@@ -31,8 +31,7 @@ class Check extends Controller
                     ? $parser->nodeValueByXPathQuery($request->input('xpath_name'))
                     : '',
             ]);
-        } catch(Exception $e) {
-
+        } catch (Exception $e) {
             return new JsonResponse([
                 'error' => $e->getMessage()
             ], JsonResponse::HTTP_BAD_REQUEST);
