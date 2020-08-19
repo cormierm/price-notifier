@@ -19,6 +19,7 @@ class Search extends Controller
             'domain' => $template->domain,
             'xpath_name' => $template->xpath_name,
             'xpath_value' => $template->xpath_value,
+            'client' => $template->client,
         ]);
     }
 }
