@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Watcher;
 
+use App\Utils\HtmlFetcher;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -14,7 +15,8 @@ class StoreRequest extends FormRequest
             'query'  => 'required|string|min:2',
             'xpath_name' => 'required|string|min:2',
             'interval_id' => 'nullable|exists:intervals,id',
-            'alert_value' => 'nullable|numeric'
+            'alert_value' => 'nullable|numeric',
+            'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),
         ];
     }
 }

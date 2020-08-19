@@ -18,6 +18,7 @@ class Watcher extends Model
         'interval_id',
         'value',
         'alert_value',
+        'client',
     ];
 
     protected $casts = [

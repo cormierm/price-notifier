@@ -4,6 +4,7 @@
 
 use App\Interval;
 use App\User;
+use App\Utils\HtmlFetcher;
 use App\Watcher;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
@@ -20,7 +21,8 @@ $factory->define(Watcher::class, function (Faker $faker) {
         'value' => (string) $faker->randomFloat(2, 1, 1000),
         'interval_id' => function () {
             return factory(Interval::class)->create()->id;
-        }
+        },
+        'client' => HtmlFetcher::CLIENT_BROWERSHOT,
     ];
 });
 

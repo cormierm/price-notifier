@@ -1,6 +1,7 @@
 <template>
     <div>
-        <b-message v-if="template && !testResults" :title="`Found previous queries for ${template.domain}`" type="is-success" aria-close-label="Close message">
+        <b-message v-if="template && !testResults" :title="`Found previous queries for ${template.domain}`"
+                   type="is-success" aria-close-label="Close message">
             Auto filling xpath queries and checking...
         </b-message>
         <div v-if="testResults">
@@ -10,7 +11,8 @@
             <b-message v-else title="Found xpath query results" type="is-success" aria-close-label="Close message">
                 {{ testResults.title }}<br><br>
                 Value: <strong>{{ testResults.value }}</strong>
-                <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">Update Name</b-button>
+                <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">Update Name
+                </b-button>
             </b-message>
         </div>
 
@@ -77,6 +79,36 @@
             >
                 <b-input v-model="alertValue" placeholder="5.00"></b-input>
             </b-field>
+
+            <b-field
+                label="Html Client"
+                :type="formErrors['client'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['client']"
+            >
+                <div class="block">
+                    <b-radio
+                        v-model="client"
+                        name="client"
+                        native-value="browsershot"
+                    >
+                        Browsershot
+                    </b-radio>
+                    <b-radio
+                        v-model="client"
+                        name="client"
+                        native-value="curl"
+                    >
+                        Curl
+                    </b-radio>
+                    <b-radio
+                        v-model="client"
+                        name="client"
+                        native-value="guzzle"
+                    >
+                        Guzzle
+                    </b-radio>
+                </div>
+            </b-field>
         </form>
 
         <div class="buttons">
@@ -113,6 +145,7 @@ export default {
             this.xpathValue = this.watcher.query;
             this.url = this.watcher.url;
             this.alertValue = this.watcher.alert_value;
+            this.client = this.watcher.client;
         }
     },
     data() {
@@ -129,6 +162,7 @@ export default {
             url: '',
             formErrors: {},
             template: null,
+            client: 'browsershot',
         };
     },
     computed: {
@@ -164,7 +198,8 @@ export default {
                 url: this.url,
                 query: this.xpathValue,
                 xpath_name: this.xpathName,
-                alert_value: this.alertValue
+                alert_value: this.alertValue,
+                client: this.client
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {
@@ -187,6 +222,7 @@ export default {
                 url: this.url,
                 xpath_value: this.xpathValue,
                 xpath_name: this.xpathName,
+                client: this.client
             }).then(({data}) => {
                 this.testResults = data;
             }).catch((err) => {
@@ -194,7 +230,7 @@ export default {
                     this.testResults = err.response.data;
                 } else {
                     this.testResults = {
-                        error:  err,
+                        error: err,
                     }
                 }
             }).finally(() => {
@@ -209,6 +245,7 @@ export default {
             }).then(({data}) => {
                 this.xpathValue = data.xpath_value;
                 this.xpathName = data.xpath_name;
+                this.client = data.client
                 this.template = data;
                 this.check();
             }).catch((err) => {
@@ -225,7 +262,8 @@ export default {
                 url: this.url,
                 query: this.xpathValue,
                 xpath_name: this.xpathName,
-                alert_value: this.alertValue
+                alert_value: this.alertValue,
+                client: this.client
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {
@@ -246,14 +284,14 @@ export default {
 </script>
 
 <style scoped>
-    .wrapper-form {
-        display: flex;
-        flex-direction: column;
-    }
+.wrapper-form {
+    display: flex;
+    flex-direction: column;
+}
 
-    .buttons {
-        margin-top: 20px;
-        display: flex;
-        justify-content: space-between;
-    }
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
 </style>

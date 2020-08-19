@@ -20,12 +20,13 @@ class UpdateWatcherTest extends TestCase
     {
         $watcher = factory(Watcher::class)->create([
             'query' => '//div[@id="pull-right-price"]/span[@class="value"]',
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ]);
         $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">149.99</span><span class="currency">$</span></div></div></body></html>';
 
 
         $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url)->andReturn($html);
+            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
 
             return $mock;
         });
@@ -41,12 +42,13 @@ class UpdateWatcherTest extends TestCase
         $rawValue = 'CDN$ 149.99';
         $watcher = factory(Watcher::class)->create([
             'query' => '//div[@id="pull-right-price"]/span[@class="value"]',
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ]);
         $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">' . $rawValue . '</span><span class="currency">$</span></div></div></body></html>';
 
 
         $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url)->andReturn($html);
+            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
 
             return $mock;
         });
@@ -84,11 +86,12 @@ class UpdateWatcherTest extends TestCase
             'query' => '//span[@class="value"]',
             'value' => '110.00',
             'alert_value' => '100.00',
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
         ]);
         $html = '<html><body><span class="value">' . $rawValue . '</span></body></html>';
 
         $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url)->andReturn($html);
+            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
 
             return $mock;
         });

@@ -24,6 +24,7 @@ class CheckTest extends TestCase
         $this->actingAs($user)->post(route('watcher.check'), [
             'url' => 'http://foobar.com',
             'xpath_value' => $xpath,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ])
             ->assertSuccessful()
             ->assertJson([
@@ -48,6 +49,7 @@ class CheckTest extends TestCase
             'url' => 'http://foobar.com',
             'xpath_value' => $xpath,
             'xpath_name' => $xpathTitle,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ])
             ->assertSuccessful()
             ->assertJson([

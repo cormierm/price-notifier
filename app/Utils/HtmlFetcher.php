@@ -7,8 +7,34 @@ use Spatie\Browsershot\Browsershot;
 
 class HtmlFetcher
 {
-    public function getHtmlFromUrl(string $url)
+    const CLIENT_BROWERSHOT = 'browsershot';
+    const CLIENT_CURL = 'curl';
+    const CLIENT_GUZZLE = 'guzzle';
+
+    const CLIENTS = [
+        self::CLIENT_BROWERSHOT,
+        self::CLIENT_CURL,
+        self::CLIENT_GUZZLE
+    ];
+
+    /**
+     * @var ClientInterface
+     */
+    private $client;
+
+    public function __construct(ClientInterface $client)
     {
+        $this->client = $client;
+    }
+
+    public function getHtmlFromUrl(string $url, string $client = self::CLIENT_BROWERSHOT)
+    {
+        if ($client === self::CLIENT_GUZZLE) {
+            return $this->getHtmlWithGuzzle($url);
+        } elseif ($client === self::CLIENT_CURL) {
+            return $this->getHtmlWithCurl($url);
+        }
+
         return $this->getHtmlWithBrowserShot($url);
     }
 
@@ -19,6 +45,7 @@ class HtmlFetcher
             ->setNpmBinary(config('pcn.browsershot.npm_bin'))
             ->userAgent(config('pcn.fetcher.user_agent'))
             ->disableImages()
+            ->dismissDialogs()
             ->waitUntilNetworkIdle()
             ->bodyHtml();
     }
@@ -41,9 +68,9 @@ class HtmlFetcher
         return $data;
     }
 
-    public function getHtmlWithGuzzle(string $url, ClientInterface $client): string
+    public function getHtmlWithGuzzle(string $url): string
     {
-        return (string)$client->request('GET', $url, [
+        return (string)$this->client->request('GET', $url, [
             'headers' => [
                 'User-Agent' => config('pcn.fetcher.user_agent'),
             ]

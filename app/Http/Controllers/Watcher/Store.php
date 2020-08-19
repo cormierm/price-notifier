@@ -18,6 +18,7 @@ class Store extends Controller
             'query'  => $request->input('query'),
             'interval_id' => $request->input('interval_id'),
             'alert_value' => $request->input('alert_value'),
+            'client' => $request->input('client'),
         ]);
 
         $request->user()->templates()->updateOrCreate(
@@ -27,7 +28,8 @@ class Store extends Controller
             ],
             [
                 'xpath_value' => $request->input('query'),
-                'xpath_name' => $request->input('xpath_name')
+                'xpath_name' => $request->input('xpath_name'),
+                'client' =>  $request->input('client'),
             ]
         );
 

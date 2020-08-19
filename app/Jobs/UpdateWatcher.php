@@ -38,7 +38,7 @@ class UpdateWatcher implements ShouldQueue
         $fetcher = resolve(HtmlFetcher::class);
 
         try {
-            $html = $fetcher->getHtmlFromUrl($this->watcher->url);
+            $html = $fetcher->getHtmlFromUrl($this->watcher->url, $this->watcher->client);
 
             $parser = new HtmlParser($html);
             $rawValue = $parser->nodeValueByXPathQuery($this->watcher->query);
