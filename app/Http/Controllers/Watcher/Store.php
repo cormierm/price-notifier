@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Watcher\StoreRequest;
 use App\Watcher;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class Store extends Controller
 {
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(StoreRequest $request): JsonResponse
     {
         $watcher = Watcher::create([
             'name' => $request->input('name'),

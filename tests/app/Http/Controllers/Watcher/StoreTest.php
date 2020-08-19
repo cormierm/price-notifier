@@ -2,6 +2,7 @@
 
 namespace Tests\App\Http\Controllers\Watcher;
 
+use App\Interval;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -20,7 +21,12 @@ class StoreTest extends TestCase
             'query' => 'some-class',
         ];
 
-        $this->actingAs($user)->postJson(route('watcher.store'), $data)->assertSuccessful();
+        $this->actingAs($user)->postJson(route('watcher.store'), array_merge(
+            $data,
+            [
+                'xpath_name' => 'some-class',
+            ]
+        ))->assertSuccessful();
 
         $this->assertDatabaseHas('watchers', array_merge(
             $data,
