@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Watcher;
 
+use App\Events\WatcherUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Watcher\StoreRequest;
+use App\Http\Resources\WatcherResource;
 use App\Watcher;
 use Illuminate\Http\JsonResponse;
 
@@ -20,6 +22,8 @@ class Store extends Controller
             'alert_value' => $request->input('alert_value'),
             'client' => $request->input('client'),
         ]);
+
+        event(new WatcherUpdated(WatcherResource::make($watcher)));
 
         $request->user()->templates()->updateOrCreate(
             [

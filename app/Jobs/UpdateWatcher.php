@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Events\WatcherUpdated;
+use App\Http\Resources\WatcherResource;
 use App\Utils\HtmlFetcher;
 use App\Utils\HtmlParser;
 use App\Utils\PriceHelper;
@@ -48,7 +50,6 @@ class UpdateWatcher implements ShouldQueue
                 $this->sendAlerts($formattedValue);
 
                 $this->watcher->update([
-                    'last_sync' => Carbon::now(),
                     'value' => $formattedValue,
                 ]);
 
@@ -63,6 +64,12 @@ class UpdateWatcher implements ShouldQueue
         } catch (Exception $e) {
             $this->error = $e->getMessage();
         }
+
+        $this->watcher->update([
+            'last_sync' => Carbon::now(),
+        ]);
+
+        event(new WatcherUpdated(WatcherResource::make($this->watcher)));
 
         WatcherLog::create([
             'watcher_id' => $this->watcher->id,

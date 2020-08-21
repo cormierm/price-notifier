@@ -66,11 +66,16 @@
 <script>
 import moment from 'moment';
 import IntervalSelect from "../watcher/IntervalSelect";
+import Pusher from 'pusher-js';
 
 export default {
     name: "Home",
     components: { IntervalSelect },
     props: {
+        userId: {
+            type: Number,
+            required: true
+        },
         watchers: {
             type: Array,
             default: () => ([])
@@ -82,6 +87,19 @@ export default {
     },
     mounted() {
         this.watchersList = this.watchers;
+        Pusher.logToConsole = true;
+
+        const pusher = new Pusher('a4e15e941c6e4777254a', {
+            cluster: 'us2'
+        });
+
+        const channel = pusher.subscribe(`user.${this.userId}.watchers`);
+        channel.bind('update', (data) => {
+            this.updateWatcherList(data.watcher);
+        });
+        channel.bind('delete', (data) => {
+            this.removeWatcherFromList(data.id);
+        });
     },
     data() {
         return {
@@ -144,6 +162,9 @@ export default {
                 ...this.watchersList.filter((watcher) => (watcher.id !== updatedWatcher.id)),
                 updatedWatcher
             ];
+        },
+        removeWatcherFromList(id) {
+            this.watchersList = this.watchersList.filter((watcher) => (watcher.id !== id));
         },
         refresh(id) {
             this.loadingWatcher(id, true);
