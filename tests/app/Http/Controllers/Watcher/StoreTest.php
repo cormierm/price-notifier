@@ -2,9 +2,11 @@
 
 namespace Tests\App\Http\Controllers\Watcher;
 
+use App\Events\WatcherCreatedOrUpdated;
 use App\User;
 use App\Utils\HtmlFetcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
@@ -14,6 +16,8 @@ class StoreTest extends TestCase
     /** @test */
     public function itCanCreateWatcher(): void
     {
+        Event::fake();
+
         $user = factory(User::class)->create();
         $data = [
             'name' => 'Foo',
@@ -28,6 +32,8 @@ class StoreTest extends TestCase
                 'xpath_name' => 'some-class',
             ]
         ))->assertSuccessful();
+
+        Event::assertDispatched(WatcherCreatedOrUpdated::class);
 
         $this->assertDatabaseHas('watchers', array_merge(
             $data,

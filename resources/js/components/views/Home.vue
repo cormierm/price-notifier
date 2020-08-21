@@ -87,12 +87,10 @@ export default {
     },
     mounted() {
         this.watchersList = this.watchers;
-        Pusher.logToConsole = true;
 
         const pusher = new Pusher('a4e15e941c6e4777254a', {
             cluster: 'us2'
         });
-
         const channel = pusher.subscribe(`user.${this.userId}.watchers`);
         channel.bind('update', (data) => {
             this.updateWatcherList(data.watcher);

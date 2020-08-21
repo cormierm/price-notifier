@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Events\WatcherUpdated;
+use App\Events\WatcherCreatedOrUpdated;
 use App\Http\Resources\WatcherResource;
 use App\Utils\HtmlFetcher;
 use App\Utils\HtmlParser;
@@ -69,7 +69,7 @@ class UpdateWatcher implements ShouldQueue
             'last_sync' => Carbon::now(),
         ]);
 
-        event(new WatcherUpdated(WatcherResource::make($this->watcher)));
+        event(new WatcherCreatedOrUpdated(WatcherResource::make($this->watcher)));
 
         WatcherLog::create([
             'watcher_id' => $this->watcher->id,

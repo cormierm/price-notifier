@@ -2,12 +2,13 @@
 
 namespace Tests\App\Jobs;
 
+use App\Events\WatcherCreatedOrUpdated;
 use App\Jobs\SendPushoverMessage;
 use App\Jobs\UpdateWatcher;
-use App\User;
 use App\Utils\HtmlFetcher;
 use App\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -18,6 +19,8 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itCanUpdateWatcher(): void
     {
+        Event::fake();
+
         $watcher = factory(Watcher::class)->create([
             'query' => '//div[@id="pull-right-price"]/span[@class="value"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
@@ -32,6 +35,7 @@ class UpdateWatcherTest extends TestCase
         });
 
         UpdateWatcher::dispatch($watcher);
+        Event::assertDispatched(WatcherCreatedOrUpdated::class);
 
         $this->assertEquals('149.99', $watcher->fresh()->value);
     }
