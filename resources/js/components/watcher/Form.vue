@@ -24,6 +24,7 @@
             >
                 <b-input
                     v-model="url"
+                    maxlength="191"
                     placeholder="https://www.example.com/product.html"
                     @input="autoFill"
                 ></b-input>
@@ -36,6 +37,7 @@
             >
                 <b-input
                     v-model="name"
+                    maxlength="191"
                     placeholder="Product Name"
                     :loading="loadingTemplate"
                 ></b-input>
@@ -46,7 +48,11 @@
                 :type="formErrors['query'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['query']"
             >
-                <b-input v-model="xpathValue"></b-input>
+                <b-input
+                    v-model="xpathValue"
+                    maxlength="191"
+                    placeholder="//span[@id='price']"
+                ></b-input>
             </b-field>
 
             <b-field
@@ -54,7 +60,11 @@
                 :type="formErrors['xpath_name'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['xpath_name']"
             >
-                <b-input v-model="xpathName"></b-input>
+                <b-input
+                    v-model="xpathName"
+                    maxlength="191"
+                    placeholder="//title"
+                ></b-input>
             </b-field>
 
             <b-field
@@ -155,7 +165,7 @@ export default {
             loadingTemplate: false,
             id: null,
             name: '',
-            interval: null,
+            interval: 1,
             alertValue: '',
             xpathValue: '//span[@id="price"]',
             xpathName: '//title',
