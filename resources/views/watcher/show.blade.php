@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.vue')
 
 @section('content')
     <div class="container">
@@ -7,11 +7,12 @@
         Name: <strong>{{ $watcher->name }}</strong><br>
         Url: {{ $watcher->url }}<br>
         Last Synced: {{ $watcher->last_sync }}<br>
-        Initial: {{ $watcher->interval->name }}<br>
-        Original Price: {{ $watcher->initial_value }}<br>
-        Current Price: {{ $watcher->initial_value }}<br>
-        Alert Price: {{ $watcher->initial_value }}<br>
+        Interval: {{ $watcher->interval->name }}<br>
+        Initial Price: {{ $watcher->initial_value }}<br>
+        Current Price: {{ $watcher->value }}<br>
+        Alert Price: {{ $watcher->alert_value }}<br>
         XPath Query Price: {{ $watcher->query }}
+        XPath Query Name: {{ $watcher->xpath_name }}
 
         <h2 class="mt-3 subtitle">Api logs</h2>
         <watcher-logs :logs="{{ $watcher->logs }}"></watcher-logs>
