@@ -23,6 +23,7 @@
                 :message="formErrors['url']"
             >
                 <b-input
+                    type="url"
                     v-model="url"
                     maxlength="191"
                     placeholder="https://www.example.com/product.html"
@@ -87,7 +88,11 @@
                 :type="formErrors['alert_value'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['alert_value']"
             >
-                <b-input v-model="alertValue" placeholder="5.00"></b-input>
+                <b-input
+                    v-model="alertValue"
+                    type="number"
+                    placeholder="5.00"
+                ></b-input>
             </b-field>
 
             <b-field
