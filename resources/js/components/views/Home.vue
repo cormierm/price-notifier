@@ -1,64 +1,69 @@
 <template>
     <div>
         <div class="container">
-            <div class="row justify-content-between">
+            <div class="title-header">
                 <h1 class="title">Watchers</h1>
-                <a href="/watcher/create"><b-button icon-left="plus">Add New Watcher</b-button></a>
+                <a href="/watcher/create">
+                    <b-button icon-left="plus">Add New Watcher</b-button>
+                </a>
             </div>
-            <div class="row justify-content-center">
-                <b-table
-                    :data="tableData"
-                    class="watcher-table"
-                    default-sort="id"
-                    :row-class="(row) => `is-${row.status}`"
-                >
-                    <template slot-scope="props">
-                        <b-table-column field="id" label="ID" width="40" sortable numeric>
-                            {{ props.row.id }}
-                        </b-table-column>
+            <b-table
+                :data="tableData"
+                class="watcher-table"
+                default-sort="id"
+                :row-class="(row) => `is-${row.status}`"
+            >
+                <template slot-scope="props">
+                    <b-table-column field="id" label="ID" width="40" sortable numeric>
+                        {{ props.row.id }}
+                    </b-table-column>
 
-                        <b-table-column field="name" label="Name" sortable>
-                            <div class="name-field">
-                                <a :href="props.row.url">{{ props.row.name }}</a>
-                                <span>{{ props.row.url_domain }}</span>
-                            </div>
-                        </b-table-column>
+                    <b-table-column field="name" label="Name" sortable>
+                        <div class="name-field">
+                            <a :href="props.row.url">{{ props.row.name }}</a>
+                            <span>{{ props.row.url_domain }}</span>
+                        </div>
+                    </b-table-column>
 
-                        <b-table-column field="interval" label="Interval" centered>
-                            <interval-select
-                                :intervals="intervals"
-                                :watcher-id="props.row.id"
-                                :value="props.row.interval_id"
-                                @update="updateWatcherList"
-                            />
-                        </b-table-column>
+                    <b-table-column field="interval" label="Interval" centered>
+                        <interval-select
+                            :intervals="intervals"
+                            :watcher-id="props.row.id"
+                            :value="props.row.interval_id"
+                            @update="updateWatcherList"
+                        />
+                    </b-table-column>
 
-                        <b-table-column field="initial_value" label="Original" centered>
-                            {{ props.row.initial_value ? props.row.initial_value : '-' }}
-                        </b-table-column>
+                    <b-table-column field="initial_value" label="Original" centered>
+                        {{ props.row.initial_value ? props.row.initial_value : '-' }}
+                    </b-table-column>
 
-                        <b-table-column field="value" label="Current"  width="120" centered>
-                            <div class="value-field">
-                                {{ props.row.value ? props.row.value : '-' }}
-                                <span>{{ props.row.last_sync }}</span>
-                            </div>
-                        </b-table-column>
+                    <b-table-column field="value" label="Current" width="120" centered>
+                        <div class="value-field">
+                            {{ props.row.value ? props.row.value : '-' }}
+                            <span>{{ props.row.last_sync }}</span>
+                        </div>
+                    </b-table-column>
 
-                        <b-table-column field="alert_value" label="Alert" centered>
-                            {{ props.row.alert_value ? props.row.alert_value : '-' }}
-                        </b-table-column>
+                    <b-table-column field="alert_value" label="Alert" centered>
+                        {{ props.row.alert_value ? props.row.alert_value : '-' }}
+                    </b-table-column>
 
-                        <b-table-column field="tools" centered>
-                            <div class="tool-buttons">
-                                <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]" @click="refresh(props.row.id)"/>
-                                <a :href="`/watcher/${props.row.id}`"><b-button type="is-default" icon-right="information-outline"/></a>
-                                <a :href="`/watcher/${props.row.id}/edit`"><b-button type="is-default" icon-right="pencil"/></a>
-                                <b-button type="is-danger" icon-right="delete" @click="confirmDeleteWatcher(props.row)" />
-                            </div>
-                        </b-table-column>
-                    </template>
-                </b-table>
-            </div>
+                    <b-table-column field="tools" centered>
+                        <div class="tool-buttons">
+                            <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]"
+                                      @click="refresh(props.row.id)"/>
+                            <a :href="`/watcher/${props.row.id}`">
+                                <b-button type="is-default" icon-right="information-outline"/>
+                            </a>
+                            <a :href="`/watcher/${props.row.id}/edit`">
+                                <b-button type="is-default" icon-right="pencil"/>
+                            </a>
+                            <b-button type="is-danger" icon-right="delete" @click="confirmDeleteWatcher(props.row)"/>
+                        </div>
+                    </b-table-column>
+                </template>
+            </b-table>
         </div>
     </div>
 </template>
@@ -70,7 +75,7 @@ import Pusher from 'pusher-js';
 
 export default {
     name: "Home",
-    components: { IntervalSelect },
+    components: {IntervalSelect},
     props: {
         userId: {
             type: Number,
@@ -182,26 +187,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .name-field, .value-field {
-        display: flex;
-        flex-direction: column;
-        span {
-            color: #666;
-            font-size: 0.7em;
-        }
-    }
+.title-header {
+    display: flex;
+    justify-content: space-between;
+}
+.name-field, .value-field {
+    display: flex;
+    flex-direction: column;
 
-    .tool-buttons {
-        display: flex;
+    span {
+        color: #666;
+        font-size: 0.7em;
     }
+}
+
+.tool-buttons {
+    display: flex;
+}
 </style>
 
 <style>
-    tr.is-error {
-        background: #ffd4d4;
-    }
-    tr.is-disabled {
-        background: #f6f6f6;
-        color: #4c4c4c;
-    }
+tr.is-error {
+    background: #ffd4d4;
+}
+
+tr.is-disabled {
+    background: #f6f6f6;
+    color: #4c4c4c;
+}
 </style>
