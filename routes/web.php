@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes(['register' => false]);
+Auth::routes(['register' => env('REGISTRATION_ENABLED', false)]);
 
 Route::middleware('auth')->group(function() {
     Route::get('/home', 'HomeController@index')->name('home');
