@@ -17,9 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes(['register' => env('REGISTRATION_ENABLED', false)]);
+Auth::routes([
+    'register' => env('REGISTRATION_ENABLED', false),
+    'verify' => true,
+]);
 
-Route::middleware('auth')->group(function() {
+Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::prefix('template')->namespace('Template')->name('template.')->group(function() {
