@@ -34,7 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
         Route::post('/', 'Store')->name('store');
         Route::post('check', 'Check')->name('check');
         Route::get('create', 'Create')->name('create');
-        Route::delete('{watcher}', 'Destroy')->middleware('can:update,watcher');
+        Route::delete('{watcher}', 'Destroy')->name('destroy')->middleware('can:update,watcher');
         Route::get('{watcher}', 'Show')->name('show')->middleware('can:view,watcher');
         Route::put('{watcher}', 'Update')->name('update')->middleware('can:update,watcher');
         Route::get('{watcher}/edit', 'Edit')->name('edit')->middleware('can:update,watcher');

@@ -14,6 +14,7 @@ class Destroy extends Controller
     {
         $id = $watcher->id;
 
+        $watcher->logs()->delete();
         $watcher->delete();
 
         event(new WatcherDeleted($id, $request->user()->id));
