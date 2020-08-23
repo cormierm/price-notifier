@@ -46,6 +46,7 @@ class HtmlFetcher
             ->userAgent(config('pcn.fetcher.user_agent'))
             ->disableImages()
             ->dismissDialogs()
+            ->noSandbox()
             ->waitUntilNetworkIdle()
             ->bodyHtml();
     }
