@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Utils\HtmlFetcher;
 use App\Watcher;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -24,6 +25,11 @@ class UpdateAllWatchers implements ShouldQueue
 
             if (!$watcher->interval->minutes) {
                 return;
+            }
+
+            // delay for browsershot to avoid request error state
+            if ($watcher->client === HtmlFetcher::CLIENT_BROWERSHOT) {
+                sleep(config('pcn.fetcher.delay'));
             }
 
             if (!$lastLog || $lastLog->created_at < Carbon::now()->subMinutes($watcher->interval->minutes)) {
