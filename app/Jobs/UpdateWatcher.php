@@ -53,6 +53,8 @@ class UpdateWatcher implements ShouldQueue
                     'value' => $formattedValue,
                 ]);
 
+                $this->setLowestPrice($formattedValue);
+
                 if (!$this->watcher->initial_value) {
                     $this->watcher->update([
                         'initial_value' => $formattedValue,
@@ -93,6 +95,19 @@ class UpdateWatcher implements ShouldQueue
                 "{$this->watcher->name}\n\${$newPrice}",
                 $this->watcher->url
             );
+        }
+    }
+
+    private function setLowestPrice(string $formattedValue)
+    {
+        $price = number_format($formattedValue, 2);
+        $lowestPrice = number_format($this->watcher->lowest_price, 2);
+
+        if(!$this->watcher->lowest_price || $price < $lowestPrice) {
+            $this->watcher->update([
+                'lowest_price' => $price,
+                'lowest_at' => Carbon::now()
+            ]);
         }
     }
 }

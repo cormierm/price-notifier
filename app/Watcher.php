@@ -19,6 +19,8 @@ class Watcher extends Model
         'value',
         'alert_value',
         'client',
+        'lowest_price',
+        'lowest_at',
     ];
 
     protected $casts = [

@@ -7,6 +7,7 @@ use App\Jobs\SendPushoverMessage;
 use App\Jobs\UpdateWatcher;
 use App\Utils\HtmlFetcher;
 use App\Watcher;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
@@ -104,5 +105,84 @@ class UpdateWatcherTest extends TestCase
 
         $job = new UpdateWatcher($watcher);
         $job->handle();
+    }
+
+    /** @test */
+    public function itCanSetLowestPriceIfNoneSet(): void
+    {
+        Event::fake();
+        Carbon::setTestNow('now');
+
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+        ]);
+        $html = '<html><span class="value">9.99</span></html>';
+
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
+
+            return $mock;
+        });
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertEquals('9.99', $watcher->fresh()->lowest_price);
+        $this->assertEquals(Carbon::now(), $watcher->fresh()->lowest_at);
+    }
+
+    /** @test */
+    public function itCannotSetLowestPriceIfPriceIsHigher(): void
+    {
+        Event::fake();
+        Carbon::setTestNow('now');
+
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'lowest_price' => '1.00'
+        ]);
+        $html = '<html><span class="value">9.99</span></html>';
+
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
+
+            return $mock;
+        });
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertEquals('1.00', $watcher->fresh()->lowest_price);
+    }
+
+    /** @test */
+    public function itCanSetLowestPriceIfPriceIsLower(): void
+    {
+        Event::fake();
+        Carbon::setTestNow('now');
+
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'lowest_price' => '99.00'
+        ]);
+        $html = '<html><span class="value">9.99</span></html>';
+
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
+
+            return $mock;
+        });
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertEquals('9.99', $watcher->fresh()->lowest_price);
+        $this->assertEquals(Carbon::now(), $watcher->fresh()->lowest_at);
     }
 }

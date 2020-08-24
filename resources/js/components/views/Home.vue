@@ -45,6 +45,13 @@
                         </div>
                     </b-table-column>
 
+                    <b-table-column field="lowest_price" label="Lowest" width="120" centered>
+                        <div class="value-field">
+                            {{ props.row.lowest_price ? props.row.lowest_price : '-' }}
+                            <span>{{ props.row.lowest_at }}</span>
+                        </div>
+                    </b-table-column>
+
                     <b-table-column field="alert_value" label="Alert" centered>
                         {{ props.row.alert_value ? props.row.alert_value : '-' }}
                     </b-table-column>
@@ -118,6 +125,7 @@ export default {
                 return {
                     ...watcher,
                     last_sync: watcher.last_sync ? moment.utc(watcher.last_sync).fromNow() : 'Never',
+                    lowest_at: watcher.lowest_at ? moment.utc(watcher.lowest_at).fromNow() : '',
                 }
             })
         }
