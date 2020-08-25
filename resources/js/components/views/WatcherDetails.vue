@@ -2,7 +2,13 @@
     <div class="container">
         <div class="title-header">
             <h1 class="title">Watcher Details</h1>
-            <refresh-button :watcher-id="watcher.id" @update="updateWatcher"></refresh-button>
+            <div class="tool-buttons">
+                <refresh-button :watcher-id="watcher.id" @update="updateWatcher"></refresh-button>
+                <a :href="`/watcher/${watcher.id}/edit`">
+                    <b-button type="is-default" icon-right="pencil"/>
+                </a>
+                <delete-button :watcher="watcher" @delete="redirectToWatchers"></delete-button>
+            </div>
         </div>
 
         <article class="panel is-primary">
@@ -27,7 +33,6 @@
                     :value="watcher.interval_id"
                     @update="updateWatcher"
                 /><br>
-
             </p>
         </article>
 
@@ -37,11 +42,12 @@
 
 <script>
 import IntervalSelect from "../watcher/IntervalSelect";
+import DeleteButton from "../watcher/DeleteButton";
 import RefreshButton from "../watcher/RefreshButton";
 
 export default {
     name: "WatcherDetails",
-    components: { IntervalSelect, RefreshButton },
+    components: { DeleteButton, IntervalSelect, RefreshButton },
     props: {
         watcher: {
             type: Object,
@@ -60,6 +66,9 @@ export default {
     methods: {
         updateWatcher(watcher) {
             this.currentWatcher = watcher;
+        },
+        redirectToWatchers() {
+            window.location = '/home';
         }
     }
 }
@@ -69,5 +78,9 @@ export default {
     .title-header {
         display: flex;
         justify-content: space-between;
+    }
+
+    .tool-buttons {
+        display: flex;
     }
 </style>

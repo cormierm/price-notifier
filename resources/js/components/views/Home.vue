@@ -102,7 +102,7 @@
                             <a :href="`/watcher/${props.row.id}/edit`">
                                 <b-button type="is-default" icon-right="pencil"/>
                             </a>
-                            <b-button type="is-danger" icon-right="delete" @click="confirmDeleteWatcher(props.row)"/>
+                            <delete-button :watcher="props.row" @delete="removeWatcherFromList"></delete-button>
                         </div>
                     </b-table-column>
                 </template>
@@ -118,12 +118,13 @@
 <script>
 import moment from 'moment';
 import IntervalSelect from "../watcher/IntervalSelect";
+import DeleteButton from "../watcher/DeleteButton";
 import RefreshButton from "../watcher/RefreshButton";
 import Pusher from 'pusher-js';
 
 export default {
     name: "Home",
-    components: {IntervalSelect, RefreshButton},
+    components: {DeleteButton, IntervalSelect, RefreshButton},
     props: {
         userId: {
             type: Number,
@@ -149,7 +150,7 @@ export default {
             this.updateWatcherList(data.watcher);
         });
         channel.bind('delete', (data) => {
-            this.removeWatcherFromList(data.id);
+            this.removeWatcherFromList(data);
         });
     },
     data() {
@@ -179,42 +180,14 @@ export default {
         }
     },
     methods: {
-        confirmDeleteWatcher(watcher) {
-            this.$buefy.dialog.confirm({
-                title: 'Deleting watcher',
-                message: `Are you sure you want to <b>delete</b> this watcher?<br><strong>${watcher.name}</strong><br>This action cannot be undone.`,
-                confirmText: 'Delete Watcher',
-                type: 'is-danger',
-                hasIcon: true,
-                onConfirm: () => this.deleteWatcher(watcher.id)
-            })
-        },
-        deleteWatcher(id) {
-            axios.delete(`/watcher/${id}`)
-                .then(({data}) => {
-                    this.watchersList = this.watchersList.filter((watcher) => (watcher.id !== id));
-                    this.$buefy.toast.open({
-                        message: data.message,
-                        type: 'is-success'
-                    })
-                })
-                .catch((err) => {
-                    this.$buefy.toast.open({
-                        duration: 5000,
-                        message: 'Error deleting watcher.',
-                        type: 'is-danger'
-                    });
-                    console.log(err);
-                });
-        },
         updateWatcherList(updatedWatcher) {
             this.watchersList = [
                 ...this.watchersList.filter((watcher) => (watcher.id !== updatedWatcher.id)),
                 updatedWatcher
             ];
         },
-        removeWatcherFromList(id) {
-            this.watchersList = this.watchersList.filter((watcher) => (watcher.id !== id));
+        removeWatcherFromList(watcher) {
+            this.watchersList = this.watchersList.filter((w) => (w.id !== watcher.id));
         },
     }
 }
