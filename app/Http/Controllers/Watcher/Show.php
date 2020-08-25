@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\WatcherResource;
+use App\Interval;
 use App\Watcher;
 
 class Show extends Controller
@@ -11,7 +13,8 @@ class Show extends Controller
     {
 
         return view('watcher.show', [
-            'watcher' => $watcher,
+            'watcher' => WatcherResource::make($watcher),
+            'intervals' => Interval::all()
         ]);
     }
 }

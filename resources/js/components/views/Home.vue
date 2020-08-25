@@ -95,8 +95,7 @@
 
                     <b-table-column field="tools" centered>
                         <div class="tool-buttons">
-                            <b-button type="is-default" icon-right="refresh" :loading="loading.watchers[props.row.id]"
-                                      @click="refresh(props.row.id)"/>
+                            <refresh-button :watcher-id="props.row.id" @update="updateWatcherList"></refresh-button>
                             <a :href="`/watcher/${props.row.id}`">
                                 <b-button type="is-default" icon-right="information-outline"/>
                             </a>
@@ -119,11 +118,12 @@
 <script>
 import moment from 'moment';
 import IntervalSelect from "../watcher/IntervalSelect";
+import RefreshButton from "../watcher/RefreshButton";
 import Pusher from 'pusher-js';
 
 export default {
     name: "Home",
-    components: {IntervalSelect},
+    components: {IntervalSelect, RefreshButton},
     props: {
         userId: {
             type: Number,
@@ -207,15 +207,6 @@ export default {
                     console.log(err);
                 });
         },
-        loadingWatcher(id, state) {
-            this.loading = {
-                ...this.loading,
-                watchers: {
-                    ...this.loading.watchers,
-                    [id]: state,
-                },
-            };
-        },
         updateWatcherList(updatedWatcher) {
             this.watchersList = [
                 ...this.watchersList.filter((watcher) => (watcher.id !== updatedWatcher.id)),
@@ -224,19 +215,6 @@ export default {
         },
         removeWatcherFromList(id) {
             this.watchersList = this.watchersList.filter((watcher) => (watcher.id !== id));
-        },
-        refresh(id) {
-            this.loadingWatcher(id, true);
-            axios.get(`/watcher/${id}/sync`)
-                .then(({data}) => {
-                    this.updateWatcherList(data.watcher);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-                .finally(() => {
-                    this.loadingWatcher(id, false);
-                });
         },
     }
 }
