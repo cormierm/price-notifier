@@ -1,21 +1,45 @@
 <template>
-    <b-table
-        :columns="columns"
-        :data="logs"
-        :row-class="(row) => row.error && 'is-danger'"
-        default-sort="created_at"
-        default-sort-direction="desc"
-    ></b-table>
+    <div>
+        <div class="title-header">
+            <p>Logs</p>
+            <div class="limit-select">
+                Display:
+                <b-select
+                    :value="5"
+                    @input="getLogs($event)"
+                    :loading="loading"
+                >
+                    <option v-for="option in limits" :value="option" :key="option">
+                        {{ option }}
+                    </option>
+                </b-select>
+            </div>
+
+        </div>
+        <b-table
+            :columns="columns"
+            :data="logs"
+            :loading="loading"
+            :row-class="(row) => row.error && 'is-danger'"
+            default-sort="created_at"
+            default-sort-direction="desc"
+        ></b-table>
+    </div>
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
     name: "watcher-logs",
     props: {
-        logs: {
-            type: Array,
-            default: () => ([])
-        }
+        watcherId: {
+            type: Number,
+            required: true
+        },
+    },
+    mounted() {
+        this.getLogs();
     },
     data() {
         return {
@@ -41,14 +65,51 @@ export default {
                     field: 'error',
                     label: 'Error',
                 },
-            ]
+            ],
+            limits: [5,10,25,100],
+            loading: false,
+            logs: [],
         }
+    },
+    methods: {
+        getLogs(limit = 5) {
+            this.loading = true;
+            this.logs = [];
+            axios.get(`/watcher/${this.watcherId}/logs?limit=${limit}`)
+                .then(({data}) => {
+                    console.log(data);
+                    this.logs = data.map((log) => {
+                        return {
+                            ...log,
+                            created_at: log.created_at ? moment(log.created_at).format('lll') : '',
+                        }
+                    })
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    .title-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        p {
+            font-weight: bold;
+        }
+    }
 
+    .limit-select {
+        display: flex;
+        align-items: center;
+    }
 </style>
 
 <style>

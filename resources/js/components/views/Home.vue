@@ -17,6 +17,7 @@
                 </div>
             </b-field>
             <b-table
+                detailed
                 :data="tableData"
                 class="watcher-table"
                 default-sort="id"
@@ -105,6 +106,10 @@
                             <b-button type="is-danger" icon-right="delete" @click="confirmDeleteWatcher(props.row)"/>
                         </div>
                     </b-table-column>
+                </template>
+
+                <template slot="detail" slot-scope="props">
+                    <watcher-logs :watcher-id="props.row.id"></watcher-logs>
                 </template>
             </b-table>
         </div>
@@ -232,7 +237,7 @@ export default {
                 .finally(() => {
                     this.loadingWatcher(id, false);
                 });
-        }
+        },
     }
 }
 </script>

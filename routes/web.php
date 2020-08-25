@@ -22,15 +22,15 @@ Auth::routes([
     'verify' => true,
 ]);
 
-Route::middleware(['auth', 'verified'])->group(function() {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::prefix('template')->namespace('Template')->name('template.')->group(function() {
+    Route::prefix('template')->namespace('Template')->name('template.')->group(function () {
         Route::post('search-by-url', 'SearchByUrl')->name('search-by-url');
         Route::get('{domain}/search', 'Search')->name('search');
     });
 
-    Route::prefix('watcher')->namespace('Watcher')->name('watcher.')->group(function() {
+    Route::prefix('watcher')->namespace('Watcher')->name('watcher.')->group(function () {
         Route::post('/', 'Store')->name('store');
         Route::post('check', 'Check')->name('check');
         Route::get('create', 'Create')->name('create');
@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
         Route::put('{watcher}', 'Update')->name('update')->middleware('can:update,watcher');
         Route::get('{watcher}/edit', 'Edit')->name('edit')->middleware('can:update,watcher');
         Route::get('{watcher}/sync', 'Sync')->name('sync')->middleware('can:update,watcher');
+        Route::get('{watcher}/logs', 'Logs')->name('logs')->middleware('can:view,watcher');
     });
 });
 

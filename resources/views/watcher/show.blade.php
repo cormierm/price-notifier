@@ -15,6 +15,6 @@
         XPath Query Name: {{ $watcher->xpath_name }}
 
         <h2 class="mt-3 subtitle">Api logs</h2>
-        <watcher-logs :logs="{{ $watcher->logs }}"></watcher-logs>
+        <watcher-logs :watcher-id="{{ $watcher->id }}"></watcher-logs>
     </div>
 @endsection
