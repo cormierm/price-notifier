@@ -108,7 +108,7 @@ class UpdateWatcherTest extends TestCase
     }
 
     /** @test */
-    public function itCanSetLowestPriceIfNoneSet(): void
+    public function itWillSetLowestPriceIfNoneSet(): void
     {
         Event::fake();
         Carbon::setTestNow('now');
@@ -117,7 +117,7 @@ class UpdateWatcherTest extends TestCase
             'query' => '//span[@class="value"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
         ]);
-        $html = '<html><span class="value">9.99</span></html>';
+        $html = '<html><span class="value">1119.99</span></html>';
 
 
         $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
@@ -129,7 +129,7 @@ class UpdateWatcherTest extends TestCase
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
-        $this->assertEquals('9.99', $watcher->fresh()->lowest_price);
+        $this->assertEquals('1119.99', $watcher->fresh()->lowest_price);
         $this->assertEquals(Carbon::now(), $watcher->fresh()->lowest_at);
     }
 
