@@ -1,7 +1,7 @@
 <template>
     <b-navbar>
         <template slot="brand">
-            <b-navbar-item class="logo" tag="router-link" :to="{ path: '/home' }">
+            <b-navbar-item href="/home">
                 PriceWatcher
             </b-navbar-item>
         </template>
