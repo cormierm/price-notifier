@@ -4,17 +4,24 @@
     <div class="container">
         <h1 class="title">Watcher Details</h1>
 
-        Name: <strong>{{ $watcher->name }}</strong><br>
-        Url: {{ $watcher->url }}<br>
-        Last Synced: {{ $watcher->last_sync }}<br>
-        Interval: {{ $watcher->interval->name }}<br>
-        Initial Price: {{ $watcher->initial_value }}<br>
-        Current Price: {{ $watcher->value }}<br>
-        Alert Price: {{ $watcher->alert_value }}<br>
-        XPath Query Price: {{ $watcher->query }}
-        XPath Query Name: {{ $watcher->xpath_name }}
+        <article class="panel is-primary">
+            <p class="panel-heading">
+                <strong>{{ $watcher->name }}<br></strong>
+                {{ $watcher->url }}
+            </p>
+            <p class="panel-block">
+                Created: {{ $watcher->created_at }}<br><br>
 
-        <h2 class="mt-3 subtitle">Api logs</h2>
+                Initial Price: {{ $watcher->initial_value }}<br>
+                Current Price: {{ $watcher->value }} ({{ $watcher->last_sync }})<br>
+                Lowest Price: {{ $watcher->lowest_price }} ({{ $watcher->lowest_at }})<br>
+                Alert Price: {{ $watcher->alert_value }}<br><br>
+
+                Interval: {{ $watcher->interval->name }}<br>
+                XPath Query Price: {{ $watcher->query }}
+            </p>
+        </article>
+
         <watcher-logs :watcher-id="{{ $watcher->id }}"></watcher-logs>
     </div>
 @endsection

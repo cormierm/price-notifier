@@ -74,10 +74,8 @@ export default {
     methods: {
         getLogs(limit = 5) {
             this.loading = true;
-            this.logs = [];
             axios.get(`/watcher/${this.watcherId}/logs?limit=${limit}`)
                 .then(({data}) => {
-                    console.log(data);
                     this.logs = data.map((log) => {
                         return {
                             ...log,
