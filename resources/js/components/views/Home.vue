@@ -7,6 +7,15 @@
                     <b-button icon-left="plus">Add New Watcher</b-button>
                 </a>
             </div>
+            <b-field grouped group-multiline>
+                <div v-for="(column, index) in columnsVisible"
+                     :key="index"
+                     class="control">
+                    <b-checkbox v-model="column.display">
+                        {{ column.title }}
+                    </b-checkbox>
+                </div>
+            </b-field>
             <b-table
                 :data="tableData"
                 class="watcher-table"
@@ -14,7 +23,14 @@
                 :row-class="(row) => `is-${row.status}`"
             >
                 <template slot-scope="props">
-                    <b-table-column field="id" label="ID" width="40" sortable numeric>
+                    <b-table-column
+                        field="id"
+                        :visible="columnsVisible['id'].display"
+                        :label="columnsVisible['id'].title"
+                        width="40"
+                        sortable
+                        numeric
+                    >
                         {{ props.row.id }}
                     </b-table-column>
 
@@ -25,7 +41,11 @@
                         </div>
                     </b-table-column>
 
-                    <b-table-column field="interval" label="Interval" centered>
+                    <b-table-column
+                        field="interval"
+                        :visible="columnsVisible['interval'].display"
+                        :label="columnsVisible['interval'].title"
+                    >
                         <interval-select
                             :intervals="intervals"
                             :watcher-id="props.row.id"
@@ -34,7 +54,12 @@
                         />
                     </b-table-column>
 
-                    <b-table-column field="initial_value" label="Original" centered>
+                    <b-table-column
+                        field="initial_value"
+                        :visible="columnsVisible['initial_value'].display"
+                        :label="columnsVisible['initial_value'].title"
+                        centered
+                    >
                         {{ props.row.initial_value ? props.row.initial_value : '-' }}
                     </b-table-column>
 
@@ -45,14 +70,25 @@
                         </div>
                     </b-table-column>
 
-                    <b-table-column field="lowest_price" label="Lowest" width="120" centered>
+                    <b-table-column
+                        field="lowest_price"
+                        :visible="columnsVisible['lowest_price'].display"
+                        :label="columnsVisible['lowest_price'].title"
+                        width="120"
+                        centered
+                    >
                         <div class="value-field">
                             {{ props.row.lowest_price ? props.row.lowest_price : '-' }}
                             <span>{{ props.row.lowest_at }}</span>
                         </div>
                     </b-table-column>
 
-                    <b-table-column field="alert_value" label="Alert" centered>
+                    <b-table-column
+                        field="alert_value"
+                        :visible="columnsVisible['alert_value'].display"
+                        :label="columnsVisible['alert_value'].title"
+                        centered
+                    >
                         {{ props.row.alert_value ? props.row.alert_value : '-' }}
                     </b-table-column>
 
@@ -116,6 +152,13 @@ export default {
             watchersList: [],
             loading: {
                 watchers: {},
+            },
+            columnsVisible: {
+                id: { title: 'ID', display: false },
+                interval: { title: 'Interval', display: true },
+                initial_value: { title: 'Original', display: true },
+                lowest_price: { title: 'Lowest', display: true },
+                alert_value: { title: 'Alert', display: false },
             },
         };
     },
