@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <h1 class="title">Domain Query Templates</h1>
 
         <b-table
