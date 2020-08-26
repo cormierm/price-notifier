@@ -29,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', 'Index')->name('index');
         Route::post('search-by-url', 'SearchByUrl')->name('search-by-url');
         Route::delete('{template}', 'Destroy')->name('destroy');
+        Route::get('{template}/edit', 'Edit')->name('edit');
         Route::get('{domain}/search', 'Search')->name('search');
     });
 

@@ -3,6 +3,7 @@ import 'buefy/dist/buefy.css';
 
 window.Vue = require('vue');
 
+Vue.component('template-form', require('./components/template/Form.vue').default);
 Vue.component('watcher-form', require('./components/watcher/Form.vue').default);
 Vue.component('watcher-logs', require('./components/watcher/Logs.vue').default);
 Vue.component('home', require('./components/views/Home.vue').default);
