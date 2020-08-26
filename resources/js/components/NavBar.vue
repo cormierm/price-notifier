@@ -1,13 +1,16 @@
 <template>
     <b-navbar>
         <template slot="brand">
-            <b-navbar-item href="/home">
+            <b-navbar-item class="logo" href="/home">
                 PriceWatcher
             </b-navbar-item>
         </template>
         <template slot="start">
             <b-navbar-item href="/home">
                 Watchers
+            </b-navbar-item>
+            <b-navbar-item href="/template">
+                Query Templates
             </b-navbar-item>
         </template>
 
