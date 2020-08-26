@@ -23,7 +23,7 @@ Auth::routes([
 ]);
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::redirect('/home', '/watcher')->name('home');
 
     Route::prefix('template')->namespace('Template')->name('template.')->group(function () {
         Route::get('/', 'Index')->name('index');
@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('watcher')->namespace('Watcher')->name('watcher.')->group(function () {
+        Route::get('/', 'Index')->name('index');
         Route::post('/', 'Store')->name('store');
         Route::post('check', 'Check')->name('check');
         Route::get('create', 'Create')->name('create');

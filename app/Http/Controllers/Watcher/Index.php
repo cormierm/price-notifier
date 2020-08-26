@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Watcher;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\WatcherResource;
 use App\Interval;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class Index extends Controller
 {
-
-    public function index(Request $request): Renderable
+    public function __invoke(Request $request)
     {
-        return view('home', [
+        return view('watcher.index', [
             'watchers' => WatcherResource::collection($request->user()->watchers),
             'intervals' => Interval::all()
         ]);
