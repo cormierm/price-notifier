@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('template')->namespace('Template')->name('template.')->group(function () {
         Route::get('/', 'Index')->name('index');
         Route::post('search-by-url', 'SearchByUrl')->name('search-by-url');
+        Route::delete('{template}', 'Destroy')->name('destroy');
         Route::get('{domain}/search', 'Search')->name('search');
     });
 

@@ -1,48 +1,58 @@
 <template>
     <div>
-        <p>Domain Query Templates</p>
+        <h1 class="title">Domain Query Templates</h1>
 
         <b-table
-            :columns="columns"
             :data="templates"
-        ></b-table>
+        >
+            <template slot-scope="props">
+                <b-table-column field="domain" label="Domain" sortable>
+                    {{ props.row.domain }}
+                </b-table-column>
+                <b-table-column field="xpath_value" label="XPath Price Query" sortable>
+                    {{ props.row.xpath_value }}
+                </b-table-column>
+                <b-table-column field="xpath_name" label="XPath Name Query" sortable>
+                    {{ props.row.xpath_name }}
+                </b-table-column>
+                <b-table-column field="client" label="Client" sortable>
+                    {{ props.row.client }}
+                </b-table-column>
+                <b-table-column field="tools" centered>
+                    <div class="tool-buttons">
+                        <a :href="`/template/${props.row.id}/edit`">
+                            <b-button type="is-default" icon-right="pencil"/>
+                        </a>
+                        <delete-button :template="props.row" @delete="reloadPage"></delete-button>
+                    </div>
+                </b-table-column>
+            </template>
+        </b-table>
     </div>
 </template>
 
 <script>
+import DeleteButton from "../template/DeleteButton";
+
 export default {
     name: "TemplateIndex",
+    components: { DeleteButton },
     props: {
         templates: {
             type: Array,
             default: () => ([])
         }
     },
-    data() {
-        return {
-            columns: [
-                {
-                    field: 'domain',
-                    label: 'Domain',
-                },
-                {
-                    field: 'xpath_value',
-                    label: 'XPath Price Query',
-                },
-                {
-                    field: 'xpath_name',
-                    label: 'XPath Name Query',
-                },
-                {
-                    field: 'client',
-                    label: 'Client',
-                },
-            ],
+    methods: {
+        reloadPage() {
+            location.reload();
         }
-    },
+    }
 }
 </script>
 
 <style scoped>
-
+    .tool-buttons {
+        display: flex;
+    }
 </style>
