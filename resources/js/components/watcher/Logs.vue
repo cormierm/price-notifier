@@ -46,8 +46,12 @@ export default {
             columns: [
                 {
                     field: 'created_at',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'created_at_formatted',
                     label: 'Created',
-                    sortable: true
                 },
                 {
                     field: 'formatted_value',
@@ -79,7 +83,7 @@ export default {
                     this.logs = data.map((log) => {
                         return {
                             ...log,
-                            created_at: log.created_at ? moment(log.created_at).format('lll') : '',
+                            created_at_formatted: log.created_at ? moment(log.created_at).format('YYYY-MM-DD HH:mm') : '',
                         }
                     })
                 })
