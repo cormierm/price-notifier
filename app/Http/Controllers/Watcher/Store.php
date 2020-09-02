@@ -32,7 +32,6 @@ class Store extends Controller
             ],
             [
                 'xpath_value' => $request->input('query'),
-                'xpath_name' => $request->input('xpath_name'),
                 'client' =>  $request->input('client'),
             ]
         );

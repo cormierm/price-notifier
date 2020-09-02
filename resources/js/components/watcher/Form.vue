@@ -57,18 +57,6 @@
             </b-field>
 
             <b-field
-                label="Name XPath Query"
-                :type="formErrors['xpath_name'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['xpath_name']"
-            >
-                <b-input
-                    v-model="xpathName"
-                    maxlength="191"
-                    placeholder="//title"
-                ></b-input>
-            </b-field>
-
-            <b-field
                 label="Interval"
                 :type="formErrors['interval_id'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['interval_id']"
@@ -170,10 +158,9 @@ export default {
             loadingTemplate: false,
             id: null,
             name: '',
-            interval: 1,
+            interval: 8,
             alertValue: '',
             xpathValue: '//span[@id="price"]',
-            xpathName: '//title',
             url: '',
             formErrors: {},
             template: null,
@@ -212,7 +199,6 @@ export default {
                 interval_id: this.interval,
                 url: this.url,
                 query: this.xpathValue,
-                xpath_name: this.xpathName,
                 alert_value: this.alertValue,
                 client: this.client
             }).then(() => {
@@ -236,10 +222,15 @@ export default {
             axios.post('/watcher/check', {
                 url: this.url,
                 xpath_value: this.xpathValue,
-                xpath_name: this.xpathName,
                 client: this.client
             }).then(({data}) => {
                 this.testResults = data;
+                if (!this.name) {
+                    this.name = this.testResults.title;
+                }
+                if (!this.alertValue) {
+                    this.alertValue = this.testResults.value;
+                }
             }).catch((err) => {
                 if (err.response.status === 400) {
                     this.testResults = err.response.data;
@@ -259,7 +250,6 @@ export default {
                 url: this.url,
             }).then(({data}) => {
                 this.xpathValue = data.xpath_value;
-                this.xpathName = data.xpath_name;
                 this.client = data.client
                 this.template = data;
                 this.check();
@@ -276,7 +266,6 @@ export default {
                 interval_id: this.interval,
                 url: this.url,
                 query: this.xpathValue,
-                xpath_name: this.xpathName,
                 alert_value: this.alertValue,
                 client: this.client
             }).then(() => {

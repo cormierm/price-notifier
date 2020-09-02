@@ -13,7 +13,6 @@ class StoreRequest extends FormRequest
             'name' => 'required|string|min:2|max:191',
             'url' => 'required|url|max:191',
             'query'  => 'required|string|min:2|max:191',
-            'xpath_name' => 'required|string|min:2|max:191',
             'interval_id' => 'nullable|exists:intervals,id',
             'alert_value' => 'nullable|numeric',
             'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),

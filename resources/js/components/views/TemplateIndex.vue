@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1 class="title">Domain Query Templates</h1>
+        <h1 class="title">Domain Queries</h1>
 
         <b-table
             :data="templates"
@@ -11,9 +11,6 @@
                 </b-table-column>
                 <b-table-column field="xpath_value" label="XPath Price Query" sortable>
                     {{ props.row.xpath_value }}
-                </b-table-column>
-                <b-table-column field="xpath_name" label="XPath Name Query" sortable>
-                    {{ props.row.xpath_name }}
                 </b-table-column>
                 <b-table-column field="client" label="Client" sortable>
                     {{ props.row.client }}

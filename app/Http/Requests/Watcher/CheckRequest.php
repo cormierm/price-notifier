@@ -12,7 +12,6 @@ class CheckRequest extends FormRequest
         return [
             'url' => 'required|url',
             'xpath_value' => 'required|string|min:2',
-            'xpath_title' => 'nullable|string',
             'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),
         ];
     }

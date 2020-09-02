@@ -40,15 +40,13 @@ class CheckTest extends TestCase
         $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $xpath = '//span[@id="foobar"]';
-        $xpathTitle = '//h1[@class="title"]';
-        $html = '<html><body><h1 class="title">Taco Salad</h1><span id="foobar">CDN$ 55.00</span></body></html>';
+        $html = '<title>Taco Salad</title><html><body><h1 class="title">Taco Salad</h1><span id="foobar">CDN$ 55.00</span></body></html>';
 
         $this->mockHtmlFetcher($html);
 
         $this->actingAs($user)->post(route('watcher.check'), [
             'url' => 'http://foobar.com',
             'xpath_value' => $xpath,
-            'xpath_name' => $xpathTitle,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ])
             ->assertSuccessful()

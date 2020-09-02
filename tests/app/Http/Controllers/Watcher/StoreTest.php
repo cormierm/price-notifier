@@ -50,7 +50,6 @@ class StoreTest extends TestCase
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
             'query' => 'some-class',
-            'xpath_name' => '//*[@id="asdf"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
         ];
 
@@ -59,7 +58,6 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas('templates', [
             'domain' => 'some-url.com',
             'xpath_value' => 'some-class',
-            'xpath_name' => '//*[@id="asdf"]',
             'user_id' => $user->id,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ]);

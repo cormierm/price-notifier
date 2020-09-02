@@ -8,8 +8,8 @@
             >
                 <b-input
                     v-model="domain"
-                    maxlength="191"
-                    placeholder="amazon.ca"
+                    readonly
+                    disabled
                 ></b-input>
             </b-field>
 
@@ -22,18 +22,6 @@
                     v-model="xpathValue"
                     maxlength="191"
                     placeholder="//span[@id='price']"
-                ></b-input>
-            </b-field>
-
-            <b-field
-                label="XPath Name Query"
-                :type="formErrors['xpath_name'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['xpath_name']"
-            >
-                <b-input
-                    v-model="xpathName"
-                    maxlength="191"
-                    placeholder="//title"
                 ></b-input>
             </b-field>
 
@@ -92,7 +80,6 @@ export default {
             this.id = this.template.id;
             this.domain = this.template.domain;
             this.xpathValue = this.template.xpath_value;
-            this.xpathName = this.template.xpath_name;
             this.client = this.template.client;
         }
     },
@@ -102,7 +89,6 @@ export default {
             id: null,
             domain: '',
             xpathValue: '//span[@id="price"]',
-            xpathName: '//title',
             client: 'browsershot',
             formErrors: {},
         };
@@ -123,7 +109,6 @@ export default {
             axios.post('/template', {
                 domain: this.domain,
                 xpath_value: this.xpathValue,
-                xpath_name: this.xpathName,
                 client: this.client
             }).then(() => {
                 window.location = '/template';
@@ -145,7 +130,6 @@ export default {
                 id: this.id,
                 domain: this.domain,
                 xpath_value: this.xpathValue,
-                xpath_name: this.xpathName,
                 client: this.client
             }).then(() => {
                 window.location = '/template';

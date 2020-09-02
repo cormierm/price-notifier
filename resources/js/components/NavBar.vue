@@ -10,7 +10,7 @@
                 Watchers
             </b-navbar-item>
             <b-navbar-item href="/template">
-                Query Templates
+                Domain Queries
             </b-navbar-item>
         </template>
 

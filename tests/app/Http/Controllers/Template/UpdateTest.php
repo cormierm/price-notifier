@@ -17,7 +17,6 @@ class UpdateTest extends TestCase
 
         $data = [
             'domain' => 'Foobar template',
-            'xpath_name' => 'some-query-name',
             'xpath_value' => 'some-query-value',
             'client' => 'curl'
         ];
