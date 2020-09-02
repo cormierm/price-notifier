@@ -16,7 +16,6 @@ class UpdateTest extends TestCase
         $template = factory(Template::class)->create();
 
         $data = [
-            'domain' => 'Foobar template',
             'xpath_value' => 'some-query-value',
             'client' => 'curl'
         ];
@@ -26,7 +25,10 @@ class UpdateTest extends TestCase
             ->assertSuccessful();
 
         $this->assertDatabaseHas('templates', array_merge(
-            ['id' => $template->id],
+            [
+                'id' => $template->id,
+                'domain' => $template->domain
+            ],
             $data
         ));
     }
