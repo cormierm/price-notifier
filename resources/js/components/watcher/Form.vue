@@ -57,6 +57,18 @@
             </b-field>
 
             <b-field
+                label="Alert Value"
+                :type="formErrors['alert_value'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['alert_value']"
+            >
+                <b-input
+                    v-model="alertValue"
+                    type="number"
+                    placeholder="5.00"
+                ></b-input>
+            </b-field>
+
+            <b-field
                 label="Interval"
                 :type="formErrors['interval_id'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['interval_id']"
@@ -69,18 +81,6 @@
                         {{ option.name }}
                     </option>
                 </b-select>
-            </b-field>
-
-            <b-field
-                label="Alert Value"
-                :type="formErrors['alert_value'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['alert_value']"
-            >
-                <b-input
-                    v-model="alertValue"
-                    type="number"
-                    placeholder="5.00"
-                ></b-input>
             </b-field>
 
             <b-field

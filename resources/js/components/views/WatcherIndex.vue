@@ -20,21 +20,10 @@
                 detailed
                 :data="tableData"
                 class="watcher-table"
-                default-sort="id"
+                default-sort="name"
                 :row-class="(row) => `is-${row.status}`"
             >
                 <template slot-scope="props">
-                    <b-table-column
-                        field="id"
-                        :visible="columnsVisible['id'].display"
-                        :label="columnsVisible['id'].title"
-                        width="40"
-                        sortable
-                        numeric
-                    >
-                        {{ props.row.id }}
-                    </b-table-column>
-
                     <b-table-column field="name" label="Name" sortable>
                         <div class="name-field">
                             <a :href="props.row.url">{{ props.row.name }}</a>
@@ -160,7 +149,6 @@ export default {
                 watchers: {},
             },
             columnsVisible: {
-                id: { title: 'ID', display: false },
                 interval: { title: 'Interval', display: true },
                 initial_value: { title: 'Original', display: true },
                 lowest_price: { title: 'Lowest', display: true },
