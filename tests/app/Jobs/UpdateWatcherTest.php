@@ -168,9 +168,9 @@ class UpdateWatcherTest extends TestCase
         $watcher = factory(Watcher::class)->create([
             'query' => '//span[@class="value"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'lowest_price' => '99.00'
+            'lowest_price' => '1299.00'
         ]);
-        $html = '<html><span class="value">9.99</span></html>';
+        $html = '<html><span class="value">CDN$ 1,129.99</span></html>';
 
 
         $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
@@ -182,7 +182,7 @@ class UpdateWatcherTest extends TestCase
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
-        $this->assertEquals('9.99', $watcher->fresh()->lowest_price);
+        $this->assertEquals('1129.99', $watcher->fresh()->lowest_price);
         $this->assertEquals(Carbon::now(), $watcher->fresh()->lowest_at);
     }
 }

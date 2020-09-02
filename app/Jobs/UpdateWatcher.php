@@ -105,7 +105,7 @@ class UpdateWatcher implements ShouldQueue
 
         if(!$this->watcher->lowest_price || $price < $lowestPrice) {
             $this->watcher->update([
-                'lowest_price' => $price,
+                'lowest_price' => $formattedValue,
                 'lowest_at' => Carbon::now()
             ]);
         }
