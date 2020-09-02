@@ -1,14 +1,14 @@
 <template>
     <div>
-        <b-message v-if="template && !testResults" :title="`Found previous queries for ${template.domain}`"
+        <b-message v-if="template && !testResults" :title="`Found domain query for ${template.domain}`"
                    type="is-success" aria-close-label="Close message">
-            Auto filling xpath queries and checking...
+            Auto filling xpath query and checking...
         </b-message>
         <div v-if="testResults">
             <b-message v-if="testResults.error" title="Danger" type="is-danger" aria-close-label="Close message">
                 {{ testResults.error }}
             </b-message>
-            <b-message v-else title="Found xpath query results" type="is-success" aria-close-label="Close message">
+            <b-message v-else title="XPath query and title results" type="is-success" aria-close-label="Close message">
                 {{ testResults.title }}<br><br>
                 Value: <strong>{{ testResults.value }}</strong>
                 <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">Update Name
@@ -16,7 +16,7 @@
             </b-message>
         </div>
 
-        <form class="wrapper-form" action="">
+        <form class="watcher-form" action="">
             <b-field
                 label="Url"
                 :type="formErrors['url'] ? 'is-danger' : 'is-default'"
@@ -45,7 +45,7 @@
             </b-field>
 
             <b-field
-                label="Value XPath Query"
+                label="XPath Query for Price"
                 :type="formErrors['query'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['query']"
             >
@@ -288,7 +288,7 @@ export default {
 </script>
 
 <style scoped>
-.wrapper-form {
+.watcher-form {
     display: flex;
     flex-direction: column;
 }
