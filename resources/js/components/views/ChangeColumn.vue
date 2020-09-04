@@ -1,11 +1,11 @@
 <template>
     <div :class="changeClass">
-        {{ changePercentage }}%
+        {{ changeAmount ? Math.abs((changeAmount)).toFixed(2) : '-' }}
         <div
             v-if="changeAmount"
             class="change-amount"
         >
-            ({{ (changeAmount).toFixed(2) }})
+            ({{ Math.abs(changePercentage).toFixed(1) }}%)
         </div>
     </div>
 </template>
