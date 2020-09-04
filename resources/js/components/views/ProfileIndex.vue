@@ -19,7 +19,7 @@
                     >
                         <b-input
                             v-model="pushoverUserKey"
-                            maxlength="191"
+                            maxlength="30"
                         ></b-input>
                     </b-field>
                     <b-field
@@ -29,7 +29,7 @@
                     >
                         <b-input
                             v-model="pushoverApiToken"
-                            maxlength="191"
+                            maxlength="30"
                         ></b-input>
                     </b-field>
                     <div class="button-container">
@@ -55,8 +55,8 @@ export default {
     data() {
         return {
             loading: false,
-            pushoverApiToken: this.user.pushover_user_key,
-            pushoverUserKey: this.user.pushover_api_token,
+            pushoverApiToken: this.user.pushover_api_token,
+            pushoverUserKey: this.user.pushover_user_key,
             formErrors: {}
         }
     },
@@ -73,7 +73,9 @@ export default {
                     type: 'is-success'
                 });
             }).catch((err) => {
-                if (err.response.status !== 422) {
+                if (err.response.status === 422) {
+                    this.formErrors = err.response.data.errors;
+                } else{
                     this.$buefy.toast.open({
                         duration: 5000,
                         message: err,
@@ -90,6 +92,9 @@ export default {
 </script>
 
 <style scoped>
+.card-header {
+    background-color: #f8f8f8;
+}
 .title-header {
     display: flex;
     justify-content: space-between;
