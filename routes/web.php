@@ -25,6 +25,10 @@ Auth::routes([
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::redirect('/home', '/watcher')->name('home');
 
+    Route::prefix('profile')->namespace('Profile')->name('profile.')->group(function () {
+        Route::get('/', 'Index')->name('index');
+    });
+
     Route::prefix('template')->namespace('Template')->name('template.')->group(function () {
         Route::get('/', 'Index')->name('index');
         Route::post('search-by-url', 'SearchByUrl')->name('search-by-url');

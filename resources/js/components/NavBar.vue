@@ -16,6 +16,9 @@
 
         <template slot="end">
             <b-navbar-dropdown :label="username">
+                <b-navbar-item href="/profile" class="border-bottom">
+                    Profile
+                </b-navbar-item>
                 <b-navbar-item @click="logout">
                     Logout
                 </b-navbar-item>
@@ -47,5 +50,9 @@ export default {
     .logo {
         font-size: 1.2em;
         font-weight: 500;
+    }
+
+    .border-bottom {
+        border-bottom: 1px solid #ececec;
     }
 </style>
