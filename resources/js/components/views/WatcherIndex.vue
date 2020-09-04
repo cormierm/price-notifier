@@ -53,6 +53,18 @@
                         {{ props.row.initial_value ? props.row.initial_value : '-' }}
                     </b-table-column>
 
+                    <b-table-column
+                        field="change"
+                        :visible="columnsVisible['change'].display"
+                        :label="columnsVisible['change'].title"
+                        width="120"
+                        centered>
+                        <change-column
+                            :initial-value="props.row.initial_value"
+                            :current-value="props.row.value"
+                        />
+                    </b-table-column>
+
                     <b-table-column field="value" label="Current" width="120" centered>
                         <div class="value-field">
                             {{ props.row.value ? props.row.value : '-' }}
@@ -110,10 +122,11 @@ import IntervalSelect from "../watcher/IntervalSelect";
 import DeleteButton from "../watcher/DeleteButton";
 import RefreshButton from "../watcher/RefreshButton";
 import Pusher from 'pusher-js';
+import ChangeColumn from "./ChangeColumn";
 
 export default {
     name: "Home",
-    components: {DeleteButton, IntervalSelect, RefreshButton},
+    components: {ChangeColumn, DeleteButton, IntervalSelect, RefreshButton},
     props: {
         userId: {
             type: Number,
@@ -151,6 +164,7 @@ export default {
             columnsVisible: {
                 interval: { title: 'Interval', display: true },
                 initial_value: { title: 'Original', display: true },
+                change: { title: 'Change', display: true },
                 lowest_price: { title: 'Lowest', display: true },
                 alert_value: { title: 'Alert', display: false },
             },
