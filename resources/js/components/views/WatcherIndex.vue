@@ -48,9 +48,13 @@
                         field="initial_value"
                         :visible="columnsVisible['initial_value'].display"
                         :label="columnsVisible['initial_value'].title"
+                        width="120"
                         centered
                     >
-                        {{ props.row.initial_value ? props.row.initial_value : '-' }}
+                        <div class="value-field">
+                            {{ props.row.initial_value ? props.row.initial_value : '-' }}
+                            <span>{{ props.row.created_at }}</span>
+                        </div>
                     </b-table-column>
 
                     <b-table-column
@@ -177,6 +181,7 @@ export default {
             return this.watchersList.map((watcher) => {
                 return {
                     ...watcher,
+                    created_at: moment.utc(watcher.created_at).fromNow(),
                     last_sync: watcher.last_sync ? moment.utc(watcher.last_sync).fromNow() : 'Never',
                     lowest_at: watcher.lowest_at ? moment.utc(watcher.lowest_at).fromNow() : '',
                 }
