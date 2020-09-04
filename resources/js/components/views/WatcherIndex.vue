@@ -11,7 +11,7 @@
                 <div v-for="(column, index) in columnsVisible"
                      :key="index"
                      class="control">
-                    <b-checkbox v-model="column.display">
+                    <b-checkbox v-model="column.display" @input="saveColumnSettings">
                         {{ column.title }}
                     </b-checkbox>
                 </div>
@@ -154,6 +154,8 @@ export default {
         channel.bind('delete', (data) => {
             this.removeWatcherFromList(data);
         });
+
+        this.restoreColumnSettings();
     },
     data() {
         return {
@@ -191,6 +193,15 @@ export default {
         removeWatcherFromList(watcher) {
             this.watchersList = this.watchersList.filter((w) => (w.id !== watcher.id));
         },
+        saveColumnSettings() {
+            localStorage.setItem('column-settings', JSON.stringify(this.columnsVisible))
+        },
+        restoreColumnSettings() {
+            const columns = JSON.parse(localStorage.getItem('column-settings'));
+            if (columns) {
+                this.columnsVisible = columns;
+            }
+        }
     }
 }
 </script>
