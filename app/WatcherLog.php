@@ -12,6 +12,7 @@ class WatcherLog extends Model
         'formatted_value',
         'raw_value',
         'duration',
+        'region',
         'error',
     ];
 

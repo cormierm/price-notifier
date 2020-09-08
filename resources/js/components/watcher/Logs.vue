@@ -66,6 +66,10 @@ export default {
                     label: 'Duration (ms)',
                 },
                 {
+                    field: 'region',
+                    label: 'Region',
+                },
+                {
                     field: 'error',
                     label: 'Error',
                 },

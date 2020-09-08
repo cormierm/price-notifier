@@ -78,6 +78,7 @@ class UpdateWatcher implements ShouldQueue
             'formatted_value' => $formattedValue ?? null,
             'raw_value' => $rawValue ?? null,
             'duration' => Carbon::now()->diffInMilliseconds($startTime),
+            'region' => config('pcn.region'),
             'error' => $this->error,
         ]);
     }

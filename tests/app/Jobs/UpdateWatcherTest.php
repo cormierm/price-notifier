@@ -9,6 +9,7 @@ use App\Utils\HtmlFetcher;
 use App\Watcher;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use Tests\TestCase;
@@ -44,6 +45,8 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itCreatesLog(): void
     {
+        $region = 'kitchener';
+        Config::set('pcn.region', $region);
         $rawValue = 'CDN$ 149.99';
         $watcher = factory(Watcher::class)->create([
             'query' => '//div[@id="pull-right-price"]/span[@class="value"]',
@@ -64,6 +67,7 @@ class UpdateWatcherTest extends TestCase
             'watcher_id' => $watcher->id,
             'formatted_value' => '149.99',
             'raw_value' => $rawValue,
+            'region' => $region,
         ]);
     }
 
