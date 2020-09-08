@@ -16,11 +16,10 @@ class IndexTest extends TestCase
     public function itShowsViewWithWatchers(): void
     {
         $user = factory(User::class)->create();
-        $watchers = factory(Watcher::class, 3)->create();
+        factory(Watcher::class, 3)->create();
 
         $this->actingAs($user)->get(route('watcher.index'))
             ->assertSuccessful()
-            ->assertViewIs('watcher.index')
-            ->assertViewHas('watchers', WatcherResource::collection($watchers));
+            ->assertViewIs('watcher.index');
     }
 }
