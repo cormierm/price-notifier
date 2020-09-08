@@ -15,6 +15,7 @@ class UpdateRequest extends FormRequest
             'url' => 'nullable|url|max:191',
             'xpath_name' => 'nullable|string|min:2|max:191',
             'interval_id' => 'nullable|exists:intervals,id',
+            'region_id' => 'nullable|exists:regions,id',
             'alert_value' => 'nullable|numeric',
             'client' => 'nullable|in:' . implode(',', HtmlFetcher::CLIENTS),
         ];

@@ -5,10 +5,12 @@ namespace Tests\App\Jobs;
 use App\Interval;
 use App\Jobs\UpdateAllWatchers;
 use App\Jobs\UpdateWatcher;
+use App\Region;
 use App\Watcher;
 use App\WatcherLog;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class UpdateAllWatchersTest extends TestCase
@@ -64,6 +66,22 @@ class UpdateAllWatchersTest extends TestCase
         ]);
 
         $this->doesntExpectJobs(UpdateWatcher::class);
+
+        $job = new UpdateAllWatchers;
+        $job->handle();
+    }
+
+    /** @test */
+    public function itOnlyRunsWatchersInRegion(): void
+    {
+        $region = factory(Region::class)->create();
+        $watcher = factory(Watcher::class)->create([
+            'region_id' => $region->id,
+        ]);
+        Config::set('pcn.region', $region->name);
+        factory(Watcher::class, 2)->create();
+
+        $this->expectsJobs(UpdateWatcher::class);
 
         $job = new UpdateAllWatchers;
         $job->handle();

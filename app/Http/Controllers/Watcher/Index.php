@@ -13,7 +13,7 @@ class Index extends Controller
     {
         return view('watcher.index', [
             'watchers' => WatcherResource::collection($request->user()->watchers),
-            'intervals' => Interval::all()
+            'intervals' => Interval::all(),
         ]);
     }
 }

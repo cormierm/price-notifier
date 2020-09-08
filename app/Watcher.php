@@ -21,6 +21,7 @@ class Watcher extends Model
         'client',
         'lowest_price',
         'lowest_at',
+        'region_id',
     ];
 
     protected $casts = [
@@ -64,5 +65,10 @@ class Watcher extends Model
         }
 
         return 'ok';
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
     }
 }

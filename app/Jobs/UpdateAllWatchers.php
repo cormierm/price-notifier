@@ -23,12 +23,15 @@ class UpdateAllWatchers implements ShouldQueue
 
             $lastLog = $watcher->lastLog();
 
-            if (!$watcher->interval->minutes) {
+            if (!$watcher->interval->minutes ||
+                (config('pcn.region') && $watcher->region && config('pcn.region') !== $watcher->region->name) ||
+                (!config('pcn.region') && $watcher->region)
+            ) {
                 return;
             }
 
             // delay for browsershot to avoid request error state
-            if ($watcher->client === HtmlFetcher::CLIENT_BROWERSHOT) {
+            if (config('app.env') !== 'testing' && $watcher->client === HtmlFetcher::CLIENT_BROWERSHOT) {
                 sleep(config('pcn.fetcher.delay'));
             }
 

@@ -9,7 +9,12 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <watcher-form :intervals="{{ $intervals }}" :watcher="{{ $watcher }}" type="Update"></watcher-form>
+                <watcher-form
+                    :intervals="{{ $intervals }}"
+                    :regions="{{ $regions }}"
+                    :watcher="{{ $watcher }}"
+                    type="Update"
+                ></watcher-form>
             </div>
         </div>
     </div>

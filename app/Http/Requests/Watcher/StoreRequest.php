@@ -14,6 +14,7 @@ class StoreRequest extends FormRequest
             'url' => 'required|url|max:191',
             'query'  => 'required|string|min:2|max:191',
             'interval_id' => 'nullable|exists:intervals,id',
+            'region_id' => 'nullable|exists:regions,id',
             'alert_value' => 'nullable|numeric',
             'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),
         ];

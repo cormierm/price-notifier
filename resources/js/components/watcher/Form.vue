@@ -112,6 +112,22 @@
                     </b-radio>
                 </div>
             </b-field>
+
+            <b-field
+                label="Region"
+                :type="formErrors['region_id'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['region_id']"
+            >
+                <b-select placeholder="Select a region" v-model="region">
+                    <option value="">None</option>
+                    <option
+                        v-for="option in regions"
+                        :value="option.id"
+                        :key="option.id">
+                        {{ option.label }}
+                    </option>
+                </b-select>
+            </b-field>
         </form>
 
         <div class="buttons">
@@ -131,6 +147,10 @@ export default {
             type: Array,
             required: true
         },
+        regions: {
+            type: Array,
+            required: true
+        },
         watcher: {
             type: Object,
             default: null,
@@ -145,6 +165,7 @@ export default {
             this.id = this.watcher.id;
             this.name = this.watcher.name;
             this.interval = this.watcher.interval_id;
+            this.region = this.watcher.region_id;
             this.xpathValue = this.watcher.query;
             this.url = this.watcher.url;
             this.alertValue = this.watcher.alert_value;
@@ -159,6 +180,7 @@ export default {
             id: null,
             name: '',
             interval: 8,
+            region: null,
             alertValue: '',
             xpathValue: '//span[@id="price"]',
             url: '',
@@ -197,6 +219,7 @@ export default {
             axios.post('/watcher', {
                 name: this.name,
                 interval_id: this.interval,
+                region_id: this.region,
                 url: this.url,
                 query: this.xpathValue,
                 alert_value: this.alertValue,
@@ -264,6 +287,7 @@ export default {
                 id: this.id,
                 name: this.name,
                 interval_id: this.interval,
+                region_id: this.region,
                 url: this.url,
                 query: this.xpathValue,
                 alert_value: this.alertValue,
