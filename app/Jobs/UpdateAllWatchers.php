@@ -24,6 +24,7 @@ class UpdateAllWatchers implements ShouldQueue
             $lastLog = $watcher->lastLog();
 
             if (!$watcher->interval->minutes ||
+                (!$watcher->region && !config('pcn.fetcher.fetch_null_regions')) ||
                 (config('pcn.region') && $watcher->region && config('pcn.region') !== $watcher->region->name) ||
                 (!config('pcn.region') && $watcher->region)
             ) {
