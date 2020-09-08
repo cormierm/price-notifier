@@ -1,12 +1,7 @@
 <template>
-    <div :class="changeClass">
-        {{ changeAmount ? Math.abs((changeAmount)).toFixed(2) : '-' }}
-        <div
-            v-if="changeAmount"
-            class="change-amount"
-        >
-            ({{ Math.abs(changePercentage).toFixed(1) }}%)
-        </div>
+    <div class="change-amount" :class="changeClass">
+        <div v-if="changeAmount">{{ changePercentage }}%</div>
+        <div v-else>-</div>
     </div>
 </template>
 <script>
@@ -44,7 +39,7 @@ export default {
 </script>
 <style scoped>
 .change-amount {
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 
 .font-red {

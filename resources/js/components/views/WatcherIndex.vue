@@ -57,6 +57,13 @@
                         </div>
                     </b-table-column>
 
+                    <b-table-column field="value" label="Current" width="120" centered>
+                        <div class="value-field">
+                            {{ props.row.value ? props.row.value : '-' }}
+                            <span>{{ props.row.last_sync }}</span>
+                        </div>
+                    </b-table-column>
+
                     <b-table-column
                         field="change"
                         :visible="columnsVisible['change'].display"
@@ -67,13 +74,6 @@
                             :initial-value="props.row.initial_value"
                             :current-value="props.row.value"
                         />
-                    </b-table-column>
-
-                    <b-table-column field="value" label="Current" width="120" centered>
-                        <div class="value-field">
-                            {{ props.row.value ? props.row.value : '-' }}
-                            <span>{{ props.row.last_sync }}</span>
-                        </div>
                     </b-table-column>
 
                     <b-table-column
