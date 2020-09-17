@@ -62,6 +62,10 @@ export default {
                     label: 'Raw Value',
                 },
                 {
+                    field: 'has_stock',
+                    label: 'Stock',
+                },
+                {
                     field: 'duration',
                     label: 'Duration (ms)',
                 },
@@ -88,6 +92,7 @@ export default {
                         return {
                             ...log,
                             created_at_formatted: log.created_at ? moment(log.created_at).format('YYYY-MM-DD HH:mm') : '',
+                            has_stock: log.has_stock === 1 ? 'Yes' : log.has_stock === 0 ? 'No' : '-',
                         }
                     })
                 })
