@@ -50,6 +50,16 @@ class UpdateWatcher implements ShouldQueue
             if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
                 $rawStockValue = $parser->nodeValueByXPathQuery($this->watcher->xpath_stock);
                 $hasStock = strpos($rawStockValue, $this->watcher->stock_text) !== false;
+
+                if ($this->watcher->stock_alert && $this->watcher->has_stock === false && $hasStock) {
+                    SendPushoverMessage::dispatch(
+                        $this->watcher->user,
+                        'Stock Alert!',
+                        "{$this->watcher->name}\n\${$formattedValue}",
+                        $this->watcher->url
+                    );
+                }
+
                 $this->watcher->update([
                     'has_stock' => $hasStock,
                 ]);
@@ -103,7 +113,7 @@ class UpdateWatcher implements ShouldQueue
         if ($alertPrice && $newPrice && $oldPrice !== $newPrice && $newPrice < $alertPrice) {
             SendPushoverMessage::dispatch(
                 $this->watcher->user,
-                'New Price Alert!',
+                'Price Alert!',
                 "{$this->watcher->name}\n\${$newPrice}",
                 $this->watcher->url
             );
