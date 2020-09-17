@@ -12,7 +12,8 @@
                 {{ testResults.title }}<br><br>
                 Value: <strong>{{ testResults.value }}</strong>
                 <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">Update Name
-                </b-button>
+                </b-button><br>
+                Stock: {{ testResults.has_stock ? 'Yes' : 'No' }}
             </b-message>
         </div>
 
@@ -66,6 +67,38 @@
                     type="number"
                     placeholder="5.00"
                 ></b-input>
+            </b-field>
+
+            <b-field
+                label="XPath Query for Stock"
+                :type="formErrors['xpath_stock'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['xpath_stock']"
+            >
+                <b-input
+                    v-model="xpathStock"
+                    maxlength="191"
+                    placeholder="//span[@id='stock']"
+                ></b-input>
+            </b-field>
+
+            <b-field
+                label="Stock Text Match"
+                :type="formErrors['stock_text'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['stock_text']"
+            >
+                <b-input
+                    v-model="stockText"
+                    maxlength="191"
+                    placeholder="In Stock."
+                ></b-input>
+            </b-field>
+
+            <b-field
+                label="Alerts"
+            >
+                <div class="field">
+                    <b-checkbox  v-model="stockAlert">Stock</b-checkbox>
+                </div>
             </b-field>
 
             <b-field
@@ -162,6 +195,7 @@ export default {
     },
     mounted() {
         if (this.watcher) {
+            console.log(this.watcher);
             this.id = this.watcher.id;
             this.name = this.watcher.name;
             this.interval = this.watcher.interval_id;
@@ -170,6 +204,9 @@ export default {
             this.url = this.watcher.url;
             this.alertValue = this.watcher.alert_value;
             this.client = this.watcher.client;
+            this.xpathStock = this.watcher.xpath_stock;
+            this.stockText = this.watcher.stock_text;
+            this.stockAlert = this.watcher.stock_alert;
         }
     },
     data() {
@@ -187,6 +224,9 @@ export default {
             formErrors: {},
             template: null,
             client: 'browsershot',
+            xpathStock: '',
+            stockText: '',
+            stockAlert: null,
         };
     },
     computed: {
@@ -223,7 +263,10 @@ export default {
                 url: this.url,
                 query: this.xpathValue,
                 alert_value: this.alertValue,
-                client: this.client
+                client: this.client,
+                xpath_stock: this.xpathStock,
+                stock_text: this.stockText,
+                stock_alert: this.stockAlert
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {
@@ -245,7 +288,9 @@ export default {
             axios.post('/watcher/check', {
                 url: this.url,
                 xpath_value: this.xpathValue,
-                client: this.client
+                client: this.client,
+                xpath_stock: this.xpathStock,
+                stock_text: this.stockText
             }).then(({data}) => {
                 this.testResults = data;
                 if (!this.name) {
@@ -291,7 +336,10 @@ export default {
                 url: this.url,
                 query: this.xpathValue,
                 alert_value: this.alertValue,
-                client: this.client
+                client: this.client,
+                xpath_stock: this.xpathStock,
+                stock_text: this.stockText,
+                stock_alert: this.stockAlert
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {

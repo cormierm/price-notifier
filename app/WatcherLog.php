@@ -14,6 +14,7 @@ class WatcherLog extends Model
         'duration',
         'region',
         'error',
+        'has_stock',
     ];
 
     public function watcher(): BelongsTo

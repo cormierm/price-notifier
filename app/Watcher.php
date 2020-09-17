@@ -22,10 +22,16 @@ class Watcher extends Model
         'lowest_price',
         'lowest_at',
         'region_id',
+        'xpath_stock',
+        'stock_text',
+        'stock_alert',
+        'has_stock',
     ];
 
     protected $casts = [
         'user_id' => 'int',
+        'stock_alert' => 'boolean',
+        'has_stock' => 'boolean',
     ];
 
     public function user(): BelongsTo

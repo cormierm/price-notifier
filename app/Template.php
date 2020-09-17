@@ -10,6 +10,8 @@ class Template extends Model
         'domain',
         'xpath_value',
         'client',
+        'xpath_stock',
+        'stock_text',
     ];
 
     public function user()

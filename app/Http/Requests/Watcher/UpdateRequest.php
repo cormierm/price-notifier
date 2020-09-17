@@ -18,6 +18,9 @@ class UpdateRequest extends FormRequest
             'region_id' => 'nullable|exists:regions,id',
             'alert_value' => 'nullable|numeric',
             'client' => 'nullable|in:' . implode(',', HtmlFetcher::CLIENTS),
+            'xpath_stock' => 'nullable|string|max:191',
+            'stock_text' => 'nullable|string|max:191',
+            'stock_alert' => 'nullable|boolean',
         ];
     }
 }
