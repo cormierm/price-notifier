@@ -21,8 +21,8 @@ class AddStockColumnsToWatchers extends Migration
         Schema::table('watchers', function (Blueprint $table) {
             $table->string('xpath_stock')->nullable();
             $table->string('stock_text')->nullable();
-            $table->boolean('stock_alert')->default(false);
-            $table->boolean('has_stock')->default(false);
+            $table->boolean('stock_alert')->nullable();
+            $table->boolean('has_stock')->nullable();
         });
 
         Schema::table('watcher_logs', function (Blueprint $table) {

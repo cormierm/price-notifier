@@ -23,15 +23,18 @@ class Check extends Controller
             $parser = new HtmlParser($html);
             $rawValue = $parser->nodeValueByXPathQuery($request->input('xpath_value', ''));
             $formattedValue = PriceHelper::numbersFromText($rawValue);
-            $rawStockValue = $parser->nodeValueByXPathQuery($request->input('xpath_stock', ''));
-            $hasStock = strpos($rawStockValue, $request->input('stock_text')) !== false;
+
+            if ($request->input('xpath_stock') && $request->input('stock_text')) {
+                $rawStockValue = $parser->nodeValueByXPathQuery($request->input('xpath_stock', ''));
+                $hasStock = strpos($rawStockValue, $request->input('stock_text')) !== false;
+            }
 
             return new JsonResponse([
                 'value' => $formattedValue,
                 'raw_value' => $rawValue,
                 'title' =>  $parser->nodeValueByXPathQuery('//title'),
-                'raw_stock_value' => $rawStockValue,
-                'has_stock' => $hasStock,
+                'raw_stock_value' => $rawStockValue ?? null,
+                'has_stock' => $hasStock ?? null,
             ]);
         } catch (Exception $e) {
             return new JsonResponse([

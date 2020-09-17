@@ -90,6 +90,15 @@
                     </b-table-column>
 
                     <b-table-column
+                        field="has_stock"
+                        :visible="columnsVisible['has_stock'].display"
+                        :label="columnsVisible['has_stock'].title"
+                        centered
+                    >
+                        {{ props.row.has_stock === true ? 'Yes' : props.row.has_stock === false ? 'No' : '-' }}
+                    </b-table-column>
+
+                    <b-table-column
                         field="alert_value"
                         :visible="columnsVisible['alert_value'].display"
                         :label="columnsVisible['alert_value'].title"
@@ -172,6 +181,7 @@ export default {
                 initial_value: { title: 'Original', display: true },
                 change: { title: 'Change', display: true },
                 lowest_price: { title: 'Lowest', display: true },
+                has_stock: { title: 'Stock', display: true },
                 alert_value: { title: 'Alert', display: false },
             },
         };
@@ -186,7 +196,7 @@ export default {
                     lowest_at: watcher.lowest_at ? moment.utc(watcher.lowest_at).fromNow() : '',
                 }
             })
-        }
+        },
     },
     methods: {
         updateWatcherList(updatedWatcher) {
@@ -204,7 +214,10 @@ export default {
         restoreColumnSettings() {
             const columns = JSON.parse(localStorage.getItem('column-settings'));
             if (columns) {
-                this.columnsVisible = columns;
+                this.columnsVisible = {
+                    ...this.columnsVisible,
+                    ...columns,
+                }
             }
         }
     }

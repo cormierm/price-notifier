@@ -21,7 +21,7 @@ class Store extends Controller
             'interval_id' => $request->input('interval_id'),
             'alert_value' => $request->input('alert_value'),
             'client' => $request->input('client'),
-            'xpath_stock' => $request->input('path_stock'),
+            'xpath_stock' => $request->input('xpath_stock'),
             'stock_text' => $request->input('stock_text'),
             'stock_alert' => $request->input('stock_alert'),
         ]);
@@ -36,6 +36,8 @@ class Store extends Controller
             [
                 'xpath_value' => $request->input('query'),
                 'client' =>  $request->input('client'),
+                'xpath_stock' => $request->input('xpath_stock'),
+                'stock_text' => $request->input('stock_text'),
             ]
         );
 

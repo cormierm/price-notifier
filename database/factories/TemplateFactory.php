@@ -12,5 +12,7 @@ $factory->define(Template::class, function (Faker $faker) {
         'user_id' => function () {
             return factory(\App\User::class)->create()->id;
         },
+        'xpath_stock' => $faker->word,
+        'stock_text' => $faker->word,
     ];
 });

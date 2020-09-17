@@ -51,6 +51,8 @@ class StoreTest extends TestCase
             'url' => 'http://some-url.com/with/price',
             'query' => 'some-class',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div/span',
+            'stock_text' => 'in stock.',
         ];
 
         $this->actingAs($user)->postJson(route('watcher.store'), $data)->assertSuccessful();
@@ -59,7 +61,9 @@ class StoreTest extends TestCase
             'domain' => 'some-url.com',
             'xpath_value' => 'some-class',
             'user_id' => $user->id,
-            'client' => HtmlFetcher::CLIENT_BROWERSHOT
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div/span',
+            'stock_text' => 'in stock.',
         ]);
     }
 }

@@ -13,7 +13,7 @@
                 Value: <strong>{{ testResults.value }}</strong>
                 <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">Update Name
                 </b-button><br>
-                Stock: {{ testResults.has_stock ? 'Yes' : 'No' }}
+                Stock: {{ testResults.has_stock }}
             </b-message>
         </div>
 
@@ -195,7 +195,6 @@ export default {
     },
     mounted() {
         if (this.watcher) {
-            console.log(this.watcher);
             this.id = this.watcher.id;
             this.name = this.watcher.name;
             this.interval = this.watcher.interval_id;
@@ -318,7 +317,9 @@ export default {
                 url: this.url,
             }).then(({data}) => {
                 this.xpathValue = data.xpath_value;
-                this.client = data.client
+                this.client = data.client;
+                this.xpathStock = data.xpath_stock;
+                this.stockText = data.stock_text;
                 this.template = data;
                 this.check();
             }).catch((err) => {

@@ -35,6 +35,7 @@ class UpdateWatcher implements ShouldQueue
     public function handle(): void
     {
         $startTime = Carbon::now();
+        $hasStock = null;
 
         /** @var HtmlFetcher $fetcher */
         $fetcher = resolve(HtmlFetcher::class);
@@ -45,6 +46,15 @@ class UpdateWatcher implements ShouldQueue
             $parser = new HtmlParser($html);
             $rawValue = $parser->nodeValueByXPathQuery($this->watcher->query);
             $formattedValue = PriceHelper::numbersFromText($rawValue);
+
+            if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
+                $rawStockValue = $parser->nodeValueByXPathQuery($this->watcher->xpath_stock);
+                $hasStock = strpos($rawStockValue, $this->watcher->stock_text) !== false;
+                $this->watcher->update([
+                    'has_stock' => $hasStock,
+                ]);
+            }
+
 
             if ($formattedValue) {
                 $this->sendAlerts($formattedValue);
@@ -80,6 +90,7 @@ class UpdateWatcher implements ShouldQueue
             'duration' => Carbon::now()->diffInMilliseconds($startTime),
             'region' => config('pcn.region'),
             'error' => $this->error,
+            'has_stock' => $hasStock,
         ]);
     }
 

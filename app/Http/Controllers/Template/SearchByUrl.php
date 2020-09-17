@@ -20,6 +20,8 @@ class SearchByUrl extends Controller
             'xpath_name' => $template->xpath_name,
             'xpath_value' => $template->xpath_value,
             'client' => $template->client,
+            'xpath_stock' => $template->xpath_stock,
+            'stock_text' => $template->stock_text,
         ]);
     }
 }
