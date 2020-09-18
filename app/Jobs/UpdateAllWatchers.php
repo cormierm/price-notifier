@@ -37,7 +37,7 @@ class UpdateAllWatchers implements ShouldQueue
             }
 
             if (!$lastLog
-                || $watcher->interval->minutes === 1
+                || $watcher->interval->minutes == 1
                 || $lastLog->created_at < Carbon::now()->subMinutes($watcher->interval->minutes)
             ) {
                 UpdateWatcher::dispatch($watcher);

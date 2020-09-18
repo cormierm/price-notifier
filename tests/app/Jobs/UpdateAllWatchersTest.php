@@ -136,4 +136,28 @@ class UpdateAllWatchersTest extends TestCase
         $job = new UpdateAllWatchers;
         $job->handle();
     }
+
+    /** @test */
+    public function itWillUpdateWatcherIfIntervalMinutesIsOne(): void
+    {
+        $minutes = 1;
+        $interval = factory(Interval::class)->create([
+            'minutes' => $minutes,
+        ]);
+        $region = factory(Region::class)->create();
+        $watcher = factory(Watcher::class)->create([
+            'region_id' => $region->id,
+            'interval_id' => $interval->id,
+        ]);
+        Config::set('pcn.region', $region->name);
+
+        factory(WatcherLog::class)->create([
+            'watcher_id' => $watcher->id,
+            'created_at' => Carbon::now()
+        ]);
+        $this->expectsJobs(UpdateWatcher::class);
+
+        $job = new UpdateAllWatchers;
+        $job->handle();
+    }
 }
