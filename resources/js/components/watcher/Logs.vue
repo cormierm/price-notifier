@@ -91,7 +91,7 @@ export default {
                     this.logs = data.map((log) => {
                         return {
                             ...log,
-                            created_at_formatted: log.created_at ? moment(log.created_at).format('YYYY-MM-DD HH:mm') : '',
+                            created_at_formatted: log.created_at ? moment(log.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
                             has_stock: log.has_stock === 1 ? 'Yes' : log.has_stock === 0 ? 'No' : '-',
                         }
                     })
