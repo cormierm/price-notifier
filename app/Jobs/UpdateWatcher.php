@@ -26,6 +26,8 @@ class UpdateWatcher implements ShouldQueue
      */
     private $watcher;
     private $error = null;
+    private $price = null;
+    private $hasStock = null;
 
     public function __construct(Watcher $watcher)
     {
@@ -35,86 +37,75 @@ class UpdateWatcher implements ShouldQueue
     public function handle(): void
     {
         $startTime = Carbon::now();
-        $hasStock = null;
 
         /** @var HtmlFetcher $fetcher */
         $fetcher = resolve(HtmlFetcher::class);
 
         try {
             $html = $fetcher->getHtmlFromUrl($this->watcher->url, $this->watcher->client);
-
             $parser = new HtmlParser($html);
+
             $rawValue = $parser->nodeValueByXPathQuery($this->watcher->query);
-            $formattedValue = PriceHelper::numbersFromText($rawValue);
+            $this->price = PriceHelper::numbersFromText($rawValue);
 
-            if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
-                $rawStockValue = $parser->nodeValueByXPathQuery($this->watcher->xpath_stock);
-                $hasStock = strpos($rawStockValue, $this->watcher->stock_text) !== false;
+            $this->hasStock = $this->calculateStock($parser);
 
-                if ($this->watcher->stock_alert && $this->watcher->has_stock === false && $hasStock) {
-                    SendPushoverMessage::dispatch(
-                        $this->watcher->user,
-                        'Stock Alert!',
-                        "{$this->watcher->name}\n\${$formattedValue}",
-                        $this->watcher->url
-                    );
-                }
-
-                $this->watcher->update([
-                    'has_stock' => $hasStock,
-                ]);
-            }
-
-
-            if ($formattedValue) {
-                $this->sendAlerts($formattedValue);
-
-                $this->watcher->update([
-                    'value' => $formattedValue,
-                ]);
-
-                $this->setLowestPrice($formattedValue);
+            if ($this->price) {
+                $this->setLowestPrice($this->price);
 
                 if (!$this->watcher->initial_value) {
                     $this->watcher->update([
-                        'initial_value' => $formattedValue,
+                        'initial_value' => $this->price,
                     ]);
                 }
-            } else {
-                $this->error = 'Formatted value was empty. Found node value: ' . $rawValue;
             }
         } catch (Exception $e) {
             $this->error = $e->getMessage();
         }
 
+        $this->sendAlerts();
+
         $this->watcher->update([
+            'has_stock' => $this->hasStock,
             'last_sync' => Carbon::now(),
+            'value' => $this->price,
         ]);
 
         event(new WatcherCreatedOrUpdated(WatcherResource::make($this->watcher)));
 
         WatcherLog::create([
             'watcher_id' => $this->watcher->id,
-            'formatted_value' => $formattedValue ?? null,
+            'formatted_value' => $this->price ?? null,
             'raw_value' => $rawValue ?? null,
             'duration' => Carbon::now()->diffInMilliseconds($startTime),
             'region' => config('pcn.region'),
             'error' => $this->error,
-            'has_stock' => $hasStock,
+            'has_stock' => $this->hasStock,
         ]);
     }
 
-    private function sendAlerts(string $formattedValue)
+    private function sendAlerts()
     {
-        $alertPrice = number_format($this->watcher->alert_value, 2);
-        $oldPrice = number_format($this->watcher->value, 2);
-        $newPrice = number_format($formattedValue, 2);
+        if ($this->price) {
+            $alertPrice = number_format($this->watcher->alert_value, 2);
+            $oldPrice = number_format($this->watcher->value, 2);
+            $newPrice = number_format($this->price, 2);
 
-        if ($alertPrice && $newPrice && $oldPrice !== $newPrice && $newPrice < $alertPrice) {
+            if ($alertPrice && $newPrice && $oldPrice !== $newPrice && $newPrice < $alertPrice) {
+                SendPushoverMessage::dispatch(
+                    $this->watcher->user,
+                    'Price Alert!',
+                    "{$this->watcher->name}\n\${$newPrice}",
+                    $this->watcher->url
+                );
+            }
+        }
+
+        if ($this->hasStock && $this->watcher->stock_alert && $this->watcher->has_stock === false) {
             SendPushoverMessage::dispatch(
                 $this->watcher->user,
-                'Price Alert!',
-                "{$this->watcher->name}\n\${$newPrice}",
+                'Stock Alert!',
+                "{$this->watcher->name}\n\${$this->price}",
                 $this->watcher->url
             );
         }
@@ -131,5 +122,15 @@ class UpdateWatcher implements ShouldQueue
                 'lowest_at' => Carbon::now()
             ]);
         }
+    }
+
+    private function calculateStock(HtmlParser $parser)
+    {
+        if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
+            $rawStockValue = $parser->nodeValueByXPathQuery($this->watcher->xpath_stock);
+            return strpos($rawStockValue, $this->watcher->stock_text) !== false;
+        }
+
+        return null;
     }
 }

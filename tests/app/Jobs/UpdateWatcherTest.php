@@ -84,12 +84,8 @@ class UpdateWatcherTest extends TestCase
     }
 
     /** @test */
-    public function itSendsAlertWhenValueIsLessThanAlertValue(): void
+    public function itSendsPriceAlertWhenValueIsLessThanAlertValue(): void
     {
-//        $user = factory(User::class)->create([
-//            'pushover_user_key' => env('PUSHOVER_USER_KEY'),
-//            'pushover_api_token' => env('PUSHOVER_API_TOKEN'),
-//        ]);
         $rawValue = '50.00';
         $watcher = factory(Watcher::class)->create([
             'query' => '//span[@class="value"]',
@@ -188,5 +184,59 @@ class UpdateWatcherTest extends TestCase
 
         $this->assertEquals('1129.99', $watcher->fresh()->lowest_price);
         $this->assertEquals(Carbon::now(), $watcher->fresh()->lowest_at);
+    }
+
+    /** @test */
+    public function itWillSendStockAlertWhenChangedHasStock(): void
+    {
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'alert_value' => null,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div[@id="stock"]',
+            'stock_text' => 'In Stock.',
+            'stock_alert' => true,
+            'has_stock' => false,
+        ]);
+        $html = '<html><body><div id="stock">In Stock.</div></body></html>';
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
+
+            return $mock;
+        });
+
+        $this->expectsJobs(SendPushoverMessage::class);
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertTrue($watcher->fresh()->has_stock);
+    }
+
+    /** @test */
+    public function itWillNotSendStockAlertWhenStockAlertSetToFalse(): void
+    {
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'alert_value' => null,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div[@id="stock"]',
+            'stock_text' => 'In Stock.',
+            'stock_alert' => false,
+            'has_stock' => false,
+        ]);
+        $html = '<html><body><div id="stock">In Stock.</div></body></html>';
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
+
+            return $mock;
+        });
+
+        $this->doesntExpectJobs(SendPushoverMessage::class);
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
     }
 }
