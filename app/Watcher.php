@@ -26,12 +26,14 @@ class Watcher extends Model
         'stock_text',
         'stock_alert',
         'has_stock',
+        'stock_contains',
     ];
 
     protected $casts = [
         'user_id' => 'int',
         'stock_alert' => 'boolean',
         'has_stock' => 'boolean',
+        'stock_contains' => 'boolean',
     ];
 
     public function user(): BelongsTo

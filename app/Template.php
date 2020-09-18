@@ -12,6 +12,7 @@ class Template extends Model
         'client',
         'xpath_stock',
         'stock_text',
+        'stock_contains',
     ];
 
     public function user()

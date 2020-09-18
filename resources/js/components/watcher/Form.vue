@@ -82,6 +82,28 @@
             </b-field>
 
             <b-field
+                :type="formErrors['stock_contains'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['stock_contains']"
+            >
+                <div class="block">
+                    <b-radio
+                        v-model="stockContains"
+                        name="stock_contains"
+                        :native-value="true"
+                    >
+                        Contains
+                    </b-radio>
+                    <b-radio
+                        v-model="stockContains"
+                        name="stock_contains"
+                        :native-value="false"
+                    >
+                        Does not contain
+                    </b-radio>
+                </div>
+            </b-field>
+
+            <b-field
                 label="Stock Text Match"
                 :type="formErrors['stock_text'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['stock_text']"
@@ -205,7 +227,8 @@ export default {
             this.client = this.watcher.client;
             this.xpathStock = this.watcher.xpath_stock;
             this.stockText = this.watcher.stock_text;
-            this.stockAlert = this.watcher.stock_alert;
+            this.stockAlert = this.watcher.stock_alert === true;
+            this.stockContains = this.watcher.stock_contains === true;
         }
     },
     data() {
@@ -225,7 +248,8 @@ export default {
             client: 'browsershot',
             xpathStock: '',
             stockText: '',
-            stockAlert: null,
+            stockAlert: false,
+            stockContains: true,
         };
     },
     computed: {
@@ -265,7 +289,8 @@ export default {
                 client: this.client,
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
-                stock_alert: this.stockAlert
+                stock_alert: this.stockAlert,
+                stock_contains: this.stockContains,
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {
@@ -289,7 +314,8 @@ export default {
                 xpath_value: this.xpathValue,
                 client: this.client,
                 xpath_stock: this.xpathStock,
-                stock_text: this.stockText
+                stock_text: this.stockText,
+                stock_contains: this.stockContains,
             }).then(({data}) => {
                 this.testResults = data;
                 if (!this.name) {
@@ -320,6 +346,7 @@ export default {
                 this.client = data.client;
                 this.xpathStock = data.xpath_stock;
                 this.stockText = data.stock_text;
+                this.stockContains = data.stock_contains === 1;
                 this.template = data;
                 this.check();
             }).catch((err) => {
@@ -340,7 +367,8 @@ export default {
                 client: this.client,
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
-                stock_alert: this.stockAlert
+                stock_alert: this.stockAlert,
+                stock_contains: this.stockContains,
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {

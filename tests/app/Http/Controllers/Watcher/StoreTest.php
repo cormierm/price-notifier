@@ -17,13 +17,16 @@ class StoreTest extends TestCase
     public function itCanCreateWatcher(): void
     {
         Event::fake();
-
         $user = factory(User::class)->create();
         $data = [
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
             'query' => 'some-class',
-            'client' => HtmlFetcher::CLIENT_BROWERSHOT
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div/span',
+            'stock_text' => 'in stock.',
+            'stock_contains' => true,
+            'stock_alert' => true,
         ];
 
         $this->actingAs($user)->postJson(route('watcher.store'), array_merge(
@@ -53,6 +56,8 @@ class StoreTest extends TestCase
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',
+            'stock_contains' => true,
+            'stock_alert' => true,
         ];
 
         $this->actingAs($user)->postJson(route('watcher.store'), $data)->assertSuccessful();
@@ -64,6 +69,7 @@ class StoreTest extends TestCase
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',
+            'stock_contains' => true,
         ]);
     }
 }

@@ -14,5 +14,6 @@ $factory->define(Template::class, function (Faker $faker) {
         },
         'xpath_stock' => $faker->word,
         'stock_text' => $faker->word,
+        'stock_contains' => $faker->boolean,
     ];
 });

@@ -196,6 +196,7 @@ class UpdateWatcherTest extends TestCase
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'In Stock.',
             'stock_alert' => true,
+            'stock_contains' => true,
             'has_stock' => false,
         ]);
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
@@ -224,6 +225,7 @@ class UpdateWatcherTest extends TestCase
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'In Stock.',
             'stock_alert' => false,
+            'stock_contains' => true,
             'has_stock' => false,
         ]);
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
@@ -238,5 +240,129 @@ class UpdateWatcherTest extends TestCase
 
         $job = new UpdateWatcher($watcher);
         $job->handle();
+    }
+
+    /** @test */
+    public function itWillSetHasStockToTrueForTextContainsTrueWhenTextFound(): void
+    {
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'alert_value' => null,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div[@id="stock"]',
+            'stock_text' => 'In Stock.',
+            'stock_alert' => false,
+            'stock_contains' => true,
+            'has_stock' => false,
+        ]);
+        $html = '<html><body><div id="stock">In Stock.</div></body></html>';
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')
+                ->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)
+                ->andReturn($html);
+
+            return $mock;
+        });
+
+        $this->doesntExpectJobs(SendPushoverMessage::class);
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertTrue($watcher->fresh()->has_stock);
+    }
+
+    /** @test */
+    public function itWillSetHasStockToFalseForTextContainsTrue(): void
+    {
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'alert_value' => null,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div[@id="stock"]',
+            'stock_text' => 'In Stock.',
+            'stock_alert' => false,
+            'stock_contains' => true,
+            'has_stock' => true,
+        ]);
+        $html = '<html><body><div id="stock">Out of stock.</div></body></html>';
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')
+                ->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)
+                ->andReturn($html);
+
+            return $mock;
+        });
+
+        $this->doesntExpectJobs(SendPushoverMessage::class);
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertFalse($watcher->fresh()->has_stock);
+    }
+
+    /** @test */
+    public function itWillSetHasStockToTrueForTextContainsFalse(): void
+    {
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'alert_value' => null,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div[@id="stock"]',
+            'stock_text' => 'Out of Stock.',
+            'stock_alert' => false,
+            'stock_contains' => false,
+            'has_stock' => false,
+        ]);
+        $html = '<html><body><div id="stock">In Stock.</div></body></html>';
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')
+                ->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)
+                ->andReturn($html);
+
+            return $mock;
+        });
+
+        $this->doesntExpectJobs(SendPushoverMessage::class);
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertTrue($watcher->fresh()->has_stock, 'Does not change has_stock to true');
+    }
+
+    /** @test */
+    public function itWillSetHasStockToFalseForTextContainsFalse(): void
+    {
+        $watcher = factory(Watcher::class)->create([
+            'query' => '//span[@class="value"]',
+            'alert_value' => null,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div[@id="stock"]',
+            'stock_text' => 'Out of Stock.',
+            'stock_alert' => false,
+            'stock_contains' => false,
+            'has_stock' => true,
+        ]);
+        $html = '<html><body><div id="stock">Out of Stock.</div></body></html>';
+
+        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('getHtmlFromUrl')
+                ->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)
+                ->andReturn($html);
+
+            return $mock;
+        });
+
+        $this->doesntExpectJobs(SendPushoverMessage::class);
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertFalse($watcher->fresh()->has_stock, 'Does not change has_stock to false');
     }
 }

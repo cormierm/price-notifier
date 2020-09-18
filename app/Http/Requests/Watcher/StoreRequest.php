@@ -18,8 +18,9 @@ class StoreRequest extends FormRequest
             'alert_value' => 'nullable|numeric',
             'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),
             'xpath_stock' => 'nullable|string|max:191',
-            'stock_text' => 'nullable|string|max:191',
-            'stock_alert' => 'nullable|boolean',
+            'stock_text' => 'required_with:xpath_stock|string|max:191',
+            'stock_alert' => 'required_with:xpath_stock|boolean',
+            'stock_contains' => 'required_with:xpath_stock|boolean',
         ];
     }
 }

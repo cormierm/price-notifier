@@ -24,6 +24,7 @@ class Store extends Controller
             'xpath_stock' => $request->input('xpath_stock'),
             'stock_text' => $request->input('stock_text'),
             'stock_alert' => $request->input('stock_alert'),
+            'stock_contains' => $request->input('stock_contains'),
         ]);
 
         event(new WatcherCreatedOrUpdated(WatcherResource::make($watcher)));
@@ -38,6 +39,7 @@ class Store extends Controller
                 'client' =>  $request->input('client'),
                 'xpath_stock' => $request->input('xpath_stock'),
                 'stock_text' => $request->input('stock_text'),
+                'stock_contains' => $request->input('stock_contains'),
             ]
         );
 
