@@ -160,4 +160,29 @@ class UpdateAllWatchersTest extends TestCase
         $job = new UpdateAllWatchers;
         $job->handle();
     }
+
+    /** @test */
+    public function itWillUpdateWatcherIfRegionIsAll(): void
+    {
+        $minutes = 1;
+        $interval = factory(Interval::class)->create([
+            'minutes' => $minutes,
+        ]);
+        $region = factory(Region::class)->create([
+            'name' => 'all',
+        ]);
+        $watcher = factory(Watcher::class)->create([
+            'region_id' => $region->id,
+            'interval_id' => $interval->id,
+        ]);
+
+        factory(WatcherLog::class)->create([
+            'watcher_id' => $watcher->id,
+            'created_at' => Carbon::now()->subDay()
+        ]);
+        $this->expectsJobs(UpdateWatcher::class);
+
+        $job = new UpdateAllWatchers;
+        $job->handle();
+    }
 }

@@ -23,10 +23,18 @@ class UpdateAllWatchers implements ShouldQueue
 
             $lastLog = $watcher->lastLog();
 
-            if (!$watcher->interval->minutes ||
-                (!$watcher->region && !config('pcn.fetcher.fetch_null_regions')) ||
-                (config('pcn.region') && $watcher->region && config('pcn.region') !== $watcher->region->name) ||
-                (!config('pcn.region') && $watcher->region)
+            $intervalNotSet = !$watcher->interval->minutes;
+            $doNotFetchNullRegion = !$watcher->region && !config('pcn.fetcher.fetch_null_regions');
+            $watcherRegionDoesNotMatchServerRegion = config('pcn.region')
+                && $watcher->region
+                && config('pcn.region') !== $watcher->region->name
+                && $watcher->region->name !== 'all';
+            $serverRegionNotSetAndWatcherHasRegion = !config('pcn.region') && $watcher->region;
+
+            if ($intervalNotSet ||
+                $doNotFetchNullRegion ||
+                $watcherRegionDoesNotMatchServerRegion ||
+                $serverRegionNotSetAndWatcherHasRegion
             ) {
                 return;
             }
