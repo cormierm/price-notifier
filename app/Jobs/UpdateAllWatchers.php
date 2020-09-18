@@ -36,7 +36,10 @@ class UpdateAllWatchers implements ShouldQueue
                 sleep(config('pcn.fetcher.delay'));
             }
 
-            if (!$lastLog || $lastLog->created_at < Carbon::now()->subMinutes($watcher->interval->minutes)) {
+            if (!$lastLog
+                || $watcher->interval->minutes === 1
+                || $lastLog->created_at < Carbon::now()->subMinutes($watcher->interval->minutes)
+            ) {
                 UpdateWatcher::dispatch($watcher);
             }
         });
