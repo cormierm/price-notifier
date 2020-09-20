@@ -59,11 +59,11 @@ class UpdateWatcher implements ShouldQueue
                     ]);
                 }
             }
+
+            $this->sendAlerts();
         } catch (Exception $e) {
             $this->error = $e->getMessage();
         }
-
-        $this->sendAlerts();
 
         $this->watcher->update([
             'has_stock' => $this->hasStock,
@@ -86,7 +86,7 @@ class UpdateWatcher implements ShouldQueue
 
     private function sendAlerts()
     {
-        if ($this->price) {
+        if ($this->price && $this->watcher->value) {
             $alertPrice = number_format($this->watcher->alert_value, 2);
             $oldPrice = number_format($this->watcher->value, 2);
             $newPrice = number_format($this->price, 2);
