@@ -79,7 +79,9 @@ class UpdateWatcher implements ShouldQueue
             'raw_value' => $rawValue ?? null,
             'duration' => Carbon::now()->diffInMilliseconds($startTime),
             'region' => config('pcn.region'),
-            'error' => $this->error,
+            'error' => strlen($this->error) > config('pcn.fetcher.error_max_length')
+                ? substr($this->error, 0, config('pcn.fetcher.error_max_length') - 1)
+                : $this->error,
             'has_stock' => $this->hasStock,
         ]);
     }
