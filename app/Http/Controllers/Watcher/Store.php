@@ -25,6 +25,7 @@ class Store extends Controller
             'stock_text' => $request->input('stock_text'),
             'stock_alert' => $request->input('stock_alert'),
             'stock_contains' => $request->input('stock_contains'),
+            'region_id' => $request->input('region_id'),
         ]);
 
         event(new WatcherCreatedOrUpdated(WatcherResource::make($watcher)));

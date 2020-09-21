@@ -3,8 +3,10 @@
 namespace Tests\App\Http\Controllers\Watcher;
 
 use App\Events\WatcherCreatedOrUpdated;
+use App\Region;
 use App\User;
 use App\Utils\HtmlFetcher;
+use App\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
@@ -18,6 +20,7 @@ class StoreTest extends TestCase
     {
         Event::fake();
         $user = factory(User::class)->create();
+        $region = factory(Region::class)->create();
         $data = [
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
@@ -27,6 +30,7 @@ class StoreTest extends TestCase
             'stock_text' => 'in stock.',
             'stock_contains' => true,
             'stock_alert' => true,
+            'region_id' => $region->id,
         ];
 
         $this->actingAs($user)->postJson(route('watcher.store'), array_merge(
