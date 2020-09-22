@@ -27,7 +27,7 @@ class Check extends Controller
             if ($request->input('xpath_stock') && $request->input('stock_text')) {
                 $rawStockValue = $parser->nodeValueByXPathQuery($request->input('xpath_stock', ''));
                 $hasStock = ($request->input('stock_contains') && strpos($rawStockValue, $request->input('stock_text')) !== false) ||
-                    (!$request->input('stock_contains') && strpos($rawStockValue, $request->input('stock_text')) === false);
+                    (!$request->input('stock_contains', false) && strpos($rawStockValue, $request->input('stock_text')) === false);
             }
 
             return new JsonResponse([

@@ -18,6 +18,5 @@ class Logs extends Controller
                 ->get()
                 ->toArray()
         );
-
     }
 }

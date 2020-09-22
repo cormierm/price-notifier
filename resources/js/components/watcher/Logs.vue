@@ -66,6 +66,10 @@ export default {
                     label: 'Stock',
                 },
                 {
+                    field: 'raw_stock',
+                    label: 'Raw Stock',
+                },
+                {
                     field: 'duration',
                     label: 'Duration (ms)',
                 },

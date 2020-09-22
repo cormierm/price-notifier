@@ -27,6 +27,7 @@ class UpdateWatcher implements ShouldQueue
     private $watcher;
     private $error = null;
     private $price = null;
+    private $rawStock = null;
     private $hasStock = null;
 
     public function __construct(Watcher $watcher)
@@ -83,6 +84,7 @@ class UpdateWatcher implements ShouldQueue
                 ? substr($this->error, 0, config('pcn.fetcher.error_max_length') - 1)
                 : $this->error,
             'has_stock' => $this->hasStock,
+            'raw_stock' => $this->rawStock,
         ]);
     }
 
@@ -129,9 +131,9 @@ class UpdateWatcher implements ShouldQueue
     private function calculateStock(HtmlParser $parser)
     {
         if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
-            $rawStockValue = $parser->nodeValueByXPathQuery($this->watcher->xpath_stock);
-            return ($this->watcher->stock_contains && strpos($rawStockValue, $this->watcher->stock_text) !== false) ||
-                (!$this->watcher->stock_contains && strpos($rawStockValue, $this->watcher->stock_text) === false);
+            $this->rawStockValue = $parser->nodeValueByXPathQuery($this->watcher->xpath_stock);
+            return ($this->watcher->stock_contains && strpos($this->rawStockValue, $this->watcher->stock_text) !== false) ||
+                (!$this->watcher->stock_contains && strpos($this->rawStockValue, $this->watcher->stock_text) === false);
         }
 
         return null;

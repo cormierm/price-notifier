@@ -14,8 +14,8 @@ class CheckRequest extends FormRequest
             'xpath_value' => 'required|string|min:2',
             'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),
             'xpath_stock' => 'nullable|string|max:191',
-            'stock_text' => 'required_with:xpath_stock|string|max:191',
-            'stock_contains' => 'required_with:xpath_stock|boolean',
+            'stock_text' => 'nullable|string|max:191',
+            'stock_contains' => 'nullable|boolean',
         ];
     }
 }
