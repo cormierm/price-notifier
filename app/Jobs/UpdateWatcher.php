@@ -131,9 +131,9 @@ class UpdateWatcher implements ShouldQueue
     private function calculateStock(HtmlParser $parser)
     {
         if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
-            $this->rawStockValue = $parser->nodeValueByXPathQuery($this->watcher->xpath_stock);
-            return ($this->watcher->stock_contains && strpos($this->rawStockValue, $this->watcher->stock_text) !== false) ||
-                (!$this->watcher->stock_contains && strpos($this->rawStockValue, $this->watcher->stock_text) === false);
+            $this->rawStock = $parser->nodeValueByXPathQuery($this->watcher->xpath_stock);
+            return ($this->watcher->stock_contains && strpos($this->rawStock, $this->watcher->stock_text) !== false) ||
+                (!$this->watcher->stock_contains && strpos($this->rawStock, $this->watcher->stock_text) === false);
         }
 
         return null;
