@@ -187,7 +187,12 @@
 
         <div class="buttons">
             <b-button :loading="loadingCheck" @click="check">Check</b-button>
-            <b-button type="is-info" @click="submit">{{ type }}</b-button>
+            <div class="block check-submit">
+                <b-checkbox v-model="updateQueries" class="update-checkbox">
+                    Update Domain Query
+                </b-checkbox>
+                <b-button type="is-info" @click="submit">{{ type }}</b-button>
+            </div>
         </div>
     </div>
 </template>
@@ -250,6 +255,7 @@ export default {
             stockText: '',
             stockAlert: false,
             stockContains: true,
+            updateQueries: true,
         };
     },
     computed: {
@@ -291,6 +297,7 @@ export default {
                 stock_text: this.stockText,
                 stock_alert: this.stockAlert,
                 stock_contains: this.stockContains,
+                update_queries: this.updateQueries,
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {
@@ -369,6 +376,7 @@ export default {
                 stock_text: this.stockText,
                 stock_alert: this.stockAlert,
                 stock_contains: this.stockContains,
+                update_queries: this.updateQueries,
             }).then(() => {
                 window.location = '/home';
             }).catch((err) => {
@@ -398,5 +406,14 @@ export default {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
+}
+
+.check-submit {
+    display: flex;
+    align-items: center;
+}
+
+.update-checkbox {
+    margin-bottom: 0.5rem;
 }
 </style>

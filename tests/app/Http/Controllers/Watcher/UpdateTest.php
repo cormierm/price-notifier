@@ -44,4 +44,38 @@ class UpdateTest extends TestCase
             ->put(route('watcher.update', $watcher), $data)
             ->assertForbidden();
     }
+
+    /** @test */
+    public function itWillUpdateTemplate(): void
+    {
+        $watcher = factory(Watcher::class)->create();
+
+        $query = '//some-class';
+        $this->actingAs($watcher->user)->putJson(route('watcher.update', $watcher), [
+            'query' => $query,
+            'update_queries' => true,
+        ])->assertSuccessful();
+
+        $this->assertDatabaseHas('templates', [
+            'domain' => $watcher->urlDomain(),
+            'xpath_value' => $query,
+        ]);
+    }
+
+    /** @test */
+    public function itWillNotUpdateTemplate(): void
+    {
+        $watcher = factory(Watcher::class)->create();
+
+        $query = '//some-class';
+        $this->actingAs($watcher->user)->putJson(route('watcher.update', $watcher), [
+            'query' => $query,
+            'update_queries' => false,
+        ])->assertSuccessful();
+
+        $this->assertDatabaseMissing('templates', [
+            'domain' => $watcher->urlDomain(),
+            'xpath_value' => $query,
+        ]);
+    }
 }

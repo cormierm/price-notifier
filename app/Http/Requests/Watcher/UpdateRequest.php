@@ -22,6 +22,7 @@ class UpdateRequest extends FormRequest
             'stock_text' => 'nullable|string|max:191',
             'stock_alert' => 'nullable|boolean',
             'stock_contains' => 'nullable|boolean',
+            'update_queries' => 'nullable|boolean',
         ];
     }
 }

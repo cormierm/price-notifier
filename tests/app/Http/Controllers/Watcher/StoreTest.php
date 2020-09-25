@@ -6,7 +6,6 @@ use App\Events\WatcherCreatedOrUpdated;
 use App\Region;
 use App\User;
 use App\Utils\HtmlFetcher;
-use App\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
@@ -51,7 +50,6 @@ class StoreTest extends TestCase
     /** @test */
     public function itWillAddTemplate(): void
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $data = [
             'name' => 'Foo',
@@ -62,6 +60,7 @@ class StoreTest extends TestCase
             'stock_text' => 'in stock.',
             'stock_contains' => true,
             'stock_alert' => true,
+            'update_queries' => true,
         ];
 
         $this->actingAs($user)->postJson(route('watcher.store'), $data)->assertSuccessful();
@@ -74,6 +73,29 @@ class StoreTest extends TestCase
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',
             'stock_contains' => true,
+        ]);
+    }
+
+    /** @test */
+    public function itWillNotAddTemplate(): void
+    {
+        $user = factory(User::class)->create();
+        $data = [
+            'name' => 'Foo',
+            'url' => 'http://some-url.com/with/price',
+            'query' => 'some-class',
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'xpath_stock' => '//div/span',
+            'stock_text' => 'in stock.',
+            'stock_contains' => true,
+            'stock_alert' => true,
+            'update_queries' => false,
+        ];
+
+        $this->actingAs($user)->postJson(route('watcher.store'), $data)->assertSuccessful();
+
+        $this->assertDatabaseMissing('templates', [
+            'domain' => 'some-url.com',
         ]);
     }
 }

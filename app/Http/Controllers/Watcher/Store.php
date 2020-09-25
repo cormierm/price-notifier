@@ -17,7 +17,7 @@ class Store extends Controller
             'name' => $request->input('name'),
             'url' => $request->input('url'),
             'user_id' => $request->user()->id,
-            'query'  => $request->input('query'),
+            'query' => $request->input('query'),
             'interval_id' => $request->input('interval_id'),
             'alert_value' => $request->input('alert_value'),
             'client' => $request->input('client'),
@@ -30,19 +30,21 @@ class Store extends Controller
 
         event(new WatcherCreatedOrUpdated(WatcherResource::make($watcher)));
 
-        $request->user()->templates()->updateOrCreate(
-            [
-                'domain' => $watcher->urlDomain(),
-                'user_id' => $request->user()->id
-            ],
-            [
-                'xpath_value' => $request->input('query'),
-                'client' =>  $request->input('client'),
-                'xpath_stock' => $request->input('xpath_stock'),
-                'stock_text' => $request->input('stock_text'),
-                'stock_contains' => $request->input('stock_contains'),
-            ]
-        );
+        if ($request->boolean('update_queries')) {
+            $request->user()->templates()->updateOrCreate(
+                [
+                    'domain' => $watcher->urlDomain(),
+                    'user_id' => $request->user()->id
+                ],
+                [
+                    'xpath_value' => $request->input('query'),
+                    'client' => $request->input('client'),
+                    'xpath_stock' => $request->input('xpath_stock'),
+                    'stock_text' => $request->input('stock_text'),
+                    'stock_contains' => $request->input('stock_contains'),
+                ]
+            );
+        }
 
         return new JsonResponse([
             'message' => 'Successfully created watcher',

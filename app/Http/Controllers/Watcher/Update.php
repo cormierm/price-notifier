@@ -14,6 +14,22 @@ class Update extends Controller
     {
         $watcher->update($request->validated());
 
+        if ($request->boolean('update_queries')) {
+            $request->user()->templates()->updateOrCreate(
+                [
+                    'domain' => $watcher->urlDomain(),
+                    'user_id' => $request->user()->id
+                ],
+                [
+                    'xpath_value' => $watcher->query,
+                    'client' => $watcher->client,
+                    'xpath_stock' => $watcher->xpath_stock,
+                    'stock_text' => $watcher->stock_text,
+                    'stock_contains' => $watcher->stock_contains,
+                ]
+            );
+        }
+
         return new JsonResponse([
             'message' => 'Successfully updated',
             'watcher' => WatcherResource::make($watcher)
