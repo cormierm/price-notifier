@@ -1,6 +1,6 @@
 <template>
-    <div class="change-amount" :class="changeClass">
-        <div v-if="changeAmount">{{ changePercentage }}%</div>
+    <div class="change-column" :class="changeClass">
+        <div v-if="showChange">{{ changePercentage }}%</div>
         <div v-else>-</div>
     </div>
 </template>
@@ -10,35 +10,34 @@ export default {
   props: {
       initialValue: {
           type: String,
-          default: 0
+          default: null
       },
       currentValue: {
           type: String,
-          default: 0,
+          default: null
       }
   },
     computed: {
         changeClass() {
-            if (this.changeAmount > 0) {
+            if (this.changePercentage > 0) {
                 return 'font-red';
             }
-            if (this.changeAmount < 0) {
+            if (this.changePercentage < 0) {
                 return 'font-green';
             }
             return '';
         },
         changePercentage() {
-            return ((this.currentValue - this.initialValue) / this.currentValue * 100).toFixed(1);
+            return ((this.initialValue - this.currentValue) / this.initialValue * 100).toFixed(1) * -1;
         },
-        changeAmount() {
-            return this.currentValue - this.initialValue;
-            ;
+        showChange() {
+            return this.currentValue && this.initialValue && this.currentValue !== this.initialValue;
         }
     }
 }
 </script>
 <style scoped>
-.change-amount {
+.change-column {
     font-size: 0.9em;
 }
 

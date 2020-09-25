@@ -193,7 +193,7 @@ export default {
         });
 
         this.restoreColumnSettings();
-        this.hasMobileCards = this.restoreColumnSetting('mobile-cards') || false;
+        this.hasMobileCards = this.restoreColumnSetting('mobile-cards');
     },
     data() {
         return {
@@ -243,7 +243,7 @@ export default {
             localStorage.setItem('column-settings', JSON.stringify(this.columnsVisible))
         },
         restoreColumnSetting(column) {
-            return localStorage.getItem(`column-setting-${column}`);
+            return localStorage.getItem(`column-setting-${column}`) === 'true';
         },
         restoreColumnSettings() {
             const columns = JSON.parse(localStorage.getItem('column-settings'));
