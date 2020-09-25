@@ -8,6 +8,11 @@
                 </a>
             </div>
             <b-field grouped group-multiline>
+                <div class="control">
+                    <b-checkbox v-model="hasMobileCards" @input="saveColumnSetting('mobile-cards', $event)">
+                        Mobile Cards
+                    </b-checkbox>
+                </div>
                 <div v-for="(column, index) in columnsVisible"
                      :key="index"
                      class="control">
@@ -22,6 +27,7 @@
                 class="watcher-table"
                 default-sort="name"
                 :row-class="(row) => `is-${row.status}`"
+                :mobile-cards="hasMobileCards"
             >
                 <template slot-scope="props">
                     <b-table-column field="name" label="Name" sortable>
@@ -187,9 +193,11 @@ export default {
         });
 
         this.restoreColumnSettings();
+        this.hasMobileCards = this.restoreColumnSetting('mobile-cards') || false;
     },
     data() {
         return {
+            hasMobileCards: true,
             watchersList: [],
             loading: {
                 watchers: {},
@@ -228,8 +236,14 @@ export default {
         removeWatcherFromList(watcher) {
             this.watchersList = this.watchersList.filter((w) => (w.id !== watcher.id));
         },
+        saveColumnSetting(column, setting) {
+            localStorage.setItem(`column-setting-${column}`, setting);
+        },
         saveColumnSettings() {
             localStorage.setItem('column-settings', JSON.stringify(this.columnsVisible))
+        },
+        restoreColumnSetting(column) {
+            return localStorage.getItem(`column-setting-${column}`);
         },
         restoreColumnSettings() {
             const columns = JSON.parse(localStorage.getItem('column-settings'));
