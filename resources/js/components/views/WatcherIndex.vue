@@ -107,6 +107,24 @@
                         {{ props.row.alert_value ? props.row.alert_value : '-' }}
                     </b-table-column>
 
+                    <b-table-column
+                        field="client"
+                        :visible="columnsVisible['client'].display"
+                        :label="columnsVisible['client'].title"
+                        centered
+                    >
+                        {{ props.row.client }}
+                    </b-table-column>
+
+                    <b-table-column
+                        field="region"
+                        :visible="columnsVisible['region'].display"
+                        :label="columnsVisible['region'].title"
+                        centered
+                    >
+                        {{ props.row.region ? props.row.region.label : '-' }}
+                    </b-table-column>
+
                     <b-table-column field="tools" centered>
                         <div class="tool-buttons">
                             <refresh-button :watcher-id="props.row.id" @update="updateWatcherList"></refresh-button>
@@ -183,6 +201,8 @@ export default {
                 lowest_price: { title: 'Lowest', display: true },
                 has_stock: { title: 'Stock', display: true },
                 alert_value: { title: 'Alert', display: false },
+                client: { title: 'Client', display: false },
+                region: { title: 'Region', display: false },
             },
         };
     },
