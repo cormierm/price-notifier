@@ -54,18 +54,7 @@
                     v-model="xpathValue"
                     maxlength="191"
                     placeholder="//span[@id='price']"
-                ></b-input>
-            </b-field>
-
-            <b-field
-                label="Alert Value"
-                :type="formErrors['alert_value'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['alert_value']"
-            >
-                <b-input
-                    v-model="alertValue"
-                    type="number"
-                    placeholder="5.00"
+                    @input="updateQueries = true"
                 ></b-input>
             </b-field>
 
@@ -78,6 +67,7 @@
                     v-model="xpathStock"
                     maxlength="191"
                     placeholder="//span[@id='stock']"
+                    @input="updateQueries = true"
                 ></b-input>
             </b-field>
 
@@ -90,6 +80,7 @@
                         v-model="stockContains"
                         name="stock_contains"
                         :native-value="true"
+                        @input="updateQueries = true"
                     >
                         Contains
                     </b-radio>
@@ -97,6 +88,7 @@
                         v-model="stockContains"
                         name="stock_contains"
                         :native-value="false"
+                        @input="updateQueries = true"
                     >
                         Does not contain
                     </b-radio>
@@ -112,6 +104,19 @@
                     v-model="stockText"
                     maxlength="191"
                     placeholder="In Stock."
+                    @input="updateQueries = true"
+                ></b-input>
+            </b-field>
+
+            <b-field
+                label="Alert Price"
+                :type="formErrors['alert_value'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['alert_value']"
+            >
+                <b-input
+                    v-model="alertValue"
+                    type="number"
+                    placeholder="5.00"
                 ></b-input>
             </b-field>
 
@@ -234,6 +239,7 @@ export default {
             this.stockText = this.watcher.stock_text;
             this.stockAlert = this.watcher.stock_alert === true;
             this.stockContains = this.watcher.stock_contains === true;
+            this.updateQueries = false;
         }
     },
     data() {
