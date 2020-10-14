@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use Exception;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
