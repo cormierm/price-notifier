@@ -361,6 +361,7 @@ export default {
                 this.stockText = data.stock_text;
                 this.stockContains = data.stock_contains === 1;
                 this.template = data;
+                this.updateQueries = false;
                 this.check();
             }).catch((err) => {
                 console.log(err);
