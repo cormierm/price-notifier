@@ -15,6 +15,10 @@ class Template extends Model
         'stock_contains',
     ];
 
+    protected $casts = [
+        'stock_contains' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

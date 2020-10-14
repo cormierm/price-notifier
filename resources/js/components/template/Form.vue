@@ -26,6 +26,52 @@
             </b-field>
 
             <b-field
+                label="XPath Query for Stock"
+                :type="formErrors['xpath_stock'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['xpath_stock']"
+            >
+                <b-input
+                    v-model="xpathStock"
+                    maxlength="191"
+                    placeholder="//span[@id='stock']"
+                ></b-input>
+            </b-field>
+
+            <b-field
+                :type="formErrors['stock_contains'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['stock_contains']"
+            >
+                <div class="block">
+                    <b-radio
+                        v-model="stockContains"
+                        name="stock_contains"
+                        :native-value="true"
+                    >
+                        Contains
+                    </b-radio>
+                    <b-radio
+                        v-model="stockContains"
+                        name="stock_contains"
+                        :native-value="false"
+                    >
+                        Does not contain
+                    </b-radio>
+                </div>
+            </b-field>
+
+            <b-field
+                label="Stock Text Match"
+                :type="formErrors['stock_text'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['stock_text']"
+            >
+                <b-input
+                    v-model="stockText"
+                    maxlength="191"
+                    placeholder="In Stock."
+                ></b-input>
+            </b-field>
+
+            <b-field
                 label="Client"
                 :type="formErrors['client'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['client']"
@@ -81,6 +127,9 @@ export default {
             this.domain = this.template.domain;
             this.xpathValue = this.template.xpath_value;
             this.client = this.template.client;
+            this.xpathStock = this.template.xpath_stock;
+            this.stockText = this.template.stock_text;
+            this.stockContains = this.template.stock_contains === true;
         }
     },
     data() {
@@ -91,6 +140,9 @@ export default {
             xpathValue: '//span[@id="price"]',
             client: 'browsershot',
             formErrors: {},
+            xpathStock: '',
+            stockContains: true,
+            stockText: '',
         };
     },
     methods: {
@@ -130,7 +182,10 @@ export default {
                 id: this.id,
                 domain: this.domain,
                 xpath_value: this.xpathValue,
-                client: this.client
+                client: this.client,
+                xpath_stock: this.xpathStock,
+                stock_text: this.stockText,
+                stock_contains: this.stockContains,
             }).then(() => {
                 window.location = '/template';
             }).catch((err) => {

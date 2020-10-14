@@ -11,13 +11,16 @@ class UpdateTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function itCanUpdateWatcher(): void
+    public function itCanUpdateTemplate(): void
     {
         $template = factory(Template::class)->create();
 
         $data = [
             'xpath_value' => 'some-query-value',
-            'client' => 'curl'
+            'client' => 'curl',
+            'xpath_stock' => 'some-stock-query',
+            'stock_contains' => true,
+            'stock_text' => 'foobar',
         ];
 
         $this->actingAs($template->user)
