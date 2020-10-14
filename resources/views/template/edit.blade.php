@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <h1 class="title">Edit Template</h1>
+            <h1 class="title">Edit Domain Query</h1>
             <div class="col-md-8">
             </div>
         </div>
