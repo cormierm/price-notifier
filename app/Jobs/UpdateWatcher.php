@@ -61,6 +61,8 @@ class UpdateWatcher implements ShouldQueue
                 }
             }
 
+            $this->updatePriceChanges();
+
             $this->sendAlerts();
         } catch (Exception $e) {
             $this->error = $e->getMessage();
@@ -127,6 +129,20 @@ class UpdateWatcher implements ShouldQueue
             $this->watcher->update([
                 'lowest_price' => $formattedValue,
                 'lowest_at' => Carbon::now()
+            ]);
+        }
+    }
+
+    private function updatePriceChanges()
+    {
+        $lastPriceChange = $this->watcher->priceChanges()->latest()->first();
+        if (!$lastPriceChange
+            || $lastPriceChange->price !== $this->price
+            || $lastPriceChange->stock !== $this->hasStock
+        ) {
+            $this->watcher->priceChanges()->create([
+                'price' => $this->price,
+                'stock' => $this->hasStock,
             ]);
         }
     }
