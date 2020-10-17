@@ -27,6 +27,7 @@ class UpdateWatcher implements ShouldQueue
     private $watcher;
     private $error = null;
     private $price = null;
+    private $rawPrice = null;
     private $rawStock = null;
     private $hasStock = null;
 
@@ -46,8 +47,8 @@ class UpdateWatcher implements ShouldQueue
             $html = $fetcher->getHtmlFromUrl($this->watcher->url, $this->watcher->client);
             $parser = new HtmlParser($html);
 
-            $rawValue = $parser->nodeValueByXPathQuery($this->watcher->query);
-            $this->price = PriceHelper::numbersFromText($rawValue);
+            $this->rawPrice = $parser->nodeValueByXPathQuery($this->watcher->query);
+            $this->price = PriceHelper::numbersFromText($this->rawPrice);
 
             $this->hasStock = $this->calculateStock($parser);
 
@@ -76,10 +77,14 @@ class UpdateWatcher implements ShouldQueue
 
         event(new WatcherCreatedOrUpdated(WatcherResource::make($this->watcher)));
 
+        $this->rawPrice = strlen($this->rawPrice) > 191
+            ? substr($this->rawPrice, 0, 190)
+            : $this->rawPrice;
+
         WatcherLog::create([
             'watcher_id' => $this->watcher->id,
             'formatted_value' => $this->price ?? null,
-            'raw_value' => $rawValue ?? null,
+            'raw_value' => $this->rawPrice ?? null,
             'duration' => Carbon::now()->diffInMilliseconds($startTime),
             'region' => config('pcn.region'),
             'error' => strlen($this->error) > config('pcn.fetcher.error_max_length')
@@ -154,6 +159,10 @@ class UpdateWatcher implements ShouldQueue
             return ($this->watcher->stock_contains && stripos($this->rawStock, $this->watcher->stock_text) !== false) ||
                 (!$this->watcher->stock_contains && stripos($this->rawStock, $this->watcher->stock_text) === false);
         }
+
+        $this->rawStock = strlen($this->rawStock) > 191
+            ? substr($this->rawStock, 0, 190)
+            : $this->rawStock;
 
         return null;
     }
