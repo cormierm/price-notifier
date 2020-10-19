@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -35,5 +36,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function watchers(): HasMany
     {
         return $this->hasMany(Watcher::class);
+    }
+
+    public function priceChanges(): HasManyThrough
+    {
+        return $this->hasManyThrough(PriceChange::class, Watcher::class);
     }
 }

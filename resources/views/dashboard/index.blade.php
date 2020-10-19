@@ -1,5 +1,5 @@
 @extends('layouts.vue')
 
 @section('content')
-    <dashboard-index></dashboard-index>
+    <dashboard-index :price-changes="{{ $priceChanges }}"></dashboard-index>
 @endsection
