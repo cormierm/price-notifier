@@ -1,7 +1,6 @@
 <template>
     <div class="container">
-        <h1>Dashboard</h1>
-        <recent-price-table :price-changes="priceChanges"/>
+        <recent-price-table class="price-table" :price-changes="priceChanges"/>
         <recent-stock-table :stock-changes="stockChanges"/>
     </div>
 </template>
@@ -27,5 +26,7 @@ export default {
 </script>
 
 <style scoped>
-
+    .price-table {
+        padding-bottom: 10px;
+    }
 </style>
