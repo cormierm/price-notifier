@@ -11,6 +11,7 @@ class Index extends Controller
     {
         return view('dashboard.index', [
             'priceChanges' => $request->user()->priceChanges()->with('watcher')->latest('created_at')->limit(10)->get(),
+            'stockChanges' => $request->user()->stockChanges()->with('watcher')->latest('created_at')->limit(10)->get(),
         ]);
     }
 }

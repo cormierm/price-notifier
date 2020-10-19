@@ -1,7 +1,6 @@
 <template>
-    <div class="recent-price-table">
+    <div class="recent-stock-table">
         <h2>{{ title }}</h2>
-
         <b-table
             :columns="columns"
             :data="tableData"
@@ -15,25 +14,24 @@
 import moment from "moment";
 
 export default {
-    name: "RecentPriceTable",
+    name: "RecentStockTable",
     props: {
         title: {
             type: String,
-            default: 'Most Recent Price Changes',
+            default: 'Most Recent Stock Changes',
         },
-        priceChanges: {
+        stockChanges: {
             type: Array,
             default: () => ([])
         },
     },
     computed: {
         tableData() {
-            return this.priceChanges.map((change) => {
+            return this.stockChanges.map((change) => {
                 return {
                     ...change,
-                    created_at_formatted: change.created_at
-                        ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss')
-                        : '',
+                    stock: change.stock ? 'Yes' : 'No',
+                    created_at_formatted: change.created_at ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
                 }
             });
         }
@@ -50,8 +48,8 @@ export default {
                     field: 'created_at_formatted',
                 },
                 {
-                    field: 'price',
-                    label: 'Price',
+                    field: 'stock',
+                    label: 'Stock',
                 },
                 {
                     field: 'watcher.name',
