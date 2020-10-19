@@ -63,6 +63,7 @@ class UpdateWatcher implements ShouldQueue
             }
 
             $this->updatePriceChanges();
+            $this->updateStockChanges();
 
             $this->sendAlerts();
         } catch (Exception $e) {
@@ -120,7 +121,7 @@ class UpdateWatcher implements ShouldQueue
                 $this->watcher->url
             );
             if (env('SLACK_CHANNEL', false) && env('SLACK_TOKEN', false)) {
-                SendSlackMessage::dispatch("Stock Alert! @here\n{$this->watcher->name}\n\${$this->price}\n{$this->watcher->url}");
+                SendSlackMessage::dispatch("Stock Alert!\n{$this->watcher->name}\n\${$this->price}\n{$this->watcher->url}");
             }
         }
     }
@@ -140,13 +141,32 @@ class UpdateWatcher implements ShouldQueue
 
     private function updatePriceChanges()
     {
+        if (!$this->price) {
+            return;
+        }
+
         $lastPriceChange = $this->watcher->priceChanges()->latest()->first();
         if (!$lastPriceChange
             || $lastPriceChange->price !== $this->price
-            || $lastPriceChange->stock !== $this->hasStock
         ) {
             $this->watcher->priceChanges()->create([
                 'price' => $this->price,
+            ]);
+        }
+    }
+
+    private function updateStockChanges()
+    {
+        if ($this->hasStock === null) {
+            return;
+        }
+
+        $lastStockChange = $this->watcher->stockChanges()->latest()->first();
+
+        if (!$lastStockChange
+            || $lastStockChange->stock !== $this->hasStock
+        ) {
+            $this->watcher->stockChanges()->create([
                 'stock' => $this->hasStock,
             ]);
         }

@@ -56,6 +56,11 @@ class Watcher extends Model
         return $this->hasMany(PriceChange::class);
     }
 
+    public function stockChanges(): HasMany
+    {
+        return $this->hasMany(StockChange::class);
+    }
+
     public function interval(): BelongsTo
     {
         return $this->belongsTo(Interval::class);
