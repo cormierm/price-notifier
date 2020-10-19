@@ -36,13 +36,7 @@
             </p>
         </article>
 
-        <h2>Price Changes</h2>
-        <b-table
-            :columns="priceColumns"
-            :data="transformedPriceChanges"
-            default-sort="created_at"
-            default-sort-direction="desc"
-        ></b-table>
+        <price-change-table :price-changes="priceChanges" />
 
         <h2>Stock Changes</h2>
         <b-table
@@ -60,11 +54,12 @@
 import IntervalSelect from "../watcher/IntervalSelect";
 import DeleteButton from "../watcher/DeleteButton";
 import RefreshButton from "../watcher/RefreshButton";
+import PriceChangeTable from "../tables/PriceChangeTable";
 import moment from "moment";
 
 export default {
     name: "WatcherDetails",
-    components: { DeleteButton, IntervalSelect, RefreshButton },
+    components: { DeleteButton, IntervalSelect, RefreshButton, PriceChangeTable },
     props: {
         watcher: {
             type: Object,
@@ -85,20 +80,6 @@ export default {
     },
     data() {
         return {
-            priceColumns: [
-                {
-                    field: 'created_at',
-                    visible: false,
-                },
-                {
-                    label: 'Created_at',
-                    field: 'created_at_formatted',
-                },
-                {
-                    field: 'price',
-                    label: 'Price',
-                },
-            ],
             stockColumns: [
                 {
                     field: 'created_at',
@@ -117,14 +98,6 @@ export default {
         }
     },
     computed: {
-        transformedPriceChanges() {
-            return this.priceChanges.map((change) => {
-                return {
-                    ...change,
-                    created_at_formatted: change.created_at ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
-                }
-            });
-        },
         transformedStockChanges() {
             return this.stockChanges.map((change) => {
                 return {
@@ -156,7 +129,4 @@ export default {
         display: flex;
     }
 
-    h2 {
-        font-weight: bold;
-    }
 </style>
