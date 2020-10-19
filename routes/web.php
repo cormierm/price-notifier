@@ -25,6 +25,8 @@ Auth::routes([
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::redirect('/home', '/watcher')->name('home');
 
+    Route::get('dashboard', 'Dashboard\Index')->name('dashboard.index');
+
     Route::prefix('profile')->namespace('Profile')->name('profile.')->group(function () {
         Route::get('/', 'Index')->name('index');
         Route::put('/', 'Update')->name('update');

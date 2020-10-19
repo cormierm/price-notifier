@@ -6,6 +6,9 @@
             </b-navbar-item>
         </template>
         <template slot="start">
+            <b-navbar-item href="/dashboard">
+                Dashboard
+            </b-navbar-item>
             <b-navbar-item href="/watcher">
                 Watchers
             </b-navbar-item>
