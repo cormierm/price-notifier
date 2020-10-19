@@ -47,4 +47,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasManyThrough(StockChange::class, Watcher::class);
     }
+
+    public function watcherLogs(): HasManyThrough
+    {
+        return $this->hasManyThrough(WatcherLog::class, Watcher::class);
+    }
 }
