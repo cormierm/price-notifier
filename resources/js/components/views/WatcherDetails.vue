@@ -36,6 +36,14 @@
             </p>
         </article>
 
+        <h2>Price Changes</h2>
+        <b-table
+            :columns="columns"
+            :data="transformedPriceChanges"
+            default-sort="created_at"
+            default-sort-direction="desc"
+        ></b-table>
+
         <watcher-logs :watcher-id="watcher.id"></watcher-logs>
     </div>
 </template>
@@ -44,6 +52,7 @@
 import IntervalSelect from "../watcher/IntervalSelect";
 import DeleteButton from "../watcher/DeleteButton";
 import RefreshButton from "../watcher/RefreshButton";
+import moment from "moment";
 
 export default {
     name: "WatcherDetails",
@@ -53,6 +62,10 @@ export default {
             type: Object,
             required: true
         },
+        priceChanges: {
+            type: Array,
+            default: () => ([])
+        },
         intervals: {
             type: Array,
             required: true
@@ -60,7 +73,31 @@ export default {
     },
     data() {
         return {
+            columns: [
+                {
+                    field: 'created_at',
+                    visible: false,
+                },
+                {
+                    label: 'Created_at',
+                    field: 'created_at_formatted',
+                },
+                {
+                    field: 'price',
+                    label: 'Price',
+                },
+            ],
             currentWatcher: this.watcher,
+        }
+    },
+    computed: {
+        transformedPriceChanges() {
+            return this.priceChanges.map((change) => {
+                return {
+                    ...change,
+                    created_at_formatted: change.created_at ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
+                }
+            });
         }
     },
     methods: {
