@@ -1,5 +1,5 @@
 <template>
-    <div class="price-change-table">
+    <div class="stock-change-table">
         <h2>{{ title }}</h2>
         <b-table
             :columns="columns"
@@ -14,25 +14,24 @@
 import moment from "moment";
 
 export default {
-    name: "PriceChangeTable",
+    name: "StockChangeTable",
     props: {
         title: {
             type: String,
-            default: 'Price Changes',
+            default: 'Stock Changes',
         },
-        priceChanges: {
+        stockChanges: {
             type: Array,
             default: () => ([])
         },
     },
     computed: {
         tableData() {
-            return this.priceChanges.map((change) => {
+            return this.stockChanges.map((change) => {
                 return {
                     ...change,
-                    created_at_formatted: change.created_at
-                        ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss')
-                        : '',
+                    stock: change.stock ? 'Yes' : 'No',
+                    created_at_formatted: change.created_at ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
                 }
             });
         }
@@ -49,8 +48,8 @@ export default {
                     field: 'created_at_formatted',
                 },
                 {
-                    field: 'price',
-                    label: 'Price',
+                    field: 'stock',
+                    label: 'Stock',
                 },
             ],
         }
