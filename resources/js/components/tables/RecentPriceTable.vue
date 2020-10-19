@@ -50,12 +50,12 @@ export default {
                     field: 'created_at_formatted',
                 },
                 {
-                    field: 'price',
-                    label: 'Price',
-                },
-                {
                     field: 'watcher.name',
                     label: 'Watcher',
+                },
+                {
+                    field: 'price',
+                    label: 'Price',
                 }
             ],
         }
