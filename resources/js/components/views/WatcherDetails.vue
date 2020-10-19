@@ -38,8 +38,16 @@
 
         <h2>Price Changes</h2>
         <b-table
-            :columns="columns"
+            :columns="priceColumns"
             :data="transformedPriceChanges"
+            default-sort="created_at"
+            default-sort-direction="desc"
+        ></b-table>
+
+        <h2>Stock Changes</h2>
+        <b-table
+            :columns="stockColumns"
+            :data="transformedStockChanges"
             default-sort="created_at"
             default-sort-direction="desc"
         ></b-table>
@@ -66,6 +74,10 @@ export default {
             type: Array,
             default: () => ([])
         },
+        stockChanges: {
+            type: Array,
+            default: () => ([])
+        },
         intervals: {
             type: Array,
             required: true
@@ -73,7 +85,7 @@ export default {
     },
     data() {
         return {
-            columns: [
+            priceColumns: [
                 {
                     field: 'created_at',
                     visible: false,
@@ -87,6 +99,20 @@ export default {
                     label: 'Price',
                 },
             ],
+            stockColumns: [
+                {
+                    field: 'created_at',
+                    visible: false,
+                },
+                {
+                    label: 'Created_at',
+                    field: 'created_at_formatted',
+                },
+                {
+                    field: 'stock',
+                    label: 'Stock',
+                },
+            ],
             currentWatcher: this.watcher,
         }
     },
@@ -95,6 +121,15 @@ export default {
             return this.priceChanges.map((change) => {
                 return {
                     ...change,
+                    created_at_formatted: change.created_at ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
+                }
+            });
+        },
+        transformedStockChanges() {
+            return this.stockChanges.map((change) => {
+                return {
+                    ...change,
+                    stock: change.stock ? 'Yes' : 'No',
                     created_at_formatted: change.created_at ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
                 }
             });
@@ -119,5 +154,9 @@ export default {
 
     .tool-buttons {
         display: flex;
+    }
+
+    h2 {
+        font-weight: bold;
     }
 </style>
