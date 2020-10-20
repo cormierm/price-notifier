@@ -359,7 +359,7 @@ export default {
                 this.client = data.client;
                 this.xpathStock = data.xpath_stock;
                 this.stockText = data.stock_text;
-                this.stockContains = data.stock_contains === 1;
+                this.stockContains = data.stock_contains === true;
                 this.template = data;
                 this.updateQueries = false;
                 this.check();
