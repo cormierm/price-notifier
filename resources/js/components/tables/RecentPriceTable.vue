@@ -6,7 +6,7 @@
             :data="tableData"
         >
             <template slot-scope="props">
-                <b-table-column field="created_at" label="Date">
+                <b-table-column field="created_at" label="Date" width="190">
                     {{ props.row.created_at_formatted }}
                 </b-table-column>
                 <b-table-column field="watcher.name" label="Watcher">
