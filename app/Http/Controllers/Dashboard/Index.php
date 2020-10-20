@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DashboardPriceChangeResource;
+use App\Http\Resources\DashboardStockChangeResource;
 use Illuminate\Http\Request;
 
 class Index extends Controller
@@ -16,16 +18,18 @@ class Index extends Controller
                 ->latest('created_at')
                 ->limit(10)
                 ->get(),
-            'priceChanges' => $request->user()->priceChanges()
-                ->with('watcher')
-                ->latest('created_at')
-                ->limit(10)
-                ->get(),
-            'stockChanges' => $request->user()->stockChanges()
-                ->with('watcher')
-                ->latest('created_at')
-                ->limit(10)
-                ->get(),
+            'priceChanges' => DashboardPriceChangeResource::collection(
+                $request->user()->priceChanges()
+                    ->latest('created_at')
+                    ->limit(10)
+                    ->get()
+            ),
+            'stockChanges' => DashboardStockChangeResource::collection(
+                $request->user()->stockChanges()
+                    ->latest('created_at')
+                    ->limit(10)
+                    ->get()
+            ),
         ]);
     }
 }

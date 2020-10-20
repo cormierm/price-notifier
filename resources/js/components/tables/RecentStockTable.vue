@@ -2,11 +2,26 @@
     <div class="recent-stock-table">
         <h2>{{ title }}</h2>
         <b-table
-            :columns="columns"
             :data="tableData"
-            default-sort="created_at"
-            default-sort-direction="desc"
-        ></b-table>
+        >
+            <template slot-scope="props">
+                <b-table-column field="created_at" label="Date">
+                    {{ props.row.created_at_formatted }}
+                </b-table-column>
+                <b-table-column field="watcher.name" label="Watcher">
+                    <div class="name-field">
+                        <div>
+                            <a :href="`/watcher/${props.row.watcher.id}`">{{ props.row.watcher.name }}</a>
+                            <a :href="props.row.watcher.url"><b-icon icon="link"/></a>
+                        </div>
+                        <span>{{ props.row.watcher.url_domain }}</span>
+                    </div>
+                </b-table-column>
+                <b-table-column field="stock" label="Stock" width="100">
+                    {{ props.row.stock }}
+                </b-table-column>
+            </template>
+        </b-table>
     </div>
 </template>
 
@@ -30,39 +45,26 @@ export default {
             return this.stockChanges.map((change) => {
                 return {
                     ...change,
-                    stock: change.stock ? 'Yes' : 'No',
                     created_at_formatted: change.created_at ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
                 }
             });
         }
     },
-    data() {
-        return {
-            columns: [
-                {
-                    field: 'created_at',
-                    visible: false,
-                },
-                {
-                    label: 'Created_at',
-                    field: 'created_at_formatted',
-                },
-                {
-                    field: 'watcher.name',
-                    label: 'Watcher',
-                },
-                {
-                    field: 'stock',
-                    label: 'Stock',
-                }
-            ],
-        }
-    }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 h2 {
     font-weight: bold;
+}
+
+.name-field {
+    display: flex;
+    flex-direction: column;
+
+    span {
+        color: #666;
+        font-size: 0.7em;
+    }
 }
 </style>
