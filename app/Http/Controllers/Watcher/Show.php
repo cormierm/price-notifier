@@ -14,8 +14,8 @@ class Show extends Controller
 
         return view('watcher.show', [
             'watcher' => WatcherResource::make($watcher),
-            'priceChanges' => $watcher->priceChanges()->limit(10)->get(),
-            'stockChanges' => $watcher->stockChanges()->limit(10)->get(),
+            'priceChanges' => $watcher->priceChanges()->latest('created_at')->limit(10)->get(),
+            'stockChanges' => $watcher->stockChanges()->latest('created_at')->limit(10)->get(),
             'intervals' => Interval::all()
         ]);
     }
