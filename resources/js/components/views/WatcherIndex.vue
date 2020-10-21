@@ -188,9 +188,6 @@ export default {
         channel.bind('update', (data) => {
             this.updateWatcherList(data.watcher);
         });
-        channel.bind('delete', (data) => {
-            this.removeWatcherFromList(data);
-        });
 
         this.restoreColumnSettings();
         this.hasMobileCards = this.restoreColumnSetting('mobile-cards');
