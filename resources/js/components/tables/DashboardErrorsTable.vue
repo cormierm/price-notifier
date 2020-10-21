@@ -3,11 +3,20 @@
         <h2>{{ title }}</h2>
 
         <b-table
-            :columns="columns"
             :data="tableData"
-            default-sort="created_at"
-            default-sort-direction="desc"
-        ></b-table>
+        >
+            <template slot-scope="props">
+                <b-table-column field="created_at" label="Date" width="115">
+                    {{ props.row.created_at_formatted }}
+                </b-table-column>
+                <b-table-column field="watcher.name" label="Watcher">
+                    <a :href="`/watcher/${props.row.watcher.id}`">{{ props.row.watcher.name }}</a>
+                </b-table-column>
+                <b-table-column field="error" label="Error">
+                    {{ props.row.error }}
+                </b-table-column>
+            </template>
+        </b-table>
     </div>
 </template>
 
@@ -38,33 +47,22 @@ export default {
             });
         }
     },
-    data() {
-        return {
-            columns: [
-                {
-                    field: 'created_at',
-                    visible: false,
-                },
-                {
-                    label: 'Created_at',
-                    field: 'created_at_formatted',
-                },
-                {
-                    field: 'watcher.name',
-                    label: 'Watcher',
-                },
-                {
-                    field: 'error',
-                    label: 'Error',
-                }
-            ],
-        }
-    }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 h2 {
+    font-size: 1.2em;
     font-weight: bold;
+}
+
+.name-field {
+    display: flex;
+    flex-direction: column;
+
+    span {
+        color: #666;
+        font-size: 0.7em;
+    }
 }
 </style>
