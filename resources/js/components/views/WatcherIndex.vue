@@ -22,7 +22,6 @@
                 </div>
             </b-field>
             <b-table
-                detailed
                 :data="tableData"
                 class="watcher-table"
                 default-sort="name"
@@ -31,8 +30,12 @@
             >
                 <template slot-scope="props">
                     <b-table-column field="name" label="Name" sortable>
+
                         <div class="name-field">
-                            <a :href="props.row.url">{{ props.row.name }}</a>
+                            <div>
+                                <a :href="`/watcher/${props.row.id}`">{{ props.row.name }}</a>
+                                <a :href="props.row.url"><b-icon icon="link"/></a>
+                            </div>
                             <span>{{ props.row.url_domain }}</span>
                         </div>
                     </b-table-column>
@@ -143,10 +146,6 @@
                             <delete-button :watcher="props.row" @delete="removeWatcherFromList"></delete-button>
                         </div>
                     </b-table-column>
-                </template>
-
-                <template slot="detail" slot-scope="props">
-                    <watcher-logs :watcher-id="props.row.id"></watcher-logs>
                 </template>
             </b-table>
         </div>
