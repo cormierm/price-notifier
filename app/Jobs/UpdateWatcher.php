@@ -120,9 +120,9 @@ class UpdateWatcher implements ShouldQueue
                 "{$this->watcher->name}\n\${$this->price}",
                 $this->watcher->url
             );
-            if (env('SLACK_CHANNEL', false) && env('SLACK_TOKEN', false)) {
-                SendSlackMessage::dispatch("Stock Alert!\n{$this->watcher->name}\n\${$this->price}\n{$this->watcher->url}");
-            }
+//            if (env('SLACK_CHANNEL', false) && env('SLACK_TOKEN', false)) {
+//                SendSlackMessage::dispatch("Stock Alert!\n{$this->watcher->name}\n\${$this->price}\n{$this->watcher->url}");
+//            }
         }
     }
 
