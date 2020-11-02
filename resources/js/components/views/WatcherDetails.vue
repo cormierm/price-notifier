@@ -86,7 +86,7 @@ export default {
             window.location = '/home';
         },
         formatDate(datetime) {
-            return moment.utc(datetime).format('lll');
+            return moment.utc(datetime).local().format('lll');
         }
     }
 }
