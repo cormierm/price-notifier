@@ -13,6 +13,7 @@ class Destroy extends Controller
     {
         $watcher->logs()->delete();
         $watcher->priceChanges()->delete();
+        $watcher->stockChanges()->delete();
         $watcher->delete();
 
         return new JsonResponse([
