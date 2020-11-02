@@ -13,26 +13,26 @@
 
         <article class="panel is-primary">
             <p class="panel-heading">
-                <strong>{{ watcher.name }}<br></strong>
-                {{ watcher.url }}
+                <strong>{{ watcher.name }}</strong><span v-if="watcher.value" class="is-pulled-right"><strong>${{watcher.value}}</strong></span><br>
+                <a :href="watcher.url">{{ watcher.url }}</a>
             </p>
-            <p class="panel-block">
-                Created: {{ watcher.created_at }}<br>
-                Initial Price: {{ watcher.initial_value }}<br>
-                Current Price: {{ watcher.value }} ({{ watcher.last_sync }})<br>
-                Lowest Price: {{ watcher.lowest_price }} ({{ watcher.lowest_at }})<br>
-                Alert Price: {{ watcher.alert_value }}<br>
-                XPath Query Price: {{ watcher.query }}
-            </p>
-
-            <p class="panel-block">
+            <p class="panel">
+                Original Price: {{ watcher.initial_value }} ({{ formatDate(watcher.created_at) }})<br>
+                Current Price: {{ watcher.value }} ({{ formatDate(watcher.last_sync) }})<br>
+                Lowest Price: {{ watcher.lowest_price }} ({{ formatDate(watcher.lowest_at) }})<br>
+                Alert Price: {{ watcher.alert_value }}<br><br>
+                XPath Query Price: {{ watcher.query }}<br><br>
+                XPath Query Stock: {{ watcher.xpath_stock }}<br>
+                Stock contains: {{ watcher.stock_contains }}<br>
+                Stock text match: {{ watcher.stock_text }}<br><br>
+                Region: {{ watcher.region ? watcher.region.label : '' }}<br><br>
                 Interval:
                 <interval-select
                     :intervals="intervals"
                     :watcher-id="watcher.id"
                     :value="watcher.interval_id"
                     @update="updateWatcher"
-                /><br>
+                />
             </p>
         </article>
 
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import IntervalSelect from "../watcher/IntervalSelect";
 import DeleteButton from "../watcher/DeleteButton";
 import RefreshButton from "../watcher/RefreshButton";
@@ -83,6 +84,9 @@ export default {
         },
         redirectToWatchers() {
             window.location = '/home';
+        },
+        formatDate(datetime) {
+            return moment.utc(datetime).format('lll');
         }
     }
 }
