@@ -5,7 +5,7 @@ namespace Tests\App\Http\Controllers\Watcher;
 use App\Events\WatcherCreatedOrUpdated;
 use App\Region;
 use App\User;
-use App\Utils\HtmlFetcher;
+use App\Utils\Fetchers\HtmlFetcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;

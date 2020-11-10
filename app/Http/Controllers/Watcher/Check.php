@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Watcher\CheckRequest;
-use App\Utils\HtmlFetcher;
+use App\Utils\Fetchers\HtmlFetcherFactory;
 use App\Utils\HtmlParser;
 use App\Utils\PriceHelper;
 use Exception;
@@ -14,11 +14,10 @@ class Check extends Controller
 {
     public function __invoke(CheckRequest $request): JsonResponse
     {
-        /** @var HtmlFetcher $fetcher */
-        $fetcher = resolve(HtmlFetcher::class);
+        $fetcher = (new HtmlFetcherFactory)->build($request->input('client'));
 
         try {
-            $html = $fetcher->getHtmlFromUrl($request->input('url', ''), $request->input('client'));
+            $html = $fetcher->fetchHtml($request->input('url', ''));
 
             $parser = new HtmlParser($html);
             $rawValue = $parser->nodeValueByXPathQuery($request->input('xpath_value', ''));

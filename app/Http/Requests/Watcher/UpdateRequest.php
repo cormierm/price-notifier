@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Watcher;
 
-use App\Utils\HtmlFetcher;
+use App\Utils\Fetchers\HtmlFetcher;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest

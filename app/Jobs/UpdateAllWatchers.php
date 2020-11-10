@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Utils\HtmlFetcher;
+use App\Utils\Fetchers\HtmlFetcher;
 use App\Watcher;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;

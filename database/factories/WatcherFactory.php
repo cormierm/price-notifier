@@ -4,7 +4,7 @@
 
 use App\Interval;
 use App\User;
-use App\Utils\HtmlFetcher;
+use App\Utils\Fetchers\HtmlFetcher;
 use App\Watcher;
 use Carbon\Carbon;
 use Faker\Generator as Faker;

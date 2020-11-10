@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Events\WatcherCreatedOrUpdated;
 use App\Http\Resources\WatcherResource;
-use App\Utils\HtmlFetcher;
+use App\Utils\Fetchers\HtmlFetcherFactory;
 use App\Utils\HtmlParser;
 use App\Utils\PriceHelper;
 use App\Watcher;
@@ -39,12 +39,10 @@ class UpdateWatcher implements ShouldQueue
     public function handle(): void
     {
         $startTime = Carbon::now();
-
-        /** @var HtmlFetcher $fetcher */
-        $fetcher = resolve(HtmlFetcher::class);
+        $fetcher = (new HtmlFetcherFactory)->build($this->watcher->client);
 
         try {
-            $html = $fetcher->getHtmlFromUrl($this->watcher->url, $this->watcher->client);
+            $html = $fetcher->fetchHtml($this->watcher->url);
             $parser = new HtmlParser($html);
 
             $this->rawPrice = $parser->nodeValueByXPathQuery($this->watcher->query);
