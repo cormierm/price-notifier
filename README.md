@@ -3,12 +3,13 @@
 Laravel web application that allows users to track prices and stock on different websites.
 
 ## Installation Steps for Ubuntu
-#### 1. Install required apt packages:
+#### 1. Install required apt packages (Apache2, Php 7.4, Mysql PHP DB driver, NPM):
 
 ```
 sudo apt-get update
 sudo apt install apache2 php7.4 libapache2-mod-php7.4 php7.4-bcmath php7.4-json php7.4-mbstring php7.4-xml php7.4-zip php-curl php-pdo-mysql npm
 ```
+** Might need to install your php database driver if you are not using mysql as your database.**
 
 
 #### 2. Install composer:
