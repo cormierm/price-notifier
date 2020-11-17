@@ -84,11 +84,11 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itSendsPriceAlertWhenValueIsLessThanAlertValue(): void
     {
-        $rawValue = '50.00';
+        $rawValue = '950.00';
         $watcher = factory(Watcher::class)->create([
             'query' => '//span[@class="value"]',
-            'value' => '110.00',
-            'alert_value' => '100.00',
+            'value' => '1100.00',
+            'alert_value' => '1000.00',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
         ]);
         $html = '<html><body><span class="value">' . $rawValue . '</span></body></html>';

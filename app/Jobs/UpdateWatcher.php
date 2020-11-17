@@ -101,7 +101,7 @@ class UpdateWatcher implements ShouldQueue
             $oldPrice = number_format($this->watcher->value, 2);
             $newPrice = number_format($this->price, 2);
 
-            if ($alertPrice && $newPrice && $oldPrice !== $newPrice && $newPrice < $alertPrice) {
+            if ($alertPrice && $newPrice && $oldPrice !== $newPrice && $this->price < $this->watcher->alert_value) {
                 SendPushoverMessage::dispatch(
                     $this->watcher->user,
                     'Price Alert!',
