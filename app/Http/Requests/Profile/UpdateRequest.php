@@ -12,6 +12,7 @@ class UpdateRequest extends FormRequest
         return [
             'pushover_user_key' => 'nullable|string|size:30',
             'pushover_api_token' => 'nullable|string|size:30',
+            'api_key' => 'nullable|uuid',
         ];
     }
 }

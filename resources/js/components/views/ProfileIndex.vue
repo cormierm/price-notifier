@@ -7,13 +7,13 @@
         <div class="card">
             <header class="card-header">
                 <p class="card-header-title">
-                    Pushover Settings
+                    User Settings
                 </p>
             </header>
             <div class="card-content">
                 <div class="content">
                     <b-field
-                        label="User Key"
+                        label="Pushover User Key"
                         :type="formErrors['pushover_user_key'] ? 'is-danger' : 'is-default'"
                         :message="formErrors['pushover_user_key']"
                     >
@@ -23,7 +23,7 @@
                         ></b-input>
                     </b-field>
                     <b-field
-                        label="Api Token"
+                        label="Pushover Api Token"
                         :type="formErrors['pushover_api_token'] ? 'is-danger' : 'is-default'"
                         :message="formErrors['pushover_api_token']"
                     >
@@ -31,6 +31,22 @@
                             v-model="pushoverApiToken"
                             maxlength="30"
                         ></b-input>
+                    </b-field>
+                    <b-field
+                        label="User Api Key (Used for chrome extension)"
+                        :type="formErrors['api_key'] ? 'is-danger' : 'is-default'"
+                        :message="formErrors['api_key']"
+                    >
+                        <b-field>
+                        <b-input
+                            expanded
+                            v-model="apiKey"
+                            placeholder="5f7273b9-09eb-3070-a1fd-ce5a8fbaf2fa"
+                        ></b-input>
+                        <p class="control">
+                            <button class="button is-primary" @click="generateUUID">Generate</button>
+                        </p>
+                        </b-field>
                     </b-field>
                     <div class="button-container">
                         <b-button :loading="loading" @click="updateProfile">Update</b-button>
@@ -43,6 +59,7 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
     name: "ProfileIndex",
@@ -57,15 +74,20 @@ export default {
             loading: false,
             pushoverApiToken: this.user.pushover_api_token,
             pushoverUserKey: this.user.pushover_user_key,
+            apiKey: this.user.api_key,
             formErrors: {}
         }
     },
     methods: {
+        generateUUID() {
+            this.apiKey = uuidv4();
+        },
         updateProfile() {
             this.loading = true;
             axios.put(`/profile`, {
                 pushover_user_key: this.pushoverUserKey,
                 pushover_api_token: this.pushoverApiToken,
+                api_key: this.apiKey
             }).then(() => {
                 this.$buefy.toast.open({
                     duration: 5000,
