@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('watcher', 'Api\Watcher\Store')->middleware('auth.basic.api-key')->name('api.watcher.store');
+Route::post('watcher/check', 'Watcher\Check')->middleware('auth.basic.api-key')->name('api.check');
+Route::post('template/search-by-url', 'Template\SearchByUrl')->middleware('auth.basic.api-key')->name('api.template.search-by-url');

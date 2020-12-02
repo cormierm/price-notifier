@@ -18,12 +18,13 @@ class Store extends Controller
             'user_id' => $request->user()->id,
             'name' => $request->input('name'),
             'url' => $request->input('url'),
-            'query' => $request->input('xpath_price'),
+            'query' => $request->input('query'),
             'xpath_stock' => $request->input('xpath_stock'),
-            'stock_contains' => true,
+            'stock_contains' => $request->input('stock_contains'),
             'stock_text' => $request->input('stock_text'),
+            'client' => $request->input('client'),
             'stock_alert' => false,
-            'interval_id' => 4,
+            'interval_id' => $request->input('interval_id'),
         ]);
 
         return response()->json();
