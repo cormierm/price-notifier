@@ -20,13 +20,17 @@ curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/bin 
 
 #### 3. Install web application:
 ```
-cd /var/www
-sudo git clone https://github.com/cormierm/price-notifier
+cd ~/
+git clone https://github.com/cormierm/price-notifier
 cd price-notifier
 cp .env.example .env
-sudo composer install
-sudo npm install
-sudo npm run production
+composer install
+npm install
+npm run production
+cd ~/
+cp ~/price-notifier /var/www
+sudo chgrp -R www-data /var/www/price-notifier
+sudo chmod -R 775 /var/www/price-notifier/storage
 ```
 
 #### 4. Configure .env
@@ -53,8 +57,6 @@ sudo a2dissite 000-default.conf
 sudo a2ensite laravel.conf
 sudo a2enmod rewrite
 sudo service apache2 restart
-sudo chgrp -R www-data /var/www/price-notifier
-sudo chmod -R 775 /var/www/price-notifier/storage
 ```
 laravel.conf:
 ```
