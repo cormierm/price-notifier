@@ -34,7 +34,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">149.99</span><span class="currency">$</span></div></div></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         UpdateWatcher::dispatch($watcher);
@@ -56,7 +56,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">' . $rawValue . '</span><span class="currency">$</span></div></div></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         UpdateWatcher::dispatch($watcher);
@@ -94,7 +94,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><body><span class="value">' . $rawValue . '</span></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $this->expectsJobs(SendPushoverMessage::class);
@@ -117,7 +117,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><span class="value">1119.99</span></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $job = new UpdateWatcher($watcher);
@@ -141,7 +141,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><span class="value">9.99</span></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $job = new UpdateWatcher($watcher);
@@ -164,7 +164,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><span class="value">CDN$ 1,129.99</span></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $job = new UpdateWatcher($watcher);
@@ -190,7 +190,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $this->expectsJobs(SendPushoverMessage::class);
@@ -217,7 +217,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $this->doesntExpectJobs(SendPushoverMessage::class);
@@ -242,7 +242,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $this->doesntExpectJobs(SendPushoverMessage::class);
@@ -269,7 +269,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><body><div id="stock">Out of stock.</div></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $this->doesntExpectJobs(SendPushoverMessage::class);
@@ -296,7 +296,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $this->doesntExpectJobs(SendPushoverMessage::class);
@@ -323,7 +323,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><body><div id="stock">Out of Stock.</div></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $this->doesntExpectJobs(SendPushoverMessage::class);
@@ -346,7 +346,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><span class="value">1119.99</span></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $job = new UpdateWatcher($watcher);
@@ -377,7 +377,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><span class="value">' . $price . '</span></html>';
 
         $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            $mock->shouldReceive('fetchHtml')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
+            $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
             return $mock;
         });
 
@@ -449,7 +449,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><span class="value">' . $price . '</span><div id="stock">In Stock.</div></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $job = new UpdateWatcher($watcher);
@@ -481,7 +481,7 @@ class UpdateWatcherTest extends TestCase
         $html = '<html><span class="value">' . $newPrice . '</span></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            return $mock->shouldReceive('fetchHtml')->with($watcher->url)->andReturn($html);
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
         $job = new UpdateWatcher($watcher);
