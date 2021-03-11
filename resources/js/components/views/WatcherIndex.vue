@@ -180,8 +180,8 @@ export default {
     mounted() {
         this.watchersList = this.watchers;
 
-        const pusher = new Pusher(process.env.PUSHER_APP_KEY, {
-            cluster: process.env.PUSHER_APP_CLUSTER
+        const pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY, {
+            cluster: process.env.MIX_PUSHER_APP_CLUSTER
         });
         const channel = pusher.subscribe(`user.${this.userId}.watchers`);
         channel.bind('update', (data) => {
