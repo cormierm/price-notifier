@@ -17,7 +17,7 @@ class Check extends Controller
         $fetcher = (new HtmlFetcherFactory)->build($request->input('client'));
 
         try {
-            $html = $fetcher->fetchHtml($request->input('url', ''));
+            $html = $fetcher->fetchHtml($request->input('url', ''), $request->user()->user_agent);
 
             $parser = new HtmlParser($html);
             $rawValue = $parser->nodeValueByXPathQuery($request->input('xpath_value', ''));
