@@ -18,11 +18,11 @@ class GuzzleFetcher extends HtmlFetcher
         $this->client = $client;
     }
 
-    public function fetchHtml(string $url): string
+    public function fetchHtml(string $url, string $userAgent = null): string
     {
         return (string)$this->client->request('GET', $url, [
             'headers' => [
-                'User-Agent' => config('pcn.fetcher.user_agent'),
+                'User-Agent' => $userAgent ?? config('pcn.fetcher.user_agent'),
             ]
         ])->getBody();
     }

@@ -16,7 +16,7 @@ abstract class HtmlFetcher
 
     const NAME = 'not-set';
 
-    abstract public function fetchHtml(string $url): string;
+    abstract public function fetchHtml(string $url, string $userAgent = null): string;
 
     public static function satisfiedBy(string $client): bool
     {

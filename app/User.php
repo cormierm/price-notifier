@@ -19,6 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'pushover_user_key',
         'pushover_api_token',
         'api_key',
+        'user_agent',
     ];
 
     protected $hidden = [

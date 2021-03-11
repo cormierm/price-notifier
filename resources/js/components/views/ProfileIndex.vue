@@ -33,6 +33,16 @@
                         ></b-input>
                     </b-field>
                     <b-field
+                        label="Watcher User Agent (Used for watcher fetches)"
+                        :type="formErrors['user_agent'] ? 'is-danger' : 'is-default'"
+                        :message="formErrors['user_agent']"
+                    >
+                        <b-input
+                            v-model="userAgent"
+                            maxlength="255"
+                        ></b-input>
+                    </b-field>
+                    <b-field
                         label="User Api Key (Used for chrome extension)"
                         :type="formErrors['api_key'] ? 'is-danger' : 'is-default'"
                         :message="formErrors['api_key']"
@@ -75,6 +85,7 @@ export default {
             pushoverApiToken: this.user.pushover_api_token,
             pushoverUserKey: this.user.pushover_user_key,
             apiKey: this.user.api_key,
+            userAgent: this.user.user_agent,
             formErrors: {}
         }
     },
@@ -83,10 +94,12 @@ export default {
             this.apiKey = uuidv4();
         },
         updateProfile() {
+            this.formErrors = {};
             this.loading = true;
             axios.put(`/profile`, {
                 pushover_user_key: this.pushoverUserKey,
                 pushover_api_token: this.pushoverApiToken,
+                user_agent: this.userAgent,
                 api_key: this.apiKey
             }).then(() => {
                 this.$buefy.toast.open({

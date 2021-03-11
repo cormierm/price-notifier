@@ -6,11 +6,11 @@ class CurlFetcher extends HtmlFetcher
 {
     const NAME = HtmlFetcher::CLIENT_CURL;
 
-    public function fetchHtml(string $url): string
+    public function fetchHtml(string $url, string $userAgent = null): string
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_USERAGENT, config('pcn.fetcher.user_agent'));
+        curl_setopt($ch, CURLOPT_USERAGENT, $userAgent ?? config('pcn.fetcher.user_agent'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

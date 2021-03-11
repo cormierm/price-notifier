@@ -42,7 +42,7 @@ class UpdateWatcher implements ShouldQueue
         $fetcher = (new HtmlFetcherFactory)->build($this->watcher->client);
 
         try {
-            $html = $fetcher->fetchHtml($this->watcher->url);
+            $html = $fetcher->fetchHtml($this->watcher->url, $this->watcher->user->user_agent);
             $parser = new HtmlParser($html);
 
             $this->rawPrice = $parser->nodeValueByXPathQuery($this->watcher->query);
