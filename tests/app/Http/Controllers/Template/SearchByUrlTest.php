@@ -28,7 +28,7 @@ class SearchByUrlTest extends TestCase
                 'xpath_value' => $template->xpath_value,
                 'xpath_stock' => $template->xpath_stock,
                 'stock_text' => $template->stock_text,
-                'stock_contains' => $template->stock_contains,
+                'stock_condition' => $template->stock_condition,
             ]);
     }
 }

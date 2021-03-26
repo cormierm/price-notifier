@@ -6,6 +6,7 @@ use App\Events\WatcherCreatedOrUpdated;
 use App\Region;
 use App\User;
 use App\Utils\Fetchers\HtmlFetcher;
+use App\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
@@ -27,7 +28,7 @@ class StoreTest extends TestCase
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'stock_alert' => true,
             'region_id' => $region->id,
         ];
@@ -58,7 +59,7 @@ class StoreTest extends TestCase
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'stock_alert' => true,
             'update_queries' => true,
         ];
@@ -72,7 +73,7 @@ class StoreTest extends TestCase
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
         ]);
     }
 
@@ -87,7 +88,7 @@ class StoreTest extends TestCase
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'stock_alert' => true,
             'update_queries' => false,
         ];

@@ -7,6 +7,7 @@ use App\Http\Requests\Watcher\CheckRequest;
 use App\Utils\Fetchers\HtmlFetcherFactory;
 use App\Utils\HtmlParser;
 use App\Utils\PriceHelper;
+use App\Watcher;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
@@ -25,8 +26,8 @@ class Check extends Controller
 
             if ($request->input('xpath_stock') && $request->input('stock_text')) {
                 $rawStockValue = $parser->nodeValueByXPathQuery($request->input('xpath_stock', ''));
-                $hasStock = ($request->input('stock_contains') && stripos($rawStockValue, $request->input('stock_text')) !== false) ||
-                    (!$request->input('stock_contains', false) && stripos($rawStockValue, $request->input('stock_text')) === false);
+                $hasStock = ($request->input('stock_condition') === Watcher::STOCK_CONDITION_CONTAINS_TEXT && stripos($rawStockValue, $request->input('stock_text')) !== false) ||
+                    ($request->input('stock_condition') === Watcher::STOCK_CONDITION_MISSING_TEXT && stripos($rawStockValue, $request->input('stock_text')) === false);
             }
 
             return new JsonResponse([

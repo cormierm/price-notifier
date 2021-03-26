@@ -25,7 +25,7 @@ class Update extends Controller
                     'client' => $watcher->client,
                     'xpath_stock' => $watcher->xpath_stock,
                     'stock_text' => $watcher->stock_text,
-                    'stock_contains' => $watcher->stock_contains,
+                    'stock_condition' => $watcher->stock_condition,
                 ]
             );
         }

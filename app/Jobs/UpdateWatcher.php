@@ -175,8 +175,8 @@ class UpdateWatcher implements ShouldQueue
         if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
             $this->rawStock = $parser->nodeValueByXPathQuery($this->watcher->xpath_stock);
 
-            $hasStock = ($this->watcher->stock_contains && stripos($this->rawStock, $this->watcher->stock_text) !== false) ||
-                (!$this->watcher->stock_contains && stripos($this->rawStock, $this->watcher->stock_text) === false);
+            $hasStock = ($this->watcher->stock_condition === Watcher::STOCK_CONDITION_CONTAINS_TEXT && stripos($this->rawStock, $this->watcher->stock_text) !== false) ||
+                ($this->watcher->stock_condition === Watcher::STOCK_CONDITION_MISSING_TEXT && stripos($this->rawStock, $this->watcher->stock_text) === false);
 
             $this->rawStock = strlen($this->rawStock) > 191
                 ? substr($this->rawStock, 0, 190)

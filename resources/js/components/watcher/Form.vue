@@ -72,27 +72,18 @@
             </b-field>
 
             <b-field
-                :type="formErrors['stock_contains'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['stock_contains']"
+                label="Stock Condition"
+                :type="formErrors['stock_condition'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['stock_condition']"
             >
-                <div class="block">
-                    <b-radio
-                        v-model="stockContains"
-                        name="stock_contains"
-                        :native-value="true"
-                        @input="updateQueries = true"
-                    >
-                        Contains
-                    </b-radio>
-                    <b-radio
-                        v-model="stockContains"
-                        name="stock_contains"
-                        :native-value="false"
-                        @input="updateQueries = true"
-                    >
-                        Does not contain
-                    </b-radio>
-                </div>
+                <b-select placeholder="Select stock condition" v-model="stockCondition">
+                    <option
+                        v-for="option in stockConditions"
+                        :value="option.value"
+                        :key="option.value">
+                        {{ option.label }}
+                    </option>
+                </b-select>
             </b-field>
 
             <b-field
@@ -238,7 +229,7 @@ export default {
             this.xpathStock = this.watcher.xpath_stock;
             this.stockText = this.watcher.stock_text;
             this.stockAlert = this.watcher.stock_alert === true;
-            this.stockContains = this.watcher.stock_contains === true;
+            this.stockCondition = this.watcher.stock_condition;
             this.updateQueries = false;
         }
     },
@@ -260,8 +251,14 @@ export default {
             xpathStock: '',
             stockText: '',
             stockAlert: false,
-            stockContains: true,
+            stockCondition: 'contains_text',
             updateQueries: true,
+            stockConditions: [
+                {label: 'Contains Text', value: 'contains_text'},
+                {label: 'Missing Text', value: 'missing_text'},
+                {label: 'Contains Html', value: 'contains_html'},
+                {label: 'Missing Html', value: 'missing_html'},
+            ]
         };
     },
     computed: {
@@ -302,7 +299,7 @@ export default {
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
                 stock_alert: this.stockAlert,
-                stock_contains: this.stockContains,
+                stock_condition: this.stockCondition,
                 update_queries: this.updateQueries,
             }).then(() => {
                 window.location = '/home';
@@ -328,7 +325,7 @@ export default {
                 client: this.client,
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
-                stock_contains: this.stockContains,
+                stock_condition: this.stockCondition,
             }).then(({data}) => {
                 this.testResults = data;
                 if (!this.name) {
@@ -359,7 +356,7 @@ export default {
                 this.client = data.client;
                 this.xpathStock = data.xpath_stock;
                 this.stockText = data.stock_text;
-                this.stockContains = data.stock_contains === true;
+                this.stockCondition = data.stock_condition;
                 this.template = data;
                 this.updateQueries = false;
                 this.check();
@@ -382,7 +379,7 @@ export default {
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
                 stock_alert: this.stockAlert,
-                stock_contains: this.stockContains,
+                stock_condition: this.stockCondition,
                 update_queries: this.updateQueries,
             }).then(() => {
                 window.location = '/home';

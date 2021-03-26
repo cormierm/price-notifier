@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Watcher;
 
 use App\Utils\Fetchers\HtmlFetcher;
+use App\Watcher;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CheckRequest extends FormRequest
 {
@@ -15,7 +17,7 @@ class CheckRequest extends FormRequest
             'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),
             'xpath_stock' => 'nullable|string|max:191',
             'stock_text' => 'nullable|string|max:191',
-            'stock_contains' => 'nullable|boolean',
+            'stock_condition' => ['nullable', Rule::in(Watcher::STOCK_CONDITIONS)],
         ];
     }
 }

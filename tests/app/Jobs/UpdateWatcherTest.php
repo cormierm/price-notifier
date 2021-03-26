@@ -184,7 +184,7 @@ class UpdateWatcherTest extends TestCase
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'In Stock.',
             'stock_alert' => true,
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'has_stock' => false,
         ]);
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
@@ -211,7 +211,7 @@ class UpdateWatcherTest extends TestCase
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'In Stock.',
             'stock_alert' => false,
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'has_stock' => false,
         ]);
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
@@ -236,7 +236,7 @@ class UpdateWatcherTest extends TestCase
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'In Stock.',
             'stock_alert' => false,
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'has_stock' => false,
         ]);
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
@@ -263,7 +263,7 @@ class UpdateWatcherTest extends TestCase
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'In Stock.',
             'stock_alert' => false,
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'has_stock' => true,
         ]);
         $html = '<html><body><div id="stock">Out of stock.</div></body></html>';
@@ -281,7 +281,7 @@ class UpdateWatcherTest extends TestCase
     }
 
     /** @test */
-    public function itWillSetHasStockToTrueForTextContainsFalse(): void
+    public function itWillSetHasStockToTrueForStockConditionMissingText(): void
     {
         $watcher = factory(Watcher::class)->create([
             'query' => '//span[@class="value"]',
@@ -290,7 +290,7 @@ class UpdateWatcherTest extends TestCase
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'Out of Stock.',
             'stock_alert' => false,
-            'stock_contains' => false,
+            'stock_condition' => Watcher::STOCK_CONDITION_MISSING_TEXT,
             'has_stock' => false,
         ]);
         $html = '<html><body><div id="stock">In Stock.</div></body></html>';
@@ -317,7 +317,7 @@ class UpdateWatcherTest extends TestCase
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'Out of Stock.',
             'stock_alert' => false,
-            'stock_contains' => false,
+            'stock_condition' => Watcher::STOCK_CONDITION_MISSING_TEXT,
             'has_stock' => true,
         ]);
         $html = '<html><body><div id="stock">Out of Stock.</div></body></html>';
@@ -402,7 +402,7 @@ class UpdateWatcherTest extends TestCase
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'In Stock.',
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
         ]);
         factory(StockChange::class)->create([
             'watcher_id' => $watcher->id,
@@ -439,7 +439,7 @@ class UpdateWatcherTest extends TestCase
             'query' => '//span[@class="value"]',
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'In Stock.',
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
         ]);
         factory(StockChange::class)->create([
             'watcher_id' => $watcher->id,

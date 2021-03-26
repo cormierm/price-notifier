@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Watcher;
 
 use App\Utils\Fetchers\HtmlFetcher;
+use App\Watcher;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -20,7 +22,7 @@ class StoreRequest extends FormRequest
             'xpath_stock' => 'nullable|string|max:191',
             'stock_text' => 'nullable|string|max:191',
             'stock_alert' => 'nullable|boolean',
-            'stock_contains' => 'nullable|boolean',
+            'stock_condition' => ['nullable', Rule::in(Watcher::STOCK_CONDITIONS)],
             'update_queries' => 'nullable|boolean',
         ];
     }

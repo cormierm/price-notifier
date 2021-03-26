@@ -3,6 +3,7 @@
 namespace Tests\App\Http\Controllers\Template;
 
 use App\Template;
+use App\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,7 +20,7 @@ class UpdateTest extends TestCase
             'xpath_value' => 'some-query-value',
             'client' => 'curl',
             'xpath_stock' => 'some-stock-query',
-            'stock_contains' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'stock_text' => 'foobar',
         ];
 

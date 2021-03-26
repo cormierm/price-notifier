@@ -26,14 +26,24 @@ class Watcher extends Model
         'stock_text',
         'stock_alert',
         'has_stock',
-        'stock_contains',
+        'stock_condition',
     ];
 
     protected $casts = [
         'user_id' => 'int',
         'stock_alert' => 'boolean',
         'has_stock' => 'boolean',
-        'stock_contains' => 'boolean',
+    ];
+
+    const STOCK_CONDITION_CONTAINS_HTML = 'contains_html';
+    const STOCK_CONDITION_CONTAINS_TEXT = 'contains_text';
+    const STOCK_CONDITION_MISSING_HTML = 'missing_html';
+    const STOCK_CONDITION_MISSING_TEXT = 'missing_text';
+    const STOCK_CONDITIONS = [
+        self::STOCK_CONDITION_CONTAINS_HTML,
+        self::STOCK_CONDITION_CONTAINS_TEXT,
+        self::STOCK_CONDITION_MISSING_HTML,
+        self::STOCK_CONDITION_MISSING_TEXT,
     ];
 
     public function user(): BelongsTo

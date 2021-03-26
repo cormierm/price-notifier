@@ -38,25 +38,18 @@
             </b-field>
 
             <b-field
-                :type="formErrors['stock_contains'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['stock_contains']"
+                label="Stock Condition"
+                :type="formErrors['stock_condition'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['stock_condition']"
             >
-                <div class="block">
-                    <b-radio
-                        v-model="stockContains"
-                        name="stock_contains"
-                        :native-value="true"
-                    >
-                        Contains
-                    </b-radio>
-                    <b-radio
-                        v-model="stockContains"
-                        name="stock_contains"
-                        :native-value="false"
-                    >
-                        Does not contain
-                    </b-radio>
-                </div>
+                <b-select placeholder="Select stock condition" v-model="stockCondition">
+                    <option
+                        v-for="option in stockConditions"
+                        :value="option.value"
+                        :key="option.value">
+                        {{ option.label }}
+                    </option>
+                </b-select>
             </b-field>
 
             <b-field
@@ -129,7 +122,7 @@ export default {
             this.client = this.template.client;
             this.xpathStock = this.template.xpath_stock;
             this.stockText = this.template.stock_text;
-            this.stockContains = this.template.stock_contains === true;
+            this.stockCondition = this.template.stock_condition;
         }
     },
     data() {
@@ -141,8 +134,14 @@ export default {
             client: 'browsershot',
             formErrors: {},
             xpathStock: '',
-            stockContains: true,
+            stockCondition: 'contains_text',
             stockText: '',
+            stockConditions: [
+                {label: 'Contains Text', value: 'contains_text'},
+                {label: 'Missing Text', value: 'missing_text'},
+                {label: 'Contains Html', value: 'contains_html'},
+                {label: 'Missing Html', value: 'missing_html'},
+            ],
         };
     },
     methods: {
@@ -185,7 +184,7 @@ export default {
                 client: this.client,
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
-                stock_contains: this.stockContains,
+                stock_condition: this.stockCondition,
             }).then(() => {
                 window.location = '/template';
             }).catch((err) => {

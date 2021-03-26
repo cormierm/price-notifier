@@ -20,7 +20,7 @@ class Store extends Controller
             'url' => $request->input('url'),
             'query' => $request->input('query'),
             'xpath_stock' => $request->input('xpath_stock'),
-            'stock_contains' => $request->input('stock_contains'),
+            'stock_condition' => $request->input('stock_condition'),
             'stock_text' => $request->input('stock_text'),
             'client' => $request->input('client'),
             'stock_alert' => false,

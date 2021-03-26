@@ -15,8 +15,8 @@
                 <b-table-column field="xpath_stock" label="XPath Stock Query">
                     {{ props.row.xpath_stock }}
                 </b-table-column>
-                <b-table-column field="stock_contains" label="Contains">
-                    {{ props.row.stock_contains ? 'true' : 'false' }}
+                <b-table-column field="stock_condition" label="Condition">
+                    {{ props.row.stock_condition }}
                 </b-table-column>
                 <b-table-column field="stock_text" label="Stock Text">
                     {{ props.row.stock_text }}

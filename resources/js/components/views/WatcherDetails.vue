@@ -23,7 +23,7 @@
                 Alert Price: {{ watcher.alert_value }}<br><br>
                 XPath Query Price: {{ watcher.query }}<br><br>
                 XPath Query Stock: {{ watcher.xpath_stock }}<br>
-                Stock contains: {{ watcher.stock_contains }}<br>
+                Stock condition: {{ watcher.stock_condition }}<br>
                 Stock text match: {{ watcher.stock_text }}<br><br>
                 Region: {{ watcher.region ? watcher.region.label : '' }}<br><br>
                 Interval:
