@@ -3,6 +3,8 @@
 namespace Tests\App\Utils;
 
 use App\Utils\HtmlParser;
+use DOMDocument;
+use DOMXPath;
 use Tests\TestCase;
 
 class HtmlParserTest extends TestCase
@@ -27,5 +29,15 @@ class HtmlParserTest extends TestCase
         $parser = new HtmlParser($html);
 
         $this->assertEquals('149.99', $parser->nodeValueByXPathQuery('//div[@id="pull-right-price"]/span[@class="value"]'));
+    }
+
+    /** @test */
+    public function itCanGetHtmlFromXpathQuery(): void
+    {
+        $html = '<html><body><div id="test-div"><input class="hello"><span>Hi</span></div></div></body></html>';
+
+        $parser = new HtmlParser($html);
+
+        $this->assertEquals('<div id="test-div"><input class="hello"></input><span>Hi</span></div>', $parser->nodeHtmlByXPathQuery('//div[@id="test-div"]'));
     }
 }
