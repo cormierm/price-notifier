@@ -25,15 +25,26 @@ class Check extends Controller
             $formattedValue = PriceHelper::numbersFromText($rawValue);
 
             if ($request->input('xpath_stock') && $request->input('stock_text')) {
-                $rawStockValue = $parser->nodeValueByXPathQuery($request->input('xpath_stock', ''));
-                $hasStock = ($request->input('stock_condition') === Watcher::STOCK_CONDITION_CONTAINS_TEXT && stripos($rawStockValue, $request->input('stock_text')) !== false) ||
-                    ($request->input('stock_condition') === Watcher::STOCK_CONDITION_MISSING_TEXT && stripos($rawStockValue, $request->input('stock_text')) === false);
+                $rawStockValue = in_array(
+                    $request->input('stock_condition'),
+                    [Watcher::STOCK_CONDITION_CONTAINS_TEXT, Watcher::STOCK_CONDITION_MISSING_TEXT]
+                )
+                    ? $parser->nodeValueByXPathQuery($request->input('xpath_stock', ''))
+                    : $parser->nodeHtmlByXPathQuery($request->input('xpath_stock', ''));
+
+                $contains = in_array(
+                    $request->input('stock_condition'),
+                    [Watcher::STOCK_CONDITION_CONTAINS_TEXT, Watcher::STOCK_CONDITION_CONTAINS_HTML]
+                );
+
+                $hasStock = ($contains && stripos($rawStockValue, $request->input('stock_text')) !== false) ||
+                    (!$contains && stripos($rawStockValue, $request->input('stock_text')) === false);
             }
 
             return new JsonResponse([
                 'value' => $formattedValue,
                 'raw_value' => $rawValue,
-                'title' =>  $parser->nodeValueByXPathQuery('//title'),
+                'title' => $parser->nodeValueByXPathQuery('//title'),
                 'raw_stock_value' => $rawStockValue ?? null,
                 'has_stock' => $hasStock ?? null,
             ]);
