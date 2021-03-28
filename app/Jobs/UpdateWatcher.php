@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Events\WatcherCreatedOrUpdated;
 use App\Http\Resources\WatcherResource;
 use App\Notifications\PriceAlert;
+use App\Notifications\StockAlert;
 use App\Utils\Fetchers\HtmlFetcherFactory;
 use App\Utils\HtmlParser;
 use App\Utils\PriceHelper;
@@ -108,12 +109,7 @@ class UpdateWatcher implements ShouldQueue
         }
 
         if ($this->hasStock && $this->watcher->stock_alert && $this->watcher->has_stock === false) {
-            SendPushoverMessage::dispatch(
-                $this->watcher->user,
-                'Stock Alert!',
-                "{$this->watcher->name}\n\${$this->price}",
-                $this->watcher->url
-            );
+            $this->watcher->user->notify(new StockAlert($this->watcher));
         }
     }
 
