@@ -6,6 +6,7 @@ use App\Notifications\StockAlert;
 use App\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use NotificationChannels\Pushover\PushoverChannel;
+use NotificationChannels\Twilio\TwilioChannel;
 use Tests\TestCase;
 
 class StockAlertTest extends TestCase
@@ -18,6 +19,14 @@ class StockAlertTest extends TestCase
         $watcher = factory(Watcher::class)->create();
 
         $this->assertContains(PushoverChannel::class, (new StockAlert($watcher))->via($watcher->user));
+    }
+
+    /** @test */
+    public function itWillSendToTwilio()
+    {
+        $watcher = factory(Watcher::class)->create();
+
+        $this->assertContains(TwilioChannel::class, (new StockAlert($watcher))->via($watcher->user));
     }
 
     /** @test */
@@ -37,4 +46,17 @@ class StockAlertTest extends TestCase
         $this->assertEquals('cashregister', $pushoverMessage->sound);
     }
 
+    /** @test */
+    public function itWillSendTwilioSMSMessage()
+    {
+        $watcher = factory(Watcher::class)->create();
+        $newPrice = '123';
+        $watcher->priceChanges()->create([
+            'price' => $newPrice,
+        ]);
+
+        $twilioMessage = (new StockAlert($watcher))->toTwilio($watcher->user);
+
+        $this->assertEquals("Stick Alert! {$watcher->name} @ {$newPrice}", $twilioMessage->content);
+    }
 }

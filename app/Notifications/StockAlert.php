@@ -8,6 +8,8 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Pushover\PushoverChannel;
 use NotificationChannels\Pushover\PushoverMessage;
+use NotificationChannels\Twilio\TwilioChannel;
+use NotificationChannels\Twilio\TwilioSmsMessage;
 
 class StockAlert extends Notification
 {
@@ -36,7 +38,13 @@ class StockAlert extends Notification
      */
     public function via($notifiable)
     {
-        return [PushoverChannel::class];
+        return [PushoverChannel::class, TwilioChannel::class];
+    }
+
+    public function toTwilio($notifiable)
+    {
+        return (new TwilioSmsMessage())
+            ->content("Stick Alert! {$this->watcher->name} @ " . $this->watcher->priceChanges()->latest()->first()->price);
     }
 
     public function toPushover($notifiable)

@@ -20,4 +20,12 @@ class UserTest extends TestCase
         $this->assertEquals($user->pushover_user_key, $pushoverReceiver->toArray()['user']);
         $this->assertEquals($user->pushover_api_token, $pushoverReceiver->toArray()['token']);
     }
+
+    /** @test */
+    public function itWillSetTwilioConfig()
+    {
+        $user = factory(User::class)->create();
+
+        $this->assertEquals($user->phone_number, $user->routeNotificationForTwilio());
+    }
 }

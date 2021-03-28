@@ -60,4 +60,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return PushoverReceiver::withUserKey($this->pushover_user_key)->withApplicationToken($this->pushover_api_token);
     }
+
+    public function routeNotificationForTwilio()
+    {
+        return $this->phone_number;
+    }
 }

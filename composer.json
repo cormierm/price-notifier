@@ -15,6 +15,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.3",
         "laravel-notification-channels/pushover": "^3.0",
+        "laravel-notification-channels/twilio": "^3.1",
         "laravel/framework": "^8.34",
         "laravel/legacy-factories": "^1.1",
         "laravel/tinker": "^2.0",
