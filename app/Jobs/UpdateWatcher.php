@@ -18,7 +18,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
 
 class UpdateWatcher implements ShouldQueue
 {
@@ -110,7 +109,6 @@ class UpdateWatcher implements ShouldQueue
         }
 
         if ($this->hasStock && $this->watcher->stock_alert && $this->watcher->has_stock === false) {
-            Auth::login($this->watcher->user);
             $this->watcher->user->notify(new StockAlert($this->watcher));
         }
     }

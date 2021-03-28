@@ -214,9 +214,6 @@ class UpdateWatcherTest extends TestCase
             }
         );
 
-        // Should be logged in for overriding the Twilio cred values in the Twilio notification library
-        $this->assertEquals($watcher->user->id, auth()->user()->id);
-
         $this->assertTrue($watcher->fresh()->has_stock);
     }
 

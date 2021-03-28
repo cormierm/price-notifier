@@ -29,8 +29,5 @@ $factory->define(User::class, function (Faker $faker) {
         'user_agent' => $faker->userAgent,
         'pushover_api_token' => $faker->uuid,
         'pushover_user_key' => $faker->uuid,
-        'twilio_auth_token' => $faker->uuid,
-        'twilio_account_sid' => $faker->uuid,
-        'twilio_from' => $faker->e164PhoneNumber,
     ];
 });
