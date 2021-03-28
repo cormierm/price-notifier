@@ -4,9 +4,9 @@ namespace App\Notifications;
 
 use App\Watcher;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\Pushover\PushoverChannel;
 
 class PriceAlert extends Notification
 {
@@ -35,7 +35,7 @@ class PriceAlert extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return [PushoverChannel::class];
     }
 
     /**
