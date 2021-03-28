@@ -6,6 +6,7 @@ use App\Events\WatcherCreatedOrUpdated;
 use App\Jobs\SendPushoverMessage;
 use App\Jobs\SendSlackMessage;
 use App\Jobs\UpdateWatcher;
+use App\Notifications\PriceAlert;
 use App\PriceChange;
 use App\StockChange;
 use App\Utils\Fetchers\BrowsershotFetcher;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -84,6 +86,8 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itSendsPriceAlertWhenValueIsLessThanAlertValue(): void
     {
+        Notification::fake();
+
         $rawValue = '950.00';
         $watcher = factory(Watcher::class)->create([
             'query' => '//span[@class="value"]',
@@ -97,11 +101,16 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->expectsJobs(SendPushoverMessage::class);
-        $this->doesntExpectJobs(SendSlackMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
+
+        Notification::assertSentTo(
+            $watcher->user,
+            PriceAlert::class,
+            function ($notification, $channels) use ($watcher) {
+                return $notification->watcher->id === $watcher->id;
+            }
+        );
     }
 
     /** @test */

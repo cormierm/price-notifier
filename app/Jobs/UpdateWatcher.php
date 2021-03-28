@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Events\WatcherCreatedOrUpdated;
 use App\Http\Resources\WatcherResource;
+use App\Notifications\PriceAlert;
 use App\Utils\Fetchers\HtmlFetcherFactory;
 use App\Utils\HtmlParser;
 use App\Utils\PriceHelper;
@@ -102,12 +103,7 @@ class UpdateWatcher implements ShouldQueue
             $newPrice = number_format($this->price, 2);
 
             if ($alertPrice && $newPrice && $oldPrice !== $newPrice && $this->price < $this->watcher->alert_value) {
-                SendPushoverMessage::dispatch(
-                    $this->watcher->user,
-                    'Price Alert!',
-                    "{$this->watcher->name}\n\${$newPrice}",
-                    $this->watcher->url
-                );
+                $this->watcher->user->notify(new PriceAlert($this->watcher));
             }
         }
 
@@ -118,9 +114,6 @@ class UpdateWatcher implements ShouldQueue
                 "{$this->watcher->name}\n\${$this->price}",
                 $this->watcher->url
             );
-//            if (env('SLACK_CHANNEL', false) && env('SLACK_TOKEN', false)) {
-//                SendSlackMessage::dispatch("Stock Alert!\n{$this->watcher->name}\n\${$this->price}\n{$this->watcher->url}");
-//            }
         }
     }
 
