@@ -45,7 +45,7 @@ class StockAlert extends Notification
     public function toTwilio($notifiable)
     {
         return (new TwilioSmsMessage())
-            ->content("Stick Alert! {$this->watcher->name} @ " . $this->watcher->priceChanges()->latest()->first()->price);
+            ->content("Stock Alert! {$this->watcher->name} @ " . $this->watcher->priceChanges()->latest()->first()->price);
     }
 
     public function toPushover($notifiable)

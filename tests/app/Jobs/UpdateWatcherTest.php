@@ -3,7 +3,6 @@
 namespace Tests\App\Jobs;
 
 use App\Events\WatcherCreatedOrUpdated;
-use App\Jobs\SendPushoverMessage;
 use App\Jobs\UpdateWatcher;
 use App\Notifications\PriceAlert;
 use App\Notifications\StockAlert;
@@ -215,6 +214,9 @@ class UpdateWatcherTest extends TestCase
             }
         );
 
+        // Should be logged in for overriding the Twilio cred values in the Twilio notification library
+        $this->assertEquals($watcher->user->id, auth()->user()->id);
+
         $this->assertTrue($watcher->fresh()->has_stock);
     }
 
@@ -305,6 +307,8 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itWillSetHasStockToTrueForStockConditionMissingText(): void
     {
+        Notification::fake();
+
         $watcher = factory(Watcher::class)->create([
             'query' => '//span[@class="value"]',
             'alert_value' => null,
@@ -321,10 +325,10 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->doesntExpectJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
+
+        Notification::assertNothingSent();
 
         $this->assertTrue($watcher->fresh()->has_stock, 'Does not change has_stock to true');
     }
@@ -332,6 +336,8 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itWillSetHasStockToFalseForTextContainsFalse(): void
     {
+        Notification::fake();
+
         $watcher = factory(Watcher::class)->create([
             'query' => '//span[@class="value"]',
             'alert_value' => null,
@@ -348,10 +354,10 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->doesntExpectJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
+
+        Notification::assertNothingSent();
 
         $this->assertFalse($watcher->fresh()->has_stock, 'Does not change has_stock to false');
     }

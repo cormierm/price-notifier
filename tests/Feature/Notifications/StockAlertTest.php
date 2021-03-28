@@ -67,6 +67,6 @@ class StockAlertTest extends TestCase
 
         $twilioMessage = (new StockAlert($watcher))->toTwilio($watcher->user);
 
-        $this->assertEquals("Stick Alert! {$watcher->name} @ {$newPrice}", $twilioMessage->content);
+        $this->assertEquals("Stock Alert! {$watcher->name} @ {$newPrice}", $twilioMessage->content);
     }
 }
