@@ -26,5 +26,7 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
         'api_key' => $faker->uuid,
         'user_agent' => $faker->userAgent,
+        'pushover_api_token' => $faker->uuid,
+        'pushover_user_key' => $faker->uuid,
     ];
 });

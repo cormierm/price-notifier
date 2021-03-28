@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use NotificationChannels\Pushover\PushoverReceiver;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -53,5 +54,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function watcherLogs(): HasManyThrough
     {
         return $this->hasManyThrough(WatcherLog::class, Watcher::class);
+    }
+
+    public function routeNotificationForPushover()
+    {
+        return PushoverReceiver::withUserKey($this->pushover_user_key)->withApplicationToken($this->pushover_api_token);
     }
 }
