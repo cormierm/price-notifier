@@ -376,7 +376,7 @@ class UpdateWatcherTest extends TestCase
         ]);
         $html = '<html><span class="value">' . $price . '</span></html>';
 
-        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+        $this->mock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
             $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
             return $mock;
         });
@@ -411,10 +411,12 @@ class UpdateWatcherTest extends TestCase
         ]);
         $html = '<html><div id="stock">In Stock.</div></html>';
 
-        $this->mock(HtmlFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
-            $mock->shouldReceive('fetchHtml')->with($watcher->url, HtmlFetcher::CLIENT_BROWERSHOT)->andReturn($html);
+        $this->mock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
             return $mock;
         });
+
+        $this->assertEquals(1, $watcher->stockChanges()->count());
 
         $job = new UpdateWatcher($watcher);
         $job->handle();
@@ -424,6 +426,7 @@ class UpdateWatcherTest extends TestCase
             'stock' => true,
             'created_at' => Carbon::now(),
         ]);
+
         $this->assertEquals(1, $watcher->stockChanges()->count());
     }
 

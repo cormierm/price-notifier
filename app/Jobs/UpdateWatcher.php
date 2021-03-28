@@ -172,7 +172,7 @@ class UpdateWatcher implements ShouldQueue
 
     private function calculateStock(HtmlParser $parser)
     {
-        if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
+         if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
             $this->rawStock = in_array(
                 $this->watcher->stock_condition,
                 [Watcher::STOCK_CONDITION_CONTAINS_TEXT, Watcher::STOCK_CONDITION_MISSING_TEXT]

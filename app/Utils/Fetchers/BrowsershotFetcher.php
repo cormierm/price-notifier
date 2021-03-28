@@ -2,6 +2,7 @@
 
 namespace App\Utils\Fetchers;
 
+use App\Exceptions\NoHtmlContentException;
 use Spatie\Browsershot\Browsershot;
 
 class BrowsershotFetcher extends HtmlFetcher
@@ -10,7 +11,7 @@ class BrowsershotFetcher extends HtmlFetcher
 
     public function fetchHtml(string $url, string $userAgent = null): string
     {
-        return Browsershot::url($url)
+        $html = Browsershot::url($url)
         ->setNodeBinary(config('pcn.browsershot.node_bin'))
         ->setNpmBinary(config('pcn.browsershot.npm_bin'))
         ->userAgent($userAgent ?? config('pcn.fetcher.user_agent'))
@@ -19,5 +20,11 @@ class BrowsershotFetcher extends HtmlFetcher
         ->noSandbox()
         ->waitUntilNetworkIdle()
         ->bodyHtml();
+
+        if (!$html) {
+            throw new NoHtmlContentException('Empty HTML content');
+        }
+
+        return $html;
     }
 }
