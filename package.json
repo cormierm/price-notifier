@@ -11,6 +11,7 @@
     },
     "devDependencies": {
         "axios": "^0.21.1",
+        "babel-plugin-component": "^1.1.1",
         "bootstrap": "^4.6.0",
         "cross-env": "^7.0.3",
         "jquery": "^3.2",
@@ -25,6 +26,7 @@
     },
     "dependencies": {
         "buefy": "^0.8.20",
+        "maz-ui": "^2.3.5",
         "moment": "^2.29.1",
         "puppeteer": "^8.0.0",
         "pusher-js": "^7.0.3",

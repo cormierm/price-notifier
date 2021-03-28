@@ -58,6 +58,14 @@
                         </p>
                         </b-field>
                     </b-field>
+                    <b-field
+                        label="Phone number for notifications"
+                        :message="formErrors['phone_number']"
+                    >
+                        <b-field>
+                            <MazPhoneNumberInput v-model="phoneNumber" :clearable=true />
+                        </b-field>
+                    </b-field>
                     <div class="button-container">
                         <b-button :loading="loading" @click="updateProfile">Update</b-button>
                     </div>
@@ -69,7 +77,7 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 export default {
     name: "ProfileIndex",
@@ -86,6 +94,7 @@ export default {
             pushoverUserKey: this.user.pushover_user_key,
             apiKey: this.user.api_key,
             userAgent: this.user.user_agent,
+            phoneNumber: this.user.phone_number,
             formErrors: {}
         }
     },
@@ -100,7 +109,8 @@ export default {
                 pushover_user_key: this.pushoverUserKey,
                 pushover_api_token: this.pushoverApiToken,
                 user_agent: this.userAgent,
-                api_key: this.apiKey
+                api_key: this.apiKey,
+                phone_number: this.phoneNumber ? this.phoneNumber : null
             }).then(() => {
                 this.$buefy.toast.open({
                     duration: 5000,

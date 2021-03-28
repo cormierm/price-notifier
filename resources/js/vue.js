@@ -1,6 +1,8 @@
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
 
+import {MazPhoneNumberInput} from 'maz-ui';
+
 window.Vue = require('vue');
 
 Vue.component('template-form', require('./components/template/Form.vue').default);
@@ -12,6 +14,7 @@ Vue.component('template-index', require('./components/views/TemplateIndex.vue').
 Vue.component('watcher-index', require('./components/views/WatcherIndex.vue').default);
 Vue.component('watcher-details', require('./components/views/WatcherDetails.vue').default);
 Vue.component('nav-bar', require('./components/NavBar.vue').default);
+Vue.use(MazPhoneNumberInput);
 
 Vue.use(Buefy);
 
