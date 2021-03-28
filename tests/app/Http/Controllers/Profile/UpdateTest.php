@@ -31,6 +31,22 @@ class UpdateTest extends TestCase
     }
 
     /** @test */
+    public function itCanUpdatePhoneNumber()
+    {
+        $user = factory(User::class)->create();
+
+        $data = [
+            'phone_number' => '+19051234567'
+        ];
+
+        $this->actingAs($user)
+            ->put(route('profile.update'), $data)
+            ->assertSuccessful();
+
+        $this->assertEquals($data['phone_number'], $user->fresh()->phone_number);
+    }
+
+    /** @test */
     public function itCanUpdateApiKey(): void
     {
         $user = factory(User::class)->create([
