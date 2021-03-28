@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Pushover\PushoverChannel;
+use NotificationChannels\Pushover\PushoverMessage;
 
 class PriceAlert extends Notification
 {
@@ -36,6 +37,14 @@ class PriceAlert extends Notification
     public function via($notifiable)
     {
         return [PushoverChannel::class];
+    }
+
+    public function toPushover($notifiable)
+    {
+        return PushoverMessage::create($this->watcher->name . "\n" . number_format($this->watcher->priceChanges()->latest()->first()->price, 2))
+                              ->title('Price Alert!')
+                              ->sound('cashregister')
+                              ->url($this->watcher->url);
     }
 
     /**

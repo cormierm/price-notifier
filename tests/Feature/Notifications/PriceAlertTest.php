@@ -20,4 +20,21 @@ class PriceAlertTest extends TestCase
 
         $this->assertContains(PushoverChannel::class, (new PriceAlert($watcher))->via($watcher->user));
     }
+
+    /** @test */
+    public function itWillCreatePushoverMessage()
+    {
+        $watcher = factory(Watcher::class)->create();
+        $newPrice = '123';
+        $watcher->priceChanges()->create([
+            'price' => $newPrice,
+        ]);
+
+        $pushoverMessage = (new PriceAlert($watcher))->toPushover($watcher->user);
+
+        $this->assertEquals($watcher->url, $pushoverMessage->url);
+        $this->assertEquals('Price Alert!', $pushoverMessage->title);
+        $this->assertEquals("{$watcher->name}\n" . number_format($newPrice, 2), $pushoverMessage->content);
+        $this->assertEquals('cashregister', $pushoverMessage->sound);
+    }
 }
