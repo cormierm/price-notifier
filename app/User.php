@@ -16,6 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'phone_number',
         'password',
         'pushover_user_key',
         'pushover_api_token',

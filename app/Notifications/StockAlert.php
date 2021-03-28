@@ -38,7 +38,9 @@ class StockAlert extends Notification
      */
     public function via($notifiable)
     {
-        return [PushoverChannel::class, TwilioChannel::class];
+        return array_merge([
+            PushoverChannel::class,
+        ], $notifiable->phone_number ? [TwilioChannel::class] : []);
     }
 
     public function toTwilio($notifiable)

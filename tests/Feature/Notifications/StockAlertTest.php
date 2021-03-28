@@ -30,6 +30,16 @@ class StockAlertTest extends TestCase
     }
 
     /** @test */
+    public function itWillNotSendToTwilioIfNoPhoneNumber()
+    {
+        $watcher = factory(Watcher::class)->create();
+        $watcher->user->phone_number = null;
+        $watcher->user->save();
+
+        $this->assertNotContains(TwilioChannel::class, (new StockAlert($watcher))->via($watcher->user));
+    }
+
+    /** @test */
     public function itWillCreatePushoverMessage()
     {
         $watcher = factory(Watcher::class)->create();
