@@ -35,7 +35,7 @@ class PriceAlert extends Notification
      */
     public function via($notifiable)
     {
-        return [PushoverChannel::class];
+        return $notifiable->pushover_user_key && $notifiable->pushover_api_token ? [PushoverChannel::class] : [];
     }
 
     public function toPushover($notifiable)
