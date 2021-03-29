@@ -21,10 +21,13 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
+        'phone_number' => $faker->e164PhoneNumber,
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
         'api_key' => $faker->uuid,
         'user_agent' => $faker->userAgent,
+        'pushover_api_token' => $faker->uuid,
+        'pushover_user_key' => $faker->uuid,
     ];
 });
