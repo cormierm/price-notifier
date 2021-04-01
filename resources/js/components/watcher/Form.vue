@@ -26,7 +26,7 @@
                 <b-input
                     type="url"
                     v-model="url"
-                    maxlength="191"
+                    maxlength="255"
                     placeholder="https://www.example.com/product.html"
                     @input="autoFill"
                 ></b-input>
@@ -39,7 +39,7 @@
             >
                 <b-input
                     v-model="name"
-                    maxlength="191"
+                    maxlength="255"
                     placeholder="Product Name"
                     :loading="loadingTemplate"
                 ></b-input>
@@ -52,7 +52,7 @@
             >
                 <b-input
                     v-model="xpathValue"
-                    maxlength="191"
+                    maxlength="255"
                     placeholder="//span[@id='price']"
                     @input="updateQueries = true"
                 ></b-input>
@@ -65,7 +65,7 @@
             >
                 <b-input
                     v-model="xpathStock"
-                    maxlength="191"
+                    maxlength="255"
                     placeholder="//span[@id='stock']"
                     @input="updateQueries = true"
                 ></b-input>
@@ -93,7 +93,7 @@
             >
                 <b-input
                     v-model="stockText"
-                    maxlength="191"
+                    maxlength="255"
                     placeholder="In Stock."
                     @input="updateQueries = true"
                 ></b-input>

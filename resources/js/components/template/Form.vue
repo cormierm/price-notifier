@@ -20,7 +20,7 @@
             >
                 <b-input
                     v-model="xpathValue"
-                    maxlength="191"
+                    maxlength="255"
                     placeholder="//span[@id='price']"
                 ></b-input>
             </b-field>
@@ -32,7 +32,7 @@
             >
                 <b-input
                     v-model="xpathStock"
-                    maxlength="191"
+                    maxlength="255"
                     placeholder="//span[@id='stock']"
                 ></b-input>
             </b-field>
@@ -59,7 +59,7 @@
             >
                 <b-input
                     v-model="stockText"
-                    maxlength="191"
+                    maxlength="255"
                     placeholder="In Stock."
                 ></b-input>
             </b-field>

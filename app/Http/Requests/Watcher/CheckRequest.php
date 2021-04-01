@@ -15,8 +15,8 @@ class CheckRequest extends FormRequest
             'url' => 'required|url',
             'xpath_value' => 'required|string|min:2',
             'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),
-            'xpath_stock' => 'nullable|string|max:191',
-            'stock_text' => 'nullable|string|max:191',
+            'xpath_stock' => 'nullable|string|max:255',
+            'stock_text' => 'nullable|string|max:255',
             'stock_condition' => ['nullable', Rule::in(Watcher::STOCK_CONDITIONS)],
         ];
     }

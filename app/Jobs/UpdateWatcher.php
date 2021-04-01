@@ -76,7 +76,7 @@ class UpdateWatcher implements ShouldQueue
 
         event(new WatcherCreatedOrUpdated(WatcherResource::make($this->watcher)));
 
-        $this->rawPrice = strlen($this->rawPrice) > 191
+        $this->rawPrice = strlen($this->rawPrice) > 255
             ? substr($this->rawPrice, 0, 190)
             : $this->rawPrice;
 
@@ -188,7 +188,7 @@ class UpdateWatcher implements ShouldQueue
             $hasStock = ($containText && stripos($this->rawStock, $this->watcher->stock_text) !== false) ||
                 (!$containText && stripos($this->rawStock, $this->watcher->stock_text) === false);
 
-            $this->rawStock = strlen($this->rawStock) > 191
+            $this->rawStock = strlen($this->rawStock) > 255
                 ? substr($this->rawStock, 0, 190)
                 : $this->rawStock;
 

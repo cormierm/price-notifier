@@ -13,9 +13,9 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'xpath_value' => 'nullable|string|min:2|max:191',
-            'xpath_stock' => 'nullable|string|max:191',
-            'stock_text' => 'nullable|string|max:191',
+            'xpath_value' => 'nullable|string|min:2|max:255',
+            'xpath_stock' => 'nullable|string|max:255',
+            'stock_text' => 'nullable|string|max:255',
             'stock_condition' => ['nullable', Rule::in(Watcher::STOCK_CONDITIONS)],
             'client' => 'nullable|in:' . implode(',', HtmlFetcher::CLIENTS),
         ];
