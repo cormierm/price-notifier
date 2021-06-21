@@ -1,22 +1,28 @@
 <template>
     <div>
-        <b-message v-if="template && !testResults" :title="`Found domain query for ${template.domain}`"
-                   type="is-success" aria-close-label="Close message">
-            Auto filling xpath query and checking...
+        <b-message
+            v-if="template && !testResults"
+            :title="`Found domain query for ${template.domain}`"
+            type="is-success"
+            aria-close-label="Close message"
+        >
+            Checking for template and auto-filling form...
         </b-message>
-        <div v-if="testResults">
+        <div v-if="testResults" class="update-checkbox">
             <b-message v-if="testResults.error" title="Danger" type="is-danger" aria-close-label="Close message">
                 {{ testResults.error }}
             </b-message>
             <div v-else>
-                <b-message title="XPath query and title results" type="is-success" aria-close-label="Close message">
+                <b-message title="Check Results" type="is-success" aria-close-label="Close message">
                     {{ testResults.title }}<br><br>
                     Price: <strong>{{ testResults.value }}</strong>
-                    <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">Update Name
-                    </b-button><br>
+                    <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">
+                        Update Name
+                    </b-button>
+                    <br>
                     Stock: {{ testResults.has_stock }}
                 </b-message>
-                <b-message title="XPath Debug information" type="is-default" aria-close-label="Close message">
+                <b-message v-if="showDebug" title="Debug Information" type="is-default" aria-close-label="Close message">
                     Price InnerText: <strong>{{ testResults.debug.value_inner_text }}</strong><br><br>
                     Stock InnerText: <strong>{{ testResults.debug.stock_inner_text }}</strong><br><br>
                     Stock Html: <strong>{{ testResults.debug.stock_html }}</strong>
@@ -122,7 +128,7 @@
                 label="Alerts"
             >
                 <div class="field">
-                    <b-checkbox  v-model="stockAlert">Stock</b-checkbox>
+                    <b-checkbox v-model="stockAlert">Stock</b-checkbox>
                 </div>
             </b-field>
 
@@ -189,9 +195,16 @@
         </form>
 
         <div class="buttons">
-            <b-button :loading="loadingCheck" @click="check">Check</b-button>
-            <div class="block check-submit">
-                <b-checkbox v-model="updateQueries" class="update-checkbox">
+            <div class="button-group">
+                <b-button :loading="loadingCheck" @click="check">Check</b-button>
+                <b-field>
+                    <b-switch v-model="showDebug" class="switch-margin">
+                        Show Debug
+                    </b-switch>
+                </b-field>
+            </div>
+            <div class="button-group">
+                <b-checkbox v-model="updateQueries" class="switch-margin">
                     Update Domain Query
                 </b-checkbox>
                 <b-button type="is-info" @click="submit">{{ type }}</b-button>
@@ -265,7 +278,8 @@ export default {
                 {label: 'Missing Text', value: 'missing_text'},
                 {label: 'Contains Html', value: 'contains_html'},
                 {label: 'Missing Html', value: 'missing_html'},
-            ]
+            ],
+            showDebug: false,
         };
     },
     computed: {
@@ -419,12 +433,12 @@ export default {
     justify-content: space-between;
 }
 
-.check-submit {
+.button-group {
     display: flex;
     align-items: center;
 }
 
-.update-checkbox {
+.switch-margin {
     margin-bottom: 0.5rem;
 }
 </style>
