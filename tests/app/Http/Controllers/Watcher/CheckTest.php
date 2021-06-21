@@ -14,11 +14,11 @@ class CheckTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function itCanGetValueForXPath(): void
+    public function itReturnsTitleAndFormattedPriceFromXPath(): void
     {
         $user = factory(User::class)->create();
         $xpath = '//span[@id="foobar"]';
-        $html = '<html><body><span id="foobar">CDN$ 55.00</span></body></html>';
+        $html = '<html><title>Taco Salad</title><body><span id="foobar">CDN$ 55.00</span></body></html>';
 
         $this->mockHtmlFetcher($html);
 
@@ -30,28 +30,33 @@ class CheckTest extends TestCase
             ->assertSuccessful()
             ->assertJson([
                 'value' => '55.00',
-                'raw_value' => 'CDN$ 55.00',
-                'title' => '',
+                'title' => 'Taco Salad',
             ]);
     }
 
     /** @test */
-    public function itCanGetTitleForXPath(): void
+    public function itReturnsDebugInformation(): void
     {
         $user = factory(User::class)->create();
-        $xpath = '//span[@id="foobar"]';
-        $html = '<title>Taco Salad</title><html><body><h1 class="title">Taco Salad</h1><span id="foobar">CDN$ 55.00</span></body></html>';
+        $xpathValue = '//span[@id="foobar"]';
+        $xpathStock = '//span[@id="stock"]';
+        $html = '<html><body><span id="foobar">CDN$ 55.00</span><span id="stock">Out of Stock</span></body></html>';
 
         $this->mockHtmlFetcher($html);
 
         $this->actingAs($user)->post(route('watcher.check'), [
             'url' => 'http://foobar.com',
-            'xpath_value' => $xpath,
+            'xpath_value' => $xpathValue,
+            'xpath_stock' => $xpathStock,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ])
             ->assertSuccessful()
             ->assertJson([
-                'title' => 'Taco Salad',
+                'debug' => [
+                    'value_inner_text' => 'CDN$ 55.00',
+                    'stock_inner_text' => 'Out of Stock',
+                    'stock_html' => '<span id="stock">Out of Stock</span>'
+                ]
             ]);
     }
 

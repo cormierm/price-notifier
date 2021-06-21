@@ -43,10 +43,13 @@ class Check extends Controller
 
             return new JsonResponse([
                 'value' => $formattedValue,
-                'raw_value' => $rawValue,
                 'title' => $parser->nodeValueByXPathQuery('//title'),
-                'raw_stock_value' => $rawStockValue ?? null,
                 'has_stock' => $hasStock ?? null,
+                'debug' => [
+                    'value_inner_text' => $rawValue,
+                    'stock_inner_text' => $request->input('xpath_stock') ? $parser->nodeValueByXPathQuery($request->input('xpath_stock', '')) : '',
+                    'stock_html' => $request->input('xpath_stock') ? $parser->nodeHtmlByXPathQuery($request->input('xpath_stock', '')) : '',
+                ]
             ]);
         } catch (Exception $e) {
             return new JsonResponse([

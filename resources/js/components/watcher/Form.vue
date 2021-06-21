@@ -8,13 +8,20 @@
             <b-message v-if="testResults.error" title="Danger" type="is-danger" aria-close-label="Close message">
                 {{ testResults.error }}
             </b-message>
-            <b-message v-else title="XPath query and title results" type="is-success" aria-close-label="Close message">
-                {{ testResults.title }}<br><br>
-                Value: <strong>{{ testResults.value }}</strong>
-                <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">Update Name
-                </b-button><br>
-                Stock: {{ testResults.has_stock }}
-            </b-message>
+            <div v-else>
+                <b-message title="XPath query and title results" type="is-success" aria-close-label="Close message">
+                    {{ testResults.title }}<br><br>
+                    Value: <strong>{{ testResults.value }}</strong>
+                    <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">Update Name
+                    </b-button><br>
+                    Stock: {{ testResults.has_stock }}<br><br>
+                </b-message>
+                <b-message title="XPath Debug information" type="is-default" aria-close-label="Close message">
+                    Price InnerText: <strong>{{ testResults.debug.value_inner_text }}</strong><br><br>
+                    Stock InnerText: <strong>{{ testResults.debug.stock_inner_text }}</strong><br><br>
+                    Stock Html: <strong>{{ testResults.debug.stock_html }}</strong>
+                </b-message>
+            </div>
         </div>
 
         <form class="watcher-form" action="">
