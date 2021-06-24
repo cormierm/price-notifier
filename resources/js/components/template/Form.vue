@@ -13,8 +13,29 @@
                 ></b-input>
             </b-field>
 
+            <b-field label="Price Query"></b-field>
             <b-field
-                label="XPath Price Query"
+                :type="formErrors['price_query_type'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['price_query_type']"
+            >
+                <div class="block">
+                    <b-radio
+                        v-model="priceQueryType"
+                        name="price_query_type"
+                        native-value="xpath"
+                    >
+                        XPath
+                    </b-radio>
+                    <b-radio
+                        v-model="priceQueryType"
+                        name="price_query_type"
+                        native-value="regex"
+                    >
+                        Regex
+                    </b-radio>
+                </div>
+            </b-field>
+            <b-field
                 :type="formErrors['price_query'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['price_query']"
             >
@@ -22,6 +43,7 @@
                     v-model="priceQuery"
                     maxlength="255"
                     placeholder="//span[@id='price']"
+                    @input="updateQueries = true"
                 ></b-input>
             </b-field>
 
@@ -119,6 +141,7 @@ export default {
             this.id = this.template.id;
             this.domain = this.template.domain;
             this.priceQuery = this.template.price_query;
+            this.priceQueryType = this.template.price_query_type;
             this.client = this.template.client;
             this.xpathStock = this.template.xpath_stock;
             this.stockText = this.template.stock_text;
@@ -131,6 +154,7 @@ export default {
             id: null,
             domain: '',
             priceQuery: '//span[@id="price"]',
+            priceQueryType: 'xpath',
             client: 'browsershot',
             formErrors: {},
             xpathStock: '',
@@ -160,6 +184,7 @@ export default {
             axios.post('/template', {
                 domain: this.domain,
                 price_query: this.priceQuery,
+                price_query_type: this.priceQueryType,
                 client: this.client
             }).then(() => {
                 window.location = '/template';
@@ -181,6 +206,7 @@ export default {
                 id: this.id,
                 domain: this.domain,
                 price_query: this.priceQuery,
+                price_query_type: this.priceQueryType,
                 client: this.client,
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,

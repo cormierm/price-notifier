@@ -9,8 +9,11 @@
                 <b-table-column field="domain" label="Domain" sortable>
                     {{ props.row.domain }}
                 </b-table-column>
-                <b-table-column field="price_query" label="XPath Price Query">
+                <b-table-column field="price_query" label="Price Query">
                     {{ props.row.price_query }}
+                </b-table-column>
+                <b-table-column field="price_query_type" label="Price Query Type">
+                    {{ props.row.price_query_type }}
                 </b-table-column>
                 <b-table-column field="xpath_stock" label="XPath Stock Query">
                     {{ props.row.xpath_stock }}
