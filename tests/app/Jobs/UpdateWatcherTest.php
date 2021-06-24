@@ -23,12 +23,35 @@ class UpdateWatcherTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function itCanUpdateWatcher(): void
+    public function itCanUpdateWatcherWithXPathQuery(): void
     {
         Event::fake();
 
         $watcher = factory(Watcher::class)->create([
             'price_query' => '//div[@id="pull-right-price"]/span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT
+        ]);
+        $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">149.99</span><span class="currency">$</span></div></div></body></html>';
+
+        $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
+        });
+
+        UpdateWatcher::dispatch($watcher);
+        Event::assertDispatched(WatcherCreatedOrUpdated::class);
+
+        $this->assertEquals('149.99', $watcher->fresh()->value);
+    }
+
+    /** @test */
+    public function itCanUpdateWatcherWithRegexQuery(): void
+    {
+        Event::fake();
+
+        $watcher = factory(Watcher::class)->create([
+            'price_query' => '/<span class="value">(.*?)<\/span>/',
+            'price_query_type' => Watcher::QUERY_TYPE_REGEX,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ]);
         $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">149.99</span><span class="currency">$</span></div></div></body></html>';

@@ -9,6 +9,7 @@ class Template extends Model
     protected $fillable = [
         'domain',
         'price_query',
+        'price_query_type',
         'client',
         'xpath_stock',
         'stock_text',

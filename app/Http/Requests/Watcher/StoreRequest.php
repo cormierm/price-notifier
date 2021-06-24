@@ -15,6 +15,7 @@ class StoreRequest extends FormRequest
             'name' => 'required|string|min:2|max:255',
             'url' => 'required|url|max:255',
             'price_query'  => 'required|string|min:2|max:255',
+            'price_query_type' => ['nullable', Rule::in(Watcher::QUERY_TYPES)],
             'interval_id' => 'nullable|exists:intervals,id',
             'region_id' => 'nullable|exists:regions,id',
             'alert_value' => 'nullable|numeric',

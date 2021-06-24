@@ -16,7 +16,10 @@ class RenameXpathValueToPriceQueryAndAddPriceQueryTypeToTemplatesTable extends M
     {
         Schema::table('templates', function (Blueprint $table) {
             $table->renameColumn('xpath_value', 'price_query');
-            $table->string('price_query_type')->after('xpath_value')->default(Watcher::QUERY_TYPE_XPATH);
+        });
+
+        Schema::table('templates', function (Blueprint $table) {
+            $table->string('price_query_type')->after('price_query')->default(Watcher::QUERY_TYPE_XPATH);
         });
     }
 

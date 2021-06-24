@@ -18,6 +18,7 @@ class SearchByUrl extends Controller
         return new JsonResponse([
             'domain' => $template->domain,
             'price_query' => $template->price_query,
+            'price_query_type' => $template->price_query_type,
             'client' => $template->client,
             'xpath_stock' => $template->xpath_stock,
             'stock_text' => $template->stock_text,

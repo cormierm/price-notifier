@@ -14,12 +14,14 @@ class StoreTest extends TestCase
     /** @test */
     public function itWillAddWatcher(): void
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
 
         $data = [
             'url' => 'http://some.url',
             'name' => 'Foobar',
             'price_query' => '//span[id="price"]',
+            'price_query_type' => 'regex',
             'xpath_stock' => '//span[id="stock"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
         ];
@@ -32,6 +34,7 @@ class StoreTest extends TestCase
             'user_id' => $user->id,
             'url' => $data['url'],
             'price_query' => $data['price_query'],
+            'price_query_type' => $data['price_query_type'],
             'xpath_stock' => $data['xpath_stock'],
             'client' => $data['client']
         ]);

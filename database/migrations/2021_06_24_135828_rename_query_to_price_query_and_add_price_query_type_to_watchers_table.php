@@ -16,7 +16,10 @@ class RenameQueryToPriceQueryAndAddPriceQueryTypeToWatchersTable extends Migrati
     {
         Schema::table('watchers', function (Blueprint $table) {
             $table->renameColumn('query', 'price_query');
-            $table->string('price_query_type')->after('query')->default(Watcher::QUERY_TYPE_XPATH);
+        });
+
+        Schema::table('watchers', function (Blueprint $table) {
+            $table->string('price_query_type')->after('price_query')->default(Watcher::QUERY_TYPE_XPATH);
         });
     }
 

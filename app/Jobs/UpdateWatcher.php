@@ -45,7 +45,7 @@ class UpdateWatcher implements ShouldQueue
             $html = $fetcher->fetchHtml($this->watcher->url, $this->watcher->user->user_agent);
             $parser = new HtmlParser($html);
 
-            $this->rawPrice = $parser->nodeValueByXPathQuery($this->watcher->price_query);
+            $this->rawPrice = $parser->queryHtml($this->watcher->price_query, $this->watcher->price_query_type);
             $this->price = PriceHelper::numbersFromText($this->rawPrice);
 
             $this->hasStock = $this->calculateStock($parser);

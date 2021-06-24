@@ -21,6 +21,7 @@ class SearchTest extends TestCase
                 'domain' => $template->domain,
                 'xpath_name' => $template->xpath_name,
                 'price_query' => $template->price_query,
+                'price_query_type' => $template->price_query_type,
                 'xpath_stock' => $template->xpath_stock,
                 'stock_text' => $template->stock_text,
                 'stock_condition' => $template->stock_condition,

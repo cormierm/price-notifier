@@ -18,6 +18,7 @@ class UpdateTest extends TestCase
 
         $data = [
             'price_query' => 'some-query-value',
+            'price_query_type' => 'regex',
             'client' => 'curl',
             'xpath_stock' => 'some-stock-query',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,

@@ -13,6 +13,7 @@ class Watcher extends Model
         'url',
         'user_id',
         'price_query',
+        'price_query_type',
         'last_sync',
         'initial_value',
         'interval_id',
@@ -37,6 +38,11 @@ class Watcher extends Model
 
     const QUERY_TYPE_REGEX = 'regex';
     const QUERY_TYPE_XPATH = 'xpath';
+    const QUERY_TYPES = [
+        self::QUERY_TYPE_REGEX,
+        self::QUERY_TYPE_XPATH,
+    ];
+
     const STOCK_CONDITION_CONTAINS_HTML = 'contains_html';
     const STOCK_CONDITION_CONTAINS_TEXT = 'contains_text';
     const STOCK_CONDITION_MISSING_HTML = 'missing_html';

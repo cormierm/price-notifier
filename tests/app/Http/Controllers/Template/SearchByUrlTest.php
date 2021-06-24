@@ -2,7 +2,6 @@
 
 namespace Tests\App\Http\Controllers\Template;
 
-use App\Http\Controllers\Template\SearchByUrl;
 use App\Template;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -26,6 +25,7 @@ class SearchByUrlTest extends TestCase
             ->assertJson([
                 'domain' => $template->domain,
                 'price_query' => $template->price_query,
+                'price_query_type' => $template->price_query_type,
                 'xpath_stock' => $template->xpath_stock,
                 'stock_text' => $template->stock_text,
                 'stock_condition' => $template->stock_condition,

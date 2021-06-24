@@ -9,6 +9,7 @@ $factory->define(Template::class, function (Faker $faker) {
     return [
         'domain' => $faker->domainName,
         'price_query' => $faker->word,
+        'price_query_type' => \App\Watcher::QUERY_TYPE_XPATH,
         'user_id' => function () {
             return factory(\App\User::class)->create()->id;
         },

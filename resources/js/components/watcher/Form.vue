@@ -22,7 +22,8 @@
                     <br>
                     Stock: {{ testResults.has_stock }}
                 </b-message>
-                <b-message v-if="showDebug" title="Debug Information" type="is-default" aria-close-label="Close message">
+                <b-message v-if="showDebug" title="Debug Information" type="is-default"
+                           aria-close-label="Close message">
                     Price InnerText: <strong>{{ testResults.debug.value_inner_text }}</strong><br><br>
                     Stock InnerText: <strong>{{ testResults.debug.stock_inner_text }}</strong><br><br>
                     Stock Html: <strong>{{ testResults.debug.stock_html }}</strong>
@@ -58,8 +59,29 @@
                 ></b-input>
             </b-field>
 
+            <b-field label="Price Query"></b-field>
             <b-field
-                label="XPath Query for Price"
+                :type="formErrors['price_query_type'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['price_query_type']"
+            >
+                <div class="block">
+                    <b-radio
+                        v-model="priceQueryType"
+                        name="price_query_type"
+                        native-value="xpath"
+                    >
+                        XPath
+                    </b-radio>
+                    <b-radio
+                        v-model="priceQueryType"
+                        name="price_query_type"
+                        native-value="regex"
+                    >
+                        Regex
+                    </b-radio>
+                </div>
+            </b-field>
+            <b-field
                 :type="formErrors['price_query'] ? 'is-danger' : 'is-default'"
                 :message="formErrors['price_query']"
             >
@@ -243,6 +265,7 @@ export default {
             this.interval = this.watcher.interval_id;
             this.region = this.watcher.region_id;
             this.priceQuery = this.watcher.price_query;
+            this.priceQueryType = this.watcher.price_query_type;
             this.url = this.watcher.url;
             this.alertValue = this.watcher.alert_value;
             this.client = this.watcher.client;
@@ -264,6 +287,7 @@ export default {
             region: null,
             alertValue: '',
             priceQuery: '//span[@id="price"]',
+            priceQueryType: 'xpath',
             url: '',
             formErrors: {},
             template: null,
@@ -315,6 +339,7 @@ export default {
                 region_id: this.region,
                 url: this.url,
                 price_query: this.priceQuery,
+                price_query_type: this.priceQueryType,
                 alert_value: this.alertValue,
                 client: this.client,
                 xpath_stock: this.xpathStock,
@@ -343,7 +368,7 @@ export default {
             axios.post('/watcher/check', {
                 url: this.url,
                 price_query: this.priceQuery,
-                price_query_type: 'xpath',
+                price_query_type: this.priceQueryType,
                 client: this.client,
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
@@ -375,6 +400,7 @@ export default {
                 url: this.url,
             }).then(({data}) => {
                 this.priceQuery = data.price_query;
+                this.priceQueryType = data.price_query_type;
                 this.client = data.client;
                 this.xpathStock = data.xpath_stock;
                 this.stockText = data.stock_text;
@@ -396,6 +422,7 @@ export default {
                 region_id: this.region,
                 url: this.url,
                 price_query: this.priceQuery,
+                price_query_type: this.priceQueryType,
                 alert_value: this.alertValue,
                 client: this.client,
                 xpath_stock: this.xpathStock,
