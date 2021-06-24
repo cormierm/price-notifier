@@ -24,7 +24,8 @@ class CheckTest extends TestCase
 
         $this->actingAs($user)->post(route('watcher.check'), [
             'url' => 'http://foobar.com',
-            'xpath_value' => $xpath,
+            'price_query' => $xpath,
+            'price_query_type' => 'xpath',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ])
             ->assertSuccessful()
@@ -46,7 +47,8 @@ class CheckTest extends TestCase
 
         $this->actingAs($user)->post(route('watcher.check'), [
             'url' => 'http://foobar.com',
-            'xpath_value' => $xpathValue,
+            'price_query' => $xpathValue,
+            'price_query_type' => 'xpath',
             'xpath_stock' => $xpathStock,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ])

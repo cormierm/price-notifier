@@ -342,7 +342,8 @@ export default {
             this.loading = true;
             axios.post('/watcher/check', {
                 url: this.url,
-                xpath_value: this.xpathValue,
+                price_query: this.xpathValue,
+                price_query_type: 'xpath',
                 client: this.client,
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,

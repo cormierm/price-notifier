@@ -21,7 +21,8 @@ class Check extends Controller
             $html = $fetcher->fetchHtml($request->input('url', ''), $request->user()->user_agent);
 
             $parser = new HtmlParser($html);
-            $rawValue = $parser->nodeValueByXPathQuery($request->input('xpath_value', ''));
+
+            $rawValue = $parser->queryHtml($request->input('price_query'), $request->input('price_query_type'));
             $formattedValue = PriceHelper::numbersFromText($rawValue);
 
             if ($request->input('xpath_stock') && $request->input('stock_text')) {
@@ -47,8 +48,12 @@ class Check extends Controller
                 'has_stock' => $hasStock ?? null,
                 'debug' => [
                     'value_inner_text' => $rawValue,
-                    'stock_inner_text' => $request->input('xpath_stock') ? $parser->nodeValueByXPathQuery($request->input('xpath_stock', '')) : '',
-                    'stock_html' => $request->input('xpath_stock') ? $parser->nodeHtmlByXPathQuery($request->input('xpath_stock', '')) : '',
+                    'stock_inner_text' => $request->input('xpath_stock')
+                        ? $parser->nodeValueByXPathQuery($request->input('xpath_stock', ''))
+                        : '',
+                    'stock_html' => $request->input('xpath_stock')
+                        ? $parser->nodeHtmlByXPathQuery($request->input('xpath_stock', ''))
+                        : '',
                 ]
             ]);
         } catch (Exception $e) {

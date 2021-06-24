@@ -18,9 +18,9 @@ class HtmlParser
         $this->html = $html;
     }
 
-    public function queryHtml($query, $type): string
+    public function queryHtml(?string $query, ?string $type): string
     {
-        if (!$query) {
+        if (!$query || !$type) {
             return '';
         }
 
