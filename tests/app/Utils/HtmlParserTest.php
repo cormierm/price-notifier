@@ -3,12 +3,20 @@
 namespace Tests\App\Utils;
 
 use App\Utils\HtmlParser;
-use DOMDocument;
-use DOMXPath;
 use Tests\TestCase;
 
 class HtmlParserTest extends TestCase
 {
+
+    /** @test */
+    public function itReturnsTextFromRegexMatch(): void
+    {
+        $regex = '/before(.*?)after/';
+        $html = '<html><body><div>before$1,800.00after</div></body></html>';
+        $parser = new HtmlParser($html);
+
+        $this->assertEquals('$1,800.00', $parser->queryHtml($regex, HtmlParser::QUERY_TYPE_REGEX));
+    }
 
     /** @test */
     public function itReturnsEmptyStringForNotFoundQuery(): void

@@ -8,12 +8,34 @@ use DOMXPath;
 
 class HtmlParser
 {
+    const QUERY_TYPE_REGEX = 'regex';
+    const QUERY_TYPE_XPATH = 'xpath';
 
     private $html;
 
     public function __construct(string $html)
     {
         $this->html = $html;
+    }
+
+    public function queryHtml($query, $type): string
+    {
+        if (!$query) {
+            return '';
+        }
+
+        if ($type === self::QUERY_TYPE_REGEX) {
+            return $this->regexMatch($query);
+        }
+
+        return $this->nodeValueByXPathQuery($query);
+    }
+
+    public function regexMatch(string $regex): string
+    {
+        preg_match($regex, $this->html, $matches);
+
+        return $matches ? $matches[1] : '';
     }
 
     public function nodeValueByXPathQuery(string $query): string
