@@ -17,7 +17,7 @@ class UpdateTest extends TestCase
         $template = factory(Template::class)->create();
 
         $data = [
-            'xpath_value' => 'some-query-value',
+            'price_query' => 'some-query-value',
             'client' => 'curl',
             'xpath_stock' => 'some-stock-query',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,

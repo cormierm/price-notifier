@@ -21,7 +21,7 @@
                 Current Price: {{ watcher.value }} ({{ formatDate(watcher.last_sync) }})<br>
                 Lowest Price: {{ watcher.lowest_price }} ({{ formatDate(watcher.lowest_at) }})<br>
                 Alert Price: {{ watcher.alert_value }}<br><br>
-                XPath Query Price: {{ watcher.query }}<br><br>
+                XPath Query Price: {{ watcher.price_query }}<br><br>
                 XPath Query Stock: {{ watcher.xpath_stock }}<br>
                 Stock condition: {{ watcher.stock_condition }}<br>
                 Stock text match: {{ watcher.stock_text }}<br><br>

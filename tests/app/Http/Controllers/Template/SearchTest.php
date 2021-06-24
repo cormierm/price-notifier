@@ -20,7 +20,7 @@ class SearchTest extends TestCase
             ->assertJson([
                 'domain' => $template->domain,
                 'xpath_name' => $template->xpath_name,
-                'xpath_value' => $template->xpath_value,
+                'price_query' => $template->price_query,
                 'xpath_stock' => $template->xpath_stock,
                 'stock_text' => $template->stock_text,
                 'stock_condition' => $template->stock_condition,

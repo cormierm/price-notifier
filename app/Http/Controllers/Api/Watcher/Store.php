@@ -18,7 +18,7 @@ class Store extends Controller
             'user_id' => $request->user()->id,
             'name' => $request->input('name'),
             'url' => $request->input('url'),
-            'query' => $request->input('query'),
+            'price_query' => $request->input('price_query'),
             'xpath_stock' => $request->input('xpath_stock'),
             'stock_condition' => $request->input('stock_condition'),
             'stock_text' => $request->input('stock_text'),

@@ -14,7 +14,7 @@ class StoreRequest extends FormRequest
         return [
             'name' => 'required|string|min:2|max:255',
             'url' => 'required|url|max:255',
-            'query'  => 'required|string|min:2|max:255',
+            'price_query'  => 'required|string|min:2|max:255',
             'interval_id' => 'nullable|exists:intervals,id',
             'region_id' => 'nullable|exists:regions,id',
             'alert_value' => 'nullable|numeric',

@@ -19,7 +19,7 @@ class StoreTest extends TestCase
         $data = [
             'url' => 'http://some.url',
             'name' => 'Foobar',
-            'query' => '//span[id="price"]',
+            'price_query' => '//span[id="price"]',
             'xpath_stock' => '//span[id="stock"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
         ];
@@ -31,7 +31,7 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas('watchers', [
             'user_id' => $user->id,
             'url' => $data['url'],
-            'query' => $data['query'],
+            'price_query' => $data['price_query'],
             'xpath_stock' => $data['xpath_stock'],
             'client' => $data['client']
         ]);

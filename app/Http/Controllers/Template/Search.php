@@ -18,7 +18,7 @@ class Search extends Controller
         return new JsonResponse([
             'domain' => $template->domain,
             'xpath_name' => $template->xpath_name,
-            'xpath_value' => $template->xpath_value,
+            'price_query' => $template->price_query,
             'client' => $template->client,
             'xpath_stock' => $template->xpath_stock,
             'stock_text' => $template->stock_text,

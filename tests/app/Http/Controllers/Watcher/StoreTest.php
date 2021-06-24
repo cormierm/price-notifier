@@ -24,7 +24,7 @@ class StoreTest extends TestCase
         $data = [
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
-            'query' => 'some-class',
+            'price_query' => 'some-class',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',
@@ -55,7 +55,7 @@ class StoreTest extends TestCase
         $data = [
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
-            'query' => 'some-class',
+            'price_query' => 'some-class',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',
@@ -68,7 +68,7 @@ class StoreTest extends TestCase
 
         $this->assertDatabaseHas('templates', [
             'domain' => 'some-url.com',
-            'xpath_value' => 'some-class',
+            'price_query' => 'some-class',
             'user_id' => $user->id,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
@@ -84,7 +84,7 @@ class StoreTest extends TestCase
         $data = [
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
-            'query' => 'some-class',
+            'price_query' => 'some-class',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div/span',
             'stock_text' => 'in stock.',

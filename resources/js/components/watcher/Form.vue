@@ -60,11 +60,11 @@
 
             <b-field
                 label="XPath Query for Price"
-                :type="formErrors['query'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['query']"
+                :type="formErrors['price_query'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['price_query']"
             >
                 <b-input
-                    v-model="xpathValue"
+                    v-model="priceQuery"
                     maxlength="255"
                     placeholder="//span[@id='price']"
                     @input="updateQueries = true"
@@ -242,7 +242,7 @@ export default {
             this.name = this.watcher.name;
             this.interval = this.watcher.interval_id;
             this.region = this.watcher.region_id;
-            this.xpathValue = this.watcher.query;
+            this.priceQuery = this.watcher.price_query;
             this.url = this.watcher.url;
             this.alertValue = this.watcher.alert_value;
             this.client = this.watcher.client;
@@ -263,7 +263,7 @@ export default {
             interval: 8,
             region: null,
             alertValue: '',
-            xpathValue: '//span[@id="price"]',
+            priceQuery: '//span[@id="price"]',
             url: '',
             formErrors: {},
             template: null,
@@ -314,7 +314,7 @@ export default {
                 interval_id: this.interval,
                 region_id: this.region,
                 url: this.url,
-                query: this.xpathValue,
+                price_query: this.priceQuery,
                 alert_value: this.alertValue,
                 client: this.client,
                 xpath_stock: this.xpathStock,
@@ -342,7 +342,7 @@ export default {
             this.loading = true;
             axios.post('/watcher/check', {
                 url: this.url,
-                price_query: this.xpathValue,
+                price_query: this.priceQuery,
                 price_query_type: 'xpath',
                 client: this.client,
                 xpath_stock: this.xpathStock,
@@ -374,7 +374,7 @@ export default {
             axios.post('/template/search-by-url', {
                 url: this.url,
             }).then(({data}) => {
-                this.xpathValue = data.xpath_value;
+                this.priceQuery = data.price_query;
                 this.client = data.client;
                 this.xpathStock = data.xpath_stock;
                 this.stockText = data.stock_text;
@@ -395,7 +395,7 @@ export default {
                 interval_id: this.interval,
                 region_id: this.region,
                 url: this.url,
-                query: this.xpathValue,
+                price_query: this.priceQuery,
                 alert_value: this.alertValue,
                 client: this.client,
                 xpath_stock: this.xpathStock,

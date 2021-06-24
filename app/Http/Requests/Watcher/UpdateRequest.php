@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'nullable|string|min:2|max:255',
-            'query' => 'nullable|string|min:2|max:255',
+            'price_query' => 'nullable|string|min:2|max:255',
             'url' => 'nullable|url|max:255',
             'xpath_name' => 'nullable|string|min:2|max:255',
             'interval_id' => 'nullable|exists:intervals,id',

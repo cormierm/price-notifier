@@ -21,7 +21,7 @@ class Update extends Controller
                     'user_id' => $request->user()->id
                 ],
                 [
-                    'xpath_value' => $watcher->query,
+                    'price_query' => $watcher->price_query,
                     'client' => $watcher->client,
                     'xpath_stock' => $watcher->xpath_stock,
                     'stock_text' => $watcher->stock_text,

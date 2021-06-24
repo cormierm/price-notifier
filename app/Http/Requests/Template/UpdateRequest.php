@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'xpath_value' => 'nullable|string|min:2|max:255',
+            'price_query' => 'nullable|string|min:2|max:255',
             'xpath_stock' => 'nullable|string|max:255',
             'stock_text' => 'nullable|string|max:255',
             'stock_condition' => ['nullable', Rule::in(Watcher::STOCK_CONDITIONS)],

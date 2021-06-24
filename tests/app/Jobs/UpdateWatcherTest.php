@@ -28,7 +28,7 @@ class UpdateWatcherTest extends TestCase
         Event::fake();
 
         $watcher = factory(Watcher::class)->create([
-            'query' => '//div[@id="pull-right-price"]/span[@class="value"]',
+            'price_query' => '//div[@id="pull-right-price"]/span[@class="value"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ]);
         $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">149.99</span><span class="currency">$</span></div></div></body></html>';
@@ -50,7 +50,7 @@ class UpdateWatcherTest extends TestCase
         Config::set('pcn.region', $region);
         $rawValue = 'CDN$ 149.99';
         $watcher = factory(Watcher::class)->create([
-            'query' => '//div[@id="pull-right-price"]/span[@class="value"]',
+            'price_query' => '//div[@id="pull-right-price"]/span[@class="value"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ]);
         $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">' . $rawValue . '</span><span class="currency">$</span></div></div></body></html>';
@@ -86,7 +86,7 @@ class UpdateWatcherTest extends TestCase
     {
         $rawValue = '950.00';
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'value' => '1100.00',
             'alert_value' => '1000.00',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
@@ -111,7 +111,7 @@ class UpdateWatcherTest extends TestCase
         Carbon::setTestNow('now');
 
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
         ]);
         $html = '<html><span class="value">1119.99</span></html>';
@@ -134,7 +134,7 @@ class UpdateWatcherTest extends TestCase
         Carbon::setTestNow('now');
 
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'lowest_price' => '1.00'
         ]);
@@ -157,7 +157,7 @@ class UpdateWatcherTest extends TestCase
         Carbon::setTestNow('now');
 
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'lowest_price' => '1299.00'
         ]);
@@ -178,7 +178,7 @@ class UpdateWatcherTest extends TestCase
     public function itWillSendStockAlertWhenChangedHasStock(): void
     {
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div[@id="stock"]',
@@ -205,7 +205,7 @@ class UpdateWatcherTest extends TestCase
     public function itWillNotSendStockAlertWhenStockAlertSetToFalse(): void
     {
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div[@id="stock"]',
@@ -230,7 +230,7 @@ class UpdateWatcherTest extends TestCase
     public function itWillSetHasStockToTrueForTextContainsTrueWhenTextFound(): void
     {
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div[@id="stock"]',
@@ -257,7 +257,7 @@ class UpdateWatcherTest extends TestCase
     public function itWillSetHasStockToFalseForTextContainsTrue(): void
     {
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div[@id="stock"]',
@@ -284,7 +284,7 @@ class UpdateWatcherTest extends TestCase
     public function itWillSetHasStockToTrueForStockConditionMissingText(): void
     {
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div[@id="stock"]',
@@ -311,7 +311,7 @@ class UpdateWatcherTest extends TestCase
     public function itWillSetHasStockToFalseForTextContainsFalse(): void
     {
         $watcher = factory(Watcher::class)->create([
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'xpath_stock' => '//div[@id="stock"]',
@@ -341,7 +341,7 @@ class UpdateWatcherTest extends TestCase
 
         $watcher = factory(Watcher::class)->create([
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
         ]);
         $html = '<html><span class="value">1119.99</span></html>';
 
@@ -367,7 +367,7 @@ class UpdateWatcherTest extends TestCase
         $price = '1119.99';
         $watcher = factory(Watcher::class)->create([
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
         ]);
         factory(PriceChange::class)->create([
             'watcher_id' => $watcher->id,
@@ -439,7 +439,7 @@ class UpdateWatcherTest extends TestCase
         $price = '1119.99';
         $watcher = factory(Watcher::class)->create([
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
             'xpath_stock' => '//div[@id="stock"]',
             'stock_text' => 'In Stock.',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
@@ -474,7 +474,7 @@ class UpdateWatcherTest extends TestCase
         $newPrice = '222';
         $watcher = factory(Watcher::class)->create([
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'query' => '//span[@class="value"]',
+            'price_query' => '//span[@class="value"]',
         ]);
         factory(PriceChange::class)->create([
             'watcher_id' => $watcher->id,

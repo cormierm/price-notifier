@@ -12,7 +12,7 @@ class Watcher extends Model
         'name',
         'url',
         'user_id',
-        'query',
+        'price_query',
         'last_sync',
         'initial_value',
         'interval_id',
@@ -35,6 +35,8 @@ class Watcher extends Model
         'has_stock' => 'boolean',
     ];
 
+    const QUERY_TYPE_REGEX = 'regex';
+    const QUERY_TYPE_XPATH = 'xpath';
     const STOCK_CONDITION_CONTAINS_HTML = 'contains_html';
     const STOCK_CONDITION_CONTAINS_TEXT = 'contains_text';
     const STOCK_CONDITION_MISSING_HTML = 'missing_html';

@@ -17,7 +17,7 @@ class Store extends Controller
             'name' => $request->input('name'),
             'url' => $request->input('url'),
             'user_id' => $request->user()->id,
-            'query' => $request->input('query'),
+            'price_query' => $request->input('price_query'),
             'interval_id' => $request->input('interval_id'),
             'alert_value' => $request->input('alert_value'),
             'client' => $request->input('client'),
@@ -37,7 +37,7 @@ class Store extends Controller
                     'user_id' => $request->user()->id
                 ],
                 [
-                    'xpath_value' => $request->input('query'),
+                    'price_query' => $request->input('price_query'),
                     'client' => $request->input('client'),
                     'xpath_stock' => $request->input('xpath_stock'),
                     'stock_text' => $request->input('stock_text'),

@@ -8,7 +8,7 @@ class Template extends Model
 {
     protected $fillable = [
         'domain',
-        'xpath_value',
+        'price_query',
         'client',
         'xpath_stock',
         'stock_text',

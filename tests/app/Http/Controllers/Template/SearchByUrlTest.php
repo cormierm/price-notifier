@@ -25,7 +25,7 @@ class SearchByUrlTest extends TestCase
             ->assertSuccessful()
             ->assertJson([
                 'domain' => $template->domain,
-                'xpath_value' => $template->xpath_value,
+                'price_query' => $template->price_query,
                 'xpath_stock' => $template->xpath_stock,
                 'stock_text' => $template->stock_text,
                 'stock_condition' => $template->stock_condition,

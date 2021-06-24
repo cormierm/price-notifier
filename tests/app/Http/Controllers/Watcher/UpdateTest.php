@@ -52,13 +52,13 @@ class UpdateTest extends TestCase
 
         $query = '//some-class';
         $this->actingAs($watcher->user)->putJson(route('watcher.update', $watcher), [
-            'query' => $query,
+            'price_query' => $query,
             'update_queries' => true,
         ])->assertSuccessful();
 
         $this->assertDatabaseHas('templates', [
             'domain' => $watcher->urlDomain(),
-            'xpath_value' => $query,
+            'price_query' => $query,
         ]);
     }
 
@@ -69,13 +69,13 @@ class UpdateTest extends TestCase
 
         $query = '//some-class';
         $this->actingAs($watcher->user)->putJson(route('watcher.update', $watcher), [
-            'query' => $query,
+            'price_query' => $query,
             'update_queries' => false,
         ])->assertSuccessful();
 
         $this->assertDatabaseMissing('templates', [
             'domain' => $watcher->urlDomain(),
-            'xpath_value' => $query,
+            'price_query' => $query,
         ]);
     }
 }

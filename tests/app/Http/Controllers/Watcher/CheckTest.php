@@ -39,7 +39,7 @@ class CheckTest extends TestCase
     public function itReturnsDebugInformation(): void
     {
         $user = factory(User::class)->create();
-        $xpathValue = '//span[@id="foobar"]';
+        $priceQuery = '//span[@id="foobar"]';
         $xpathStock = '//span[@id="stock"]';
         $html = '<html><body><span id="foobar">CDN$ 55.00</span><span id="stock">Out of Stock</span></body></html>';
 
@@ -47,7 +47,7 @@ class CheckTest extends TestCase
 
         $this->actingAs($user)->post(route('watcher.check'), [
             'url' => 'http://foobar.com',
-            'price_query' => $xpathValue,
+            'price_query' => $priceQuery,
             'price_query_type' => 'xpath',
             'xpath_stock' => $xpathStock,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT

@@ -15,11 +15,11 @@
 
             <b-field
                 label="XPath Price Query"
-                :type="formErrors['xpath_value'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['xpath_value']"
+                :type="formErrors['price_query'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['price_query']"
             >
                 <b-input
-                    v-model="xpathValue"
+                    v-model="priceQuery"
                     maxlength="255"
                     placeholder="//span[@id='price']"
                 ></b-input>
@@ -118,7 +118,7 @@ export default {
         if (this.template) {
             this.id = this.template.id;
             this.domain = this.template.domain;
-            this.xpathValue = this.template.xpath_value;
+            this.priceQuery = this.template.price_query;
             this.client = this.template.client;
             this.xpathStock = this.template.xpath_stock;
             this.stockText = this.template.stock_text;
@@ -130,7 +130,7 @@ export default {
             loading: false,
             id: null,
             domain: '',
-            xpathValue: '//span[@id="price"]',
+            priceQuery: '//span[@id="price"]',
             client: 'browsershot',
             formErrors: {},
             xpathStock: '',
@@ -159,7 +159,7 @@ export default {
         create() {
             axios.post('/template', {
                 domain: this.domain,
-                xpath_value: this.xpathValue,
+                price_query: this.priceQuery,
                 client: this.client
             }).then(() => {
                 window.location = '/template';
@@ -180,7 +180,7 @@ export default {
             axios.put(`/template/${this.id}`, {
                 id: this.id,
                 domain: this.domain,
-                xpath_value: this.xpathValue,
+                price_query: this.priceQuery,
                 client: this.client,
                 xpath_stock: this.xpathStock,
                 stock_text: this.stockText,

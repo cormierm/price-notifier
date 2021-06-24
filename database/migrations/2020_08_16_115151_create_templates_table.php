@@ -17,7 +17,7 @@ class CreateTemplatesTable extends Migration
             $table->id();
             $table->string('domain');
             $table->string('xpath_name')->nullable();
-            $table->string('xpath_value');
+            $table->string('price_query');
             $table->unsignedInteger('user_id');
             $table->timestamps();
         });
