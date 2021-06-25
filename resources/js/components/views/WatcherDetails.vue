@@ -11,29 +11,37 @@
             </div>
         </div>
 
-        <article class="panel is-primary">
-            <p class="panel-heading">
-                <strong>{{ watcher.name }}</strong><span v-if="watcher.value" class="is-pulled-right"><strong>${{watcher.value}}</strong></span><br>
-                <a :href="watcher.url">{{ watcher.url }}</a>
-            </p>
-            <p class="panel">
-                Original Price: {{ watcher.initial_value }} ({{ formatDate(watcher.created_at) }})<br>
-                Current Price: {{ watcher.value }} ({{ formatDate(watcher.last_sync) }})<br>
-                Lowest Price: {{ watcher.lowest_price }} ({{ formatDate(watcher.lowest_at) }})<br>
-                Alert Price: {{ watcher.alert_value }}<br><br>
-                XPath Query Price: {{ watcher.price_query }}<br><br>
-                XPath Query Stock: {{ watcher.xpath_stock }}<br>
-                Stock condition: {{ watcher.stock_condition }}<br>
-                Stock text match: {{ watcher.stock_text }}<br><br>
-                Region: {{ watcher.region ? watcher.region.label : '' }}<br><br>
-                Interval:
-                <interval-select
-                    :intervals="intervals"
-                    :watcher-id="watcher.id"
-                    :value="watcher.interval_id"
-                    @update="updateWatcher"
-                />
-            </p>
+        <article class="panel">
+            <div class="panel-heading">
+                <strong>{{ watcher.name }}</strong>
+                <div v-if="watcher.value" class="is-pulled-right"><strong>${{watcher.value}}</strong></div>
+                <br>
+                <a class="header-link" :href="watcher.url">{{ watcher.url }}</a>
+            </div>
+            <div class="panel-block">
+                <div class="container">
+                    Original Price: {{ watcher.initial_value }} ({{ formatDate(watcher.created_at) }})<br>
+                    Current Price: {{ watcher.value }} ({{ formatDate(watcher.last_sync) }})<br>
+                    Lowest Price: {{ watcher.lowest_price }} ({{ formatDate(watcher.lowest_at) }})<br>
+                    Has Stock: {{ watcher.has_stock === true ? 'Yes' : watcher.has_stock === false ? 'No' : 'Unknown' }}<br><br>
+                    Alert Price: {{ watcher.alert_value }}<br>
+
+                    Price Query: {{ watcher.price_query }}<br>
+                    Price Query Type: {{ watcher.price_query_type }}<br><br>
+
+                    XPath Query Stock: {{ watcher.xpath_stock }}<br>
+                    Stock condition: {{ watcher.stock_condition }}<br>
+                    Stock text match: {{ watcher.stock_text }}<br><br>
+                    Region: {{ watcher.region ? watcher.region.label : '' }}<br><br>
+                    Interval:
+                    <interval-select
+                        :intervals="intervals"
+                        :watcher-id="watcher.id"
+                        :value="watcher.interval_id"
+                        @update="updateWatcher"
+                    />
+                </div>
+            </div>
         </article>
 
         <price-change-table :price-changes="priceChanges" />
@@ -100,6 +108,14 @@ export default {
 
     .tool-buttons {
         display: flex;
+    }
+
+    .header-link {
+        font-size: .7em;
+    }
+
+    .panel-heading {
+        font-size: 1.2em;
     }
 
 </style>
