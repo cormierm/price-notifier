@@ -16,7 +16,7 @@ class CheckTest extends TestCase
     /** @test */
     public function itReturnsTitleAndFormattedPriceFromXPath(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $xpath = '//span[@id="foobar"]';
         $html = '<html><title>Taco Salad</title><body><span id="foobar">CDN$ 55.00</span></body></html>';
 
@@ -38,7 +38,7 @@ class CheckTest extends TestCase
     /** @test */
     public function itReturnsDebugInformation(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $priceQuery = '//span[@id="foobar"]';
         $xpathStock = '//span[@id="stock"]';
         $html = '<html><body><span id="foobar">CDN$ 55.00</span><span id="stock">Out of Stock</span></body></html>';

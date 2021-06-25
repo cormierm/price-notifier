@@ -14,7 +14,7 @@ class UpdateTest extends TestCase
     /** @test */
     public function itCanUpdateTemplate(): void
     {
-        $template = factory(Template::class)->create();
+        $template = Template::factory()->create();
 
         $data = [
             'price_query' => 'some-query-value',

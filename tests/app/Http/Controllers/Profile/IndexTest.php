@@ -13,7 +13,7 @@ class IndexTest extends TestCase
     /** @test */
     public function itShowsViewWithUser(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $this->actingAs($user)
             ->get(route('profile.index'))

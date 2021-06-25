@@ -1,15 +1,22 @@
 <?php
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+use App\StockChange;
+use App\Watcher;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-use Faker\Generator as Faker;
+class StockChangeFactory extends Factory
+{
+    protected $model = StockChange::class;
 
-$factory->define(\App\StockChange::class, function (Faker $faker) {
-    return [
-        'watcher_id' => function () {
-            return factory(\App\Watcher::class)->create()->id;
-        },
-        'stock' => $faker->boolean,
-        'created_at' => \Carbon\Carbon::now()->subMinutes(rand(0, 99999))
-    ];
-});
+    public function definition(): array
+    {
+        return [
+            'watcher_id' => function () {
+                return Watcher::factory()->create()->id;
+            },
+            'stock' => $this->faker->boolean,
+            'created_at' => \Carbon\Carbon::now()->subMinutes(rand(0, 99999))
+        ];
+    }
+}

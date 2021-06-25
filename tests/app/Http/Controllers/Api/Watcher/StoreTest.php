@@ -15,7 +15,7 @@ class StoreTest extends TestCase
     public function itWillAddWatcher(): void
     {
         $this->withoutExceptionHandling();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $data = [
             'url' => 'http://some.url',
@@ -43,7 +43,7 @@ class StoreTest extends TestCase
     /** @test */
     public function itWillReturn401ForInvalidCredentials(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $this->postJson(route('api.watcher.store'), [], [
             "Authorization" => "Basic " . base64_encode($user->email . ":not-a-api-key"),

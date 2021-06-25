@@ -1,13 +1,19 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Region;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Region::class, function (Faker $faker) {
-    return [
-        'name' => $faker->name,
-        'label' => $faker->word,
-    ];
-});
+class RegionFactory extends Factory
+{
+    protected $model = Region::class;
+
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->name,
+            'label' => $this->faker->word,
+        ];
+    }
+}

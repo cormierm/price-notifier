@@ -14,8 +14,8 @@ class LogsTest extends TestCase
     /** @test */
     public function itReturnsLogs(): void
     {
-        $watcher = factory(Watcher::class)->create();
-        $logs = factory(WatcherLog::class, 3)->create([
+        $watcher = Watcher::factory()->create();
+        $logs = WatcherLog::factory(3)->create([
             'watcher_id' => $watcher->id
         ]);
 
@@ -28,8 +28,8 @@ class LogsTest extends TestCase
     /** @test */
     public function itReturnsLimitedLogs(): void
     {
-        $watcher = factory(Watcher::class)->create();
-        factory(WatcherLog::class, 10)->create([
+        $watcher = Watcher::factory()->create();
+        WatcherLog::factory(10)->create([
             'watcher_id' => $watcher->id
         ]);
 

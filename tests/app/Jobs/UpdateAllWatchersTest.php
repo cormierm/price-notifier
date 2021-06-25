@@ -21,17 +21,17 @@ class UpdateAllWatchersTest extends TestCase
     public function itUpdatesWatcher(): void
     {
         $minutes = 30;
-        $interval = factory(Interval::class)->create([
+        $interval = Interval::factory()->create([
             'minutes' => $minutes,
         ]);
-        $region = factory(Region::class)->create();
-        $watcher = factory(Watcher::class)->create([
+        $region = Region::factory()->create();
+        $watcher = Watcher::factory()->create([
             'region_id' => $region->id,
             'interval_id' => $interval->id,
         ]);
         Config::set('pcn.region', $region->name);
 
-        factory(WatcherLog::class)->create([
+        WatcherLog::factory()->create([
             'watcher_id' => $watcher->id,
             'created_at' => Carbon::now()->subMinutes($minutes + 5)
         ]);
@@ -45,11 +45,11 @@ class UpdateAllWatchersTest extends TestCase
     public function itUpdatesWithNoWatcherLog(): void
     {
         $minutes = 30;
-        $interval = factory(Interval::class)->create([
+        $interval = Interval::factory()->create([
             'minutes' => $minutes,
         ]);
-        $region = factory(Region::class)->create();
-        factory(Watcher::class)->create([
+        $region = Region::factory()->create();
+        Watcher::factory()->create([
             'region_id' => $region->id,
             'interval_id' => $interval->id,
         ]);
@@ -64,10 +64,10 @@ class UpdateAllWatchersTest extends TestCase
     /** @test */
     public function itDoesNotUpdateWatcherWithNullIntervalMinutes(): void
     {
-        $interval = factory(Interval::class)->create([
+        $interval = Interval::factory()->create([
             'minutes' => null,
         ]);
-        factory(Watcher::class)->create([
+        Watcher::factory()->create([
             'interval_id' => $interval->id,
         ]);
 
@@ -80,8 +80,8 @@ class UpdateAllWatchersTest extends TestCase
     /** @test */
     public function itWillFetchWatcherInRegion(): void
     {
-        $region = factory(Region::class)->create();
-        factory(Watcher::class)->create([
+        $region = Region::factory()->create();
+        Watcher::factory()->create([
             'region_id' => $region->id,
         ]);
         Config::set('pcn.region', $region->name);
@@ -95,8 +95,8 @@ class UpdateAllWatchersTest extends TestCase
     /** @test */
     public function itWillNotFetchWatcherInAnotherRegion(): void
     {
-        $region = factory(Region::class)->create();
-        factory(Watcher::class)->create([
+        $region = Region::factory()->create();
+        Watcher::factory()->create([
             'region_id' => $region->id,
         ]);
         Config::set('pcn.region', 'foo-bar-region');
@@ -110,7 +110,7 @@ class UpdateAllWatchersTest extends TestCase
     /** @test */
     public function itWillFetchWatcherWithNullRegion(): void
     {
-        factory(Watcher::class)->create([
+        Watcher::factory()->create([
             'region_id' => null
         ]);
         Config::set('pcn.region', 'foo-bar-region');
@@ -125,7 +125,7 @@ class UpdateAllWatchersTest extends TestCase
     /** @test */
     public function itWillNotFetchWatcherWithNullRegion(): void
     {
-        factory(Watcher::class)->create([
+        Watcher::factory()->create([
             'region_id' => null
         ]);
         Config::set('pcn.region', 'foo-bar-region');
@@ -141,17 +141,17 @@ class UpdateAllWatchersTest extends TestCase
     public function itWillUpdateWatcherIfIntervalMinutesIsOne(): void
     {
         $minutes = 1;
-        $interval = factory(Interval::class)->create([
+        $interval = Interval::factory()->create([
             'minutes' => $minutes,
         ]);
-        $region = factory(Region::class)->create();
-        $watcher = factory(Watcher::class)->create([
+        $region = Region::factory()->create();
+        $watcher = Watcher::factory()->create([
             'region_id' => $region->id,
             'interval_id' => $interval->id,
         ]);
         Config::set('pcn.region', $region->name);
 
-        factory(WatcherLog::class)->create([
+        WatcherLog::factory()->create([
             'watcher_id' => $watcher->id,
             'created_at' => Carbon::now()
         ]);
@@ -165,18 +165,18 @@ class UpdateAllWatchersTest extends TestCase
     public function itWillUpdateWatcherIfRegionIsAll(): void
     {
         $minutes = 1;
-        $interval = factory(Interval::class)->create([
+        $interval = Interval::factory()->create([
             'minutes' => $minutes,
         ]);
-        $region = factory(Region::class)->create([
+        $region = Region::factory()->create([
             'name' => 'all',
         ]);
-        $watcher = factory(Watcher::class)->create([
+        $watcher = Watcher::factory()->create([
             'region_id' => $region->id,
             'interval_id' => $interval->id,
         ]);
 
-        factory(WatcherLog::class)->create([
+        WatcherLog::factory()->create([
             'watcher_id' => $watcher->id,
             'created_at' => Carbon::now()->subDay()
         ]);

@@ -15,8 +15,8 @@ class IndexTest extends TestCase
     /** @test */
     public function itShowsViewWithWatchers(): void
     {
-        $user = factory(User::class)->create();
-        factory(Watcher::class, 3)->create();
+        $user = User::factory()->create();
+        Watcher::factory(3)->create();
 
         $this->actingAs($user)->get(route('watcher.index'))
             ->assertSuccessful()

@@ -15,20 +15,20 @@ class WatcherTest extends TestCase
     /** @test */
     public function itWillGetLastLog(): void
     {
-        $watcher = factory(Watcher::class)->create();
+        $watcher = Watcher::factory()->create();
 
-        factory(WatcherLog::class)->create([
+        WatcherLog::factory()->create([
             'watcher_id' => $watcher->id,
             'created_at' => Carbon::now()->subDay(),
         ]);
-        $lastLog = factory(WatcherLog::class)->create([
+        $lastLog = WatcherLog::factory()->create([
             'watcher_id' => $watcher->id,
         ]);
-        factory(WatcherLog::class)->create([
+        WatcherLog::factory()->create([
             'watcher_id' => $watcher->id,
             'created_at' => Carbon::now()->subMinute(),
         ]);
-        factory(WatcherLog::class)->create([
+        WatcherLog::factory()->create([
             'watcher_id' => $watcher->id,
             'created_at' => Carbon::now()->subHour(),
         ]);
@@ -39,7 +39,7 @@ class WatcherTest extends TestCase
     /** @test */
     public function itWillReturnNullIfNotLog(): void
     {
-        $watcher = factory(Watcher::class)->create();
+        $watcher = Watcher::factory()->create();
 
         $this->assertNull($watcher->lastLog());
     }
@@ -47,7 +47,7 @@ class WatcherTest extends TestCase
     /** @test */
     public function itCanParseDomainFromUrl(): void
     {
-        $watcher = factory(Watcher::class)->create([
+        $watcher = Watcher::factory()->create([
             'url' => 'https://www.foobar.com/something/else/index.html',
         ]);
 
@@ -57,7 +57,7 @@ class WatcherTest extends TestCase
     /** @test */
     public function itReturnsStatusErrorIfLastLogHasError(): void
     {
-        $log = factory(WatcherLog::class)->create([
+        $log = WatcherLog::factory()->create([
             'error' => 'Some error'
         ]);
 
@@ -67,7 +67,7 @@ class WatcherTest extends TestCase
     /** @test */
     public function itReturnsStatusDisabledIfNoIntervalSet(): void
     {
-        $watcher = factory(Watcher::class)->state('disabled')->create();
+        $watcher = Watcher::factory()->disabled()->create();
 
         $this->assertEquals('disabled', $watcher->status);
     }
@@ -75,7 +75,7 @@ class WatcherTest extends TestCase
     /** @test */
     public function itReturnsStatusOkayIfNoLastLogErrorAndIntervalHasMinutesSet(): void
     {
-        $watcher = factory(Watcher::class)->create();
+        $watcher = Watcher::factory()->create();
 
         $this->assertEquals('ok', $watcher->status);
     }

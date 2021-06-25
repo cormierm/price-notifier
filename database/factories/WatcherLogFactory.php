@@ -1,20 +1,27 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
+use App\Watcher;
 use App\WatcherLog;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(WatcherLog::class, function (Faker $faker) {
-    $randomPrice = $faker->randomFloat(2, 1, 100);
+class WatcherLogFactory extends Factory
+{
+    protected $model = WatcherLog::class;
 
-    return [
-        'watcher_id' => function () {
-            return factory(\App\Watcher::class)->create()->id;
-        },
-        'formatted_value' => $randomPrice,
-        'raw_value' => $faker->word . $randomPrice,
-        'duration' => $faker->randomDigit,
-        'error' => null,
-    ];
-});
+    public function definition(): array
+    {
+        $randomPrice = $this->faker->randomFloat(2, 1, 100);
+
+        return [
+            'watcher_id' => function () {
+                return Watcher::factory()->create()->id;
+            },
+            'formatted_value' => $randomPrice,
+            'raw_value' => $this->faker->word . $randomPrice,
+            'duration' => $this->faker->randomDigit,
+            'error' => null,
+        ];
+    }
+}

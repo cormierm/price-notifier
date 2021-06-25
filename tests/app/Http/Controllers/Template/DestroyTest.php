@@ -13,7 +13,7 @@ class DestroyTest extends TestCase
     /** @test */
     public function itDeletesTemplate(): void
     {
-        $template = factory(Template::class)->create();
+        $template = Template::factory()->create();
 
         $this->actingAs($template->user)
             ->delete(route('template.destroy', $template))

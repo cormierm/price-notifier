@@ -13,7 +13,7 @@ class EditTest extends TestCase
     /** @test */
     public function itShowViewWithTemplate(): void
     {
-        $template = factory(Template::class)->create();
+        $template = Template::factory()->create();
 
         $this->actingAs($template->user)->get(route('template.edit', $template))
             ->assertSuccessful()

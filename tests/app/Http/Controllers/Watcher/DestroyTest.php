@@ -14,8 +14,8 @@ class DestroyTest extends TestCase
     /** @test */
     public function itDeletesWatcherPriceChangesAndLogs(): void
     {
-        $log = factory(WatcherLog::class)->create();
-        factory(PriceChange::class, 2)->create([
+        $log = WatcherLog::factory()->create();
+        PriceChange::factory(2)->create([
             'watcher_id' => $log->watcher->id,
         ]);
 

@@ -30,7 +30,7 @@ class EmailApiKeyBasicAuthTest extends TestCase
     /** @test */
     public function itWillReturnUnauthorizedForInvalidCredentials(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $request = new Request();
         $request->headers->set('Authorization', "Basic " . base64_encode("{$user->email}:not-the-api-key"));
@@ -46,7 +46,7 @@ class EmailApiKeyBasicAuthTest extends TestCase
     /** @test */
     public function itWilCallNextForValidCredentials(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $request = new Request();
         $request->headers->set('Authorization', "Basic " . base64_encode("{$user->email}:{$user->api_key}"));

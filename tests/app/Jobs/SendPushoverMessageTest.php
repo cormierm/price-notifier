@@ -16,7 +16,7 @@ class SendPushoverMessageTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'pushover_user_key' => env('PUSHOVER_USER_KEY'),
             'pushover_api_token' => env('PUSHOVER_API_TOKEN'),
         ]);

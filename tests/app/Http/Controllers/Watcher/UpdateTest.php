@@ -14,7 +14,7 @@ class UpdateTest extends TestCase
     /** @test */
     public function itCanUpdateWatcher(): void
     {
-        $watcher = factory(Watcher::class)->create();
+        $watcher = Watcher::factory()->create();
 
         $data = [
             'name' => 'Foobar watcher',
@@ -33,8 +33,8 @@ class UpdateTest extends TestCase
     /** @test */
     public function itCannotUpdateAnotherUsersWatcher(): void
     {
-        $user = factory(User::class)->create();
-        $watcher = factory(Watcher::class)->create();
+        $user = User::factory()->create();
+        $watcher = Watcher::factory()->create();
 
         $data = [
             'name' => 'Foobar watcher',
@@ -48,7 +48,7 @@ class UpdateTest extends TestCase
     /** @test */
     public function itWillUpdateTemplate(): void
     {
-        $watcher = factory(Watcher::class)->create();
+        $watcher = Watcher::factory()->create();
 
         $query = '//some-class';
         $this->actingAs($watcher->user)->putJson(route('watcher.update', $watcher), [
@@ -65,7 +65,7 @@ class UpdateTest extends TestCase
     /** @test */
     public function itWillNotUpdateTemplate(): void
     {
-        $watcher = factory(Watcher::class)->create();
+        $watcher = Watcher::factory()->create();
 
         $query = '//some-class';
         $this->actingAs($watcher->user)->putJson(route('watcher.update', $watcher), [

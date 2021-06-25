@@ -15,7 +15,7 @@ class UpdateTest extends TestCase
     /** @test */
     public function itCanUpdateUserPushoverCredentials(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $data = [
             'pushover_user_key' => 'ffffffffffoooooooooooooooooooo',
@@ -33,7 +33,7 @@ class UpdateTest extends TestCase
     /** @test */
     public function itCanUpdateApiKey(): void
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'api_key' => null,
         ]);
 

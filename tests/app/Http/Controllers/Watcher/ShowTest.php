@@ -15,7 +15,7 @@ class ShowTest extends TestCase
     /** @test */
     public function itShowsViewWithWatcher(): void
     {
-        $watcher = factory(Watcher::class)->create();
+        $watcher = Watcher::factory()->create();
 
         $this->actingAs($watcher->user)->get(route('watcher.show', $watcher))
             ->assertSuccessful()

@@ -13,7 +13,7 @@ class SearchTest extends TestCase
     /** @test */
     public function itCanFindTemplateByDomain(): void
     {
-        $template = factory(Template::class)->create();
+        $template = Template::factory()->create();
 
         $this->actingAs($template->user)->get(route('template.search', $template->domain))
             ->assertSuccessful()

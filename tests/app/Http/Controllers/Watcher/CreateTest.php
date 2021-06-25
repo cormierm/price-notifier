@@ -13,7 +13,7 @@ class CreateTest extends TestCase
     /** @test */
     public function itCanShowView(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $this->actingAs($user)->get(route('watcher.create'))
             ->assertSuccessful()

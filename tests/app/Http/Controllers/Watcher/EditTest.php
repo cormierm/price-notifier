@@ -14,8 +14,8 @@ class EditTest extends TestCase
     /** @test */
     public function itShowsViewWithWatcher(): void
     {
-        $user = factory(User::class)->create();
-        $watcher = factory(Watcher::class)->create([
+        $user = User::factory()->create();
+        $watcher = Watcher::factory()->create([
             'user_id' => $user->id,
         ]);
 

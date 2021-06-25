@@ -1,20 +1,27 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Template;
-use Faker\Generator as Faker;
+use App\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Template::class, function (Faker $faker) {
-    return [
-        'domain' => $faker->domainName,
-        'price_query' => $faker->word,
-        'price_query_type' => \App\Watcher::QUERY_TYPE_XPATH,
-        'user_id' => function () {
-            return factory(\App\User::class)->create()->id;
-        },
-        'xpath_stock' => $faker->word,
-        'stock_text' => $faker->word,
-        'stock_condition' => \App\Watcher::STOCK_CONDITION_CONTAINS_TEXT,
-    ];
-});
+class TemplateFactory extends Factory
+{
+    protected $model = Template::class;
+
+    public function definition(): array
+    {
+        return [
+            'domain' => $this->faker->domainName,
+            'price_query' => $this->faker->word,
+            'price_query_type' => \App\Watcher::QUERY_TYPE_XPATH,
+            'user_id' => function () {
+                return User::factory()->create()->id;
+            },
+            'xpath_stock' => $this->faker->word,
+            'stock_text' => $this->faker->word,
+            'stock_condition' => \App\Watcher::STOCK_CONDITION_CONTAINS_TEXT,
+        ];
+    }
+}

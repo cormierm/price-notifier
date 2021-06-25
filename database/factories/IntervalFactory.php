@@ -1,13 +1,19 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Interval;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Interval::class, function (Faker $faker) {
-    return [
-        'name' => $faker->name,
-        'minutes' => $faker->numberBetween(1, 1440),
-    ];
-});
+class IntervalFactory extends Factory
+{
+    protected $model = Interval::class;
+
+    public function definition(): array
+    {
+        return [
+                'name' => $this->faker->name,
+                'minutes' => $this->faker->numberBetween(1, 1440),
+        ];
+    }
+}

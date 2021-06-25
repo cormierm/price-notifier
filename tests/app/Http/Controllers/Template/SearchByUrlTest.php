@@ -14,7 +14,7 @@ class SearchByUrlTest extends TestCase
     public function itCanFindTemplateByDomain(): void
     {
         $url = 'https://foobar.com/some/url/product.html';
-        $template = factory(Template::class)->create([
+        $template = Template::factory()->create([
             'domain' => 'foobar.com',
         ]);
 

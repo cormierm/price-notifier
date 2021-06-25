@@ -19,8 +19,8 @@ class StoreTest extends TestCase
     public function itCanCreateWatcher(): void
     {
         Event::fake();
-        $user = factory(User::class)->create();
-        $region = factory(Region::class)->create();
+        $user = User::factory()->create();
+        $region = Region::factory()->create();
         $data = [
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
@@ -52,7 +52,7 @@ class StoreTest extends TestCase
     /** @test */
     public function itWillAddTemplate(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $data = [
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
@@ -83,7 +83,7 @@ class StoreTest extends TestCase
     /** @test */
     public function itWillNotAddTemplate(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $data = [
             'name' => 'Foo',
             'url' => 'http://some-url.com/with/price',
