@@ -24,7 +24,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "buefy": "^0.8.20",
+        "buefy": "^0.9.8",
         "moment": "^2.29.1",
         "puppeteer": "^8.0.0",
         "pusher-js": "^7.0.3",
