@@ -5,17 +5,15 @@
         <b-table
             :data="tableData"
         >
-            <template slot-scope="props">
-                <b-table-column field="created_at" label="Date" width="115">
-                    {{ props.row.created_at_formatted }}
-                </b-table-column>
-                <b-table-column field="watcher.name" label="Watcher">
-                    <a :href="`/watcher/${props.row.watcher.id}`">{{ props.row.watcher.name }}</a>
-                </b-table-column>
-                <b-table-column field="error" label="Error">
-                    {{ props.row.error }}
-                </b-table-column>
-            </template>
+            <b-table-column field="created_at" label="Date" width="115" v-slot="props">
+                {{ props.row.created_at_formatted }}
+            </b-table-column>
+            <b-table-column field="watcher.name" label="Watcher" v-slot="props">
+                <a :href="`/watcher/${props.row.watcher.id}`">{{ props.row.watcher.name }}</a>
+            </b-table-column>
+            <b-table-column field="error" label="Error" v-slot="props">
+                {{ props.row.error }}
+            </b-table-column>
         </b-table>
     </div>
 </template>

@@ -4,23 +4,23 @@
         <b-table
             :data="tableData"
         >
-            <template slot-scope="props">
-                <b-table-column field="created_at" label="Date" width="190">
-                    {{ props.row.created_at_formatted }}
-                </b-table-column>
-                <b-table-column field="watcher.name" label="Watcher">
-                    <div class="name-field">
-                        <div>
-                            <a :href="`/watcher/${props.row.watcher.id}`">{{ props.row.watcher.name }}</a>
-                            <a :href="props.row.watcher.url"><b-icon icon="link"/></a>
-                        </div>
-                        <span>{{ props.row.watcher.url_domain }}</span>
+            <b-table-column field="created_at" label="Date" width="190" v-slot="props">
+                {{ props.row.created_at_formatted }}
+            </b-table-column>
+            <b-table-column field="watcher.name" label="Watcher" v-slot="props">
+                <div class="name-field">
+                    <div>
+                        <a :href="`/watcher/${props.row.watcher.id}`">{{ props.row.watcher.name }}</a>
+                        <a :href="props.row.watcher.url">
+                            <b-icon icon="link"/>
+                        </a>
                     </div>
-                </b-table-column>
-                <b-table-column field="stock" label="Stock" width="100">
-                    {{ props.row.stock }}
-                </b-table-column>
-            </template>
+                    <span>{{ props.row.watcher.url_domain }}</span>
+                </div>
+            </b-table-column>
+            <b-table-column field="stock" label="Stock" width="100" v-slot="props">
+                {{ props.row.stock }}
+            </b-table-column>
         </b-table>
     </div>
 </template>

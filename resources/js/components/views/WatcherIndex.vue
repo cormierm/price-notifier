@@ -28,125 +28,134 @@
                 :row-class="(row) => `is-${row.status}`"
                 :mobile-cards="hasMobileCards"
             >
-                <template slot-scope="props">
-                    <b-table-column field="name" label="Name" sortable>
+                <b-table-column field="name" label="Name" sortable v-slot="props">
 
-                        <div class="name-field">
-                            <div>
-                                <a :href="`/watcher/${props.row.id}`">{{ props.row.name }}</a>
-                                <a :href="props.row.url"><b-icon icon="link"/></a>
-                            </div>
-                            <span>{{ props.row.url_domain }}</span>
-                        </div>
-                    </b-table-column>
-
-                    <b-table-column
-                        field="interval"
-                        :visible="columnsVisible['interval'].display"
-                        :label="columnsVisible['interval'].title"
-                    >
-                        <interval-select
-                            :intervals="intervals"
-                            :watcher-id="props.row.id"
-                            :value="props.row.interval_id"
-                            @update="updateWatcherList"
-                        />
-                    </b-table-column>
-
-                    <b-table-column
-                        field="initial_value"
-                        :visible="columnsVisible['initial_value'].display"
-                        :label="columnsVisible['initial_value'].title"
-                        width="120"
-                        centered
-                    >
-                        <div class="value-field">
-                            {{ props.row.initial_value ? props.row.initial_value : '-' }}
-                            <span>{{ props.row.created_at }}</span>
-                        </div>
-                    </b-table-column>
-
-                    <b-table-column field="value" label="Current" width="120" centered>
-                        <div class="value-field">
-                            {{ props.row.value ? props.row.value : '-' }}
-                            <span>{{ props.row.last_sync }}</span>
-                        </div>
-                    </b-table-column>
-
-                    <b-table-column
-                        field="change"
-                        :visible="columnsVisible['change'].display"
-                        :label="columnsVisible['change'].title"
-                        width="120"
-                        centered>
-                        <change-column
-                            :initial-value="props.row.initial_value"
-                            :current-value="props.row.value"
-                        />
-                    </b-table-column>
-
-                    <b-table-column
-                        field="lowest_price"
-                        :visible="columnsVisible['lowest_price'].display"
-                        :label="columnsVisible['lowest_price'].title"
-                        width="120"
-                        centered
-                    >
-                        <div class="value-field">
-                            {{ props.row.lowest_price ? props.row.lowest_price : '-' }}
-                            <span>{{ props.row.lowest_at }}</span>
-                        </div>
-                    </b-table-column>
-
-                    <b-table-column
-                        field="has_stock"
-                        :visible="columnsVisible['has_stock'].display"
-                        :label="columnsVisible['has_stock'].title"
-                        centered
-                    >
-                        {{ props.row.has_stock === true ? 'Yes' : props.row.has_stock === false ? 'No' : '-' }}
-                    </b-table-column>
-
-                    <b-table-column
-                        field="alert_value"
-                        :visible="columnsVisible['alert_value'].display"
-                        :label="columnsVisible['alert_value'].title"
-                        centered
-                    >
-                        {{ props.row.alert_value ? props.row.alert_value : '-' }}
-                    </b-table-column>
-
-                    <b-table-column
-                        field="client"
-                        :visible="columnsVisible['client'].display"
-                        :label="columnsVisible['client'].title"
-                        centered
-                    >
-                        {{ props.row.client }}
-                    </b-table-column>
-
-                    <b-table-column
-                        field="region"
-                        :visible="columnsVisible['region'].display"
-                        :label="columnsVisible['region'].title"
-                        centered
-                    >
-                        {{ props.row.region ? props.row.region.label : '-' }}
-                    </b-table-column>
-
-                    <b-table-column field="tools" centered>
-                        <div class="tool-buttons">
-                            <refresh-button :watcher-id="props.row.id" @update="updateWatcherList"></refresh-button>
-                            <a :href="`/watcher/${props.row.id}`">
-                                <b-button type="is-default" icon-right="information-outline"/>
+                    <div class="name-field">
+                        <div>
+                            <a :href="`/watcher/${props.row.id}`">{{ props.row.name }}</a>
+                            <a :href="props.row.url">
+                                <b-icon icon="link"/>
                             </a>
-                            <a :href="`/watcher/${props.row.id}/edit`">
-                                <b-button type="is-default" icon-right="pencil"/>
-                            </a>
-                            <delete-button :watcher="props.row" @delete="removeWatcherFromList"></delete-button>
                         </div>
-                    </b-table-column>
-                </template>
+                        <span>{{ props.row.url_domain }}</span>
+                    </div>
+                </b-table-column>
+
+                <b-table-column
+                    field="interval"
+                    :visible="columnsVisible['interval'].display"
+                    :label="columnsVisible['interval'].title"
+                    v-slot="props"
+                >
+                    <interval-select
+                        :intervals="intervals"
+                        :watcher-id="props.row.id"
+                        :value="props.row.interval_id"
+                        @update="updateWatcherList"
+                    />
+                </b-table-column>
+
+                <b-table-column
+                    field="initial_value"
+                    :visible="columnsVisible['initial_value'].display"
+                    :label="columnsVisible['initial_value'].title"
+                    width="120"
+                    centered
+                    v-slot="props"
+                >
+                    <div class="value-field">
+                        {{ props.row.initial_value ? props.row.initial_value : '-' }}
+                        <span>{{ props.row.created_at }}</span>
+                    </div>
+                </b-table-column>
+
+                <b-table-column field="value" label="Current" width="120" centered v-slot="props">
+                    <div class="value-field">
+                        {{ props.row.value ? props.row.value : '-' }}
+                        <span>{{ props.row.last_sync }}</span>
+                    </div>
+                </b-table-column>
+
+                <b-table-column
+                    field="change"
+                    :visible="columnsVisible['change'].display"
+                    :label="columnsVisible['change'].title"
+                    width="120"
+                    centered
+                    v-slot="props"
+                >
+                    <change-column
+                        :initial-value="props.row.initial_value"
+                        :current-value="props.row.value"
+                    />
+                </b-table-column>
+
+                <b-table-column
+                    field="lowest_price"
+                    :visible="columnsVisible['lowest_price'].display"
+                    :label="columnsVisible['lowest_price'].title"
+                    width="120"
+                    centered
+                    v-slot="props"
+                >
+                    <div class="value-field">
+                        {{ props.row.lowest_price ? props.row.lowest_price : '-' }}
+                        <span>{{ props.row.lowest_at }}</span>
+                    </div>
+                </b-table-column>
+
+                <b-table-column
+                    field="has_stock"
+                    :visible="columnsVisible['has_stock'].display"
+                    :label="columnsVisible['has_stock'].title"
+                    centered
+                    v-slot="props"
+                >
+                    {{ props.row.has_stock === true ? 'Yes' : props.row.has_stock === false ? 'No' : '-' }}
+                </b-table-column>
+
+                <b-table-column
+                    field="alert_value"
+                    :visible="columnsVisible['alert_value'].display"
+                    :label="columnsVisible['alert_value'].title"
+                    centered
+                    v-slot="props"
+                >
+                    {{ props.row.alert_value ? props.row.alert_value : '-' }}
+                </b-table-column>
+
+                <b-table-column
+                    field="client"
+                    :visible="columnsVisible['client'].display"
+                    :label="columnsVisible['client'].title"
+                    centered
+                    v-slot="props"
+                >
+                    {{ props.row.client }}
+                </b-table-column>
+
+                <b-table-column
+                    field="region"
+                    :visible="columnsVisible['region'].display"
+                    :label="columnsVisible['region'].title"
+                    centered
+                    v-slot="props"
+                >
+                    {{ props.row.region ? props.row.region.label : '-' }}
+                </b-table-column>
+
+                <b-table-column field="tools" centered v-slot="props">
+                    <div class="tool-buttons">
+                        <refresh-button :watcher-id="props.row.id" @update="updateWatcherList"></refresh-button>
+                        <a :href="`/watcher/${props.row.id}`">
+                            <b-button type="is-default" icon-right="information-outline"/>
+                        </a>
+                        <a :href="`/watcher/${props.row.id}/edit`">
+                            <b-button type="is-default" icon-right="pencil"/>
+                        </a>
+                        <delete-button :watcher="props.row" @delete="removeWatcherFromList"></delete-button>
+                    </div>
+                </b-table-column>
             </b-table>
         </div>
     </div>
@@ -199,14 +208,14 @@ export default {
                 watchers: {},
             },
             columnsVisible: {
-                interval: { title: 'Interval', display: true },
-                initial_value: { title: 'Original', display: true },
-                change: { title: 'Change', display: true },
-                lowest_price: { title: 'Lowest', display: true },
-                has_stock: { title: 'Stock', display: true },
-                alert_value: { title: 'Alert', display: false },
-                client: { title: 'Client', display: false },
-                region: { title: 'Region', display: false },
+                interval: {title: 'Interval', display: true},
+                initial_value: {title: 'Original', display: true},
+                change: {title: 'Change', display: true},
+                lowest_price: {title: 'Lowest', display: true},
+                has_stock: {title: 'Stock', display: true},
+                alert_value: {title: 'Alert', display: false},
+                client: {title: 'Client', display: false},
+                region: {title: 'Region', display: false},
             },
         };
     },
@@ -259,6 +268,7 @@ export default {
     display: flex;
     justify-content: space-between;
 }
+
 .name-field, .value-field {
     display: flex;
     flex-direction: column;
