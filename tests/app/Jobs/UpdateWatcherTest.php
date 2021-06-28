@@ -69,6 +69,8 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itCreatesLog(): void
     {
+        Event::fake();
+
         $region = 'kitchener';
         Config::set('pcn.region', $region);
         $rawValue = 'CDN$ 149.99';
@@ -95,6 +97,8 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itCreatesLogWithError(): void
     {
+        Event::fake();
+
         $watcher = Watcher::factory()->create([
             'url' => 'asdf://not.a.valid.url/foobar'
         ]);

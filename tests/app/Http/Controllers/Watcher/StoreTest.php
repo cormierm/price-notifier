@@ -52,6 +52,8 @@ class StoreTest extends TestCase
     /** @test */
     public function itWillAddTemplate(): void
     {
+        Event::fake();
+
         $user = User::factory()->create();
         $data = [
             'name' => 'Foo',
@@ -83,6 +85,8 @@ class StoreTest extends TestCase
     /** @test */
     public function itWillNotAddTemplate(): void
     {
+        Event::fake();
+
         $user = User::factory()->create();
         $data = [
             'name' => 'Foo',
