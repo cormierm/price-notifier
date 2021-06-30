@@ -26,7 +26,7 @@
                            aria-close-label="Close message">
                     Price InnerText: <strong>{{ testResults.debug.value_inner_text }}</strong><br><br>
                     Stock InnerText: <strong>{{ testResults.debug.stock_inner_text }}</strong><br><br>
-                    Stock Html: <strong>{{ testResults.debug.stock_html }}</strong>
+                    Stock OuterHtml: <strong>{{ testResults.debug.stock_outer_html }}</strong>
                 </b-message>
             </div>
         </div>
@@ -100,24 +100,48 @@
                 ></b-input>
             </b-field>
 
+            <b-field label="Stock Query"></b-field>
             <b-field
-                label="XPath Query for Stock"
-                :type="formErrors['xpath_stock'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['xpath_stock']"
+                :type="formErrors['stock_query_type'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['stock_query_type']"
+            >
+                <div class="block">
+                    <b-radio
+                        v-model="stockQueryType"
+                        name="stock_query_type"
+                        native-value="xpath"
+                    >
+                        XPath
+                    </b-radio>
+                    <b-radio
+                        v-model="stockQueryType"
+                        name="stock_query_type"
+                        native-value="selector"
+                    >
+                        Query Selector
+                    </b-radio>
+                    <b-radio
+                        v-model="stockQueryType"
+                        name="stock_query_type"
+                        native-value="regex"
+                    >
+                        Regex
+                    </b-radio>
+                </div>
+            </b-field>
+            <b-field
+                :type="formErrors['stock_query'] ? 'is-danger' : 'is-default'"
+                :message="formErrors['stock_query']"
             >
                 <b-input
-                    v-model="xpathStock"
+                    v-model="stockQuery"
                     maxlength="255"
-                    placeholder="//span[@id='stock']"
+                    placeholder="//span[@id='price']"
                     @input="updateQueries = true"
                 ></b-input>
             </b-field>
 
-            <b-field
-                label="Stock Condition"
-                :type="formErrors['stock_condition'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['stock_condition']"
-            >
+            <b-field>
                 <b-select placeholder="Select stock condition" v-model="stockCondition">
                     <option
                         v-for="option in stockConditions"
@@ -126,14 +150,8 @@
                         {{ option.label }}
                     </option>
                 </b-select>
-            </b-field>
-
-            <b-field
-                label="Stock Text Match"
-                :type="formErrors['stock_text'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['stock_text']"
-            >
                 <b-input
+                    expanded
                     v-model="stockText"
                     maxlength="255"
                     placeholder="In Stock."
@@ -273,10 +291,11 @@ export default {
             this.region = this.watcher.region_id;
             this.priceQuery = this.watcher.price_query;
             this.priceQueryType = this.watcher.price_query_type;
+            this.stockQuery = this.watcher.stock_query;
+            this.stockQueryType = this.watcher.stock_query_type;
             this.url = this.watcher.url;
             this.alertValue = this.watcher.alert_value;
             this.client = this.watcher.client;
-            this.xpathStock = this.watcher.xpath_stock;
             this.stockText = this.watcher.stock_text;
             this.stockAlert = this.watcher.stock_alert === true;
             this.stockCondition = this.watcher.stock_condition;
@@ -295,20 +314,21 @@ export default {
             alertValue: '',
             priceQuery: '//span[@id="price"]',
             priceQueryType: 'xpath',
+            stockQuery: '//span[@id="stock"]',
+            stockQueryType: 'xpath',
             url: '',
             formErrors: {},
             template: null,
             client: 'browsershot',
-            xpathStock: '',
             stockText: '',
             stockAlert: false,
             stockCondition: 'contains_text',
             updateQueries: true,
             stockConditions: [
-                {label: 'Contains Text', value: 'contains_text'},
-                {label: 'Missing Text', value: 'missing_text'},
-                {label: 'Contains Html', value: 'contains_html'},
-                {label: 'Missing Html', value: 'missing_html'},
+                {label: 'InnerText Contains', value: 'contains_text'},
+                {label: 'InnerText Missing', value: 'missing_text'},
+                {label: 'OuterHtml Contains', value: 'contains_html'},
+                {label: 'OuterHtml Missing', value: 'missing_html'},
             ],
             showDebug: false,
         };
@@ -347,9 +367,10 @@ export default {
                 url: this.url,
                 price_query: this.priceQuery,
                 price_query_type: this.priceQueryType,
+                stock_query: this.stockQuery,
+                stock_query_type: this.stockQueryType,
                 alert_value: this.alertValue,
                 client: this.client,
-                xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
                 stock_alert: this.stockAlert,
                 stock_condition: this.stockCondition,
@@ -376,8 +397,9 @@ export default {
                 url: this.url,
                 price_query: this.priceQuery,
                 price_query_type: this.priceQueryType,
+                stock_query: this.stockQuery,
+                stock_query_type: this.stockQueryType,
                 client: this.client,
-                xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
                 stock_condition: this.stockCondition,
             }).then(({data}) => {
@@ -408,8 +430,9 @@ export default {
             }).then(({data}) => {
                 this.priceQuery = data.price_query;
                 this.priceQueryType = data.price_query_type;
+                this.stockQuery = data.stock_query;
+                this.stockQueryType = data.stock_query_type;
                 this.client = data.client;
-                this.xpathStock = data.xpath_stock;
                 this.stockText = data.stock_text;
                 this.stockCondition = data.stock_condition;
                 this.template = data;
@@ -430,9 +453,10 @@ export default {
                 url: this.url,
                 price_query: this.priceQuery,
                 price_query_type: this.priceQueryType,
+                stock_query: this.stockQuery,
+                stock_query_type: this.stockQueryType,
                 alert_value: this.alertValue,
                 client: this.client,
-                xpath_stock: this.xpathStock,
                 stock_text: this.stockText,
                 stock_alert: this.stockAlert,
                 stock_condition: this.stockCondition,

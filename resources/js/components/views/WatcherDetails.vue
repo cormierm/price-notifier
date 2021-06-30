@@ -23,15 +23,17 @@
                     Original Price: {{ watcher.initial_value }} ({{ formatDate(watcher.created_at) }})<br>
                     Current Price: {{ watcher.value }} ({{ formatDate(watcher.last_sync) }})<br>
                     Lowest Price: {{ watcher.lowest_price }} ({{ formatDate(watcher.lowest_at) }})<br>
-                    Has Stock: {{ watcher.has_stock === true ? 'Yes' : watcher.has_stock === false ? 'No' : 'Unknown' }}<br><br>
+                    Has Stock: {{ watcher.has_stock === true ? 'Yes' : watcher.has_stock === false ? 'No' : 'Unknown' }}<br><
                     Alert Price: {{ watcher.alert_value }}<br>
 
                     Price Query: {{ watcher.price_query }}<br>
                     Price Query Type: {{ watcher.price_query_type }}<br><br>
 
-                    XPath Query Stock: {{ watcher.xpath_stock }}<br>
+                    Stock Query: {{ watcher.stock_query }}<br>
+                    Stock Query Type: {{ watcher.stock_query_type }}<br><br>
                     Stock condition: {{ watcher.stock_condition }}<br>
                     Stock text match: {{ watcher.stock_text }}<br><br>
+
                     Region: {{ watcher.region ? watcher.region.label : '' }}<br><br>
                     Interval:
                     <interval-select

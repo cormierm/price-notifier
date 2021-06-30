@@ -49,7 +49,8 @@ class CheckTest extends TestCase
             'url' => 'http://foobar.com',
             'price_query' => $priceQuery,
             'price_query_type' => 'xpath',
-            'xpath_stock' => $xpathStock,
+            'stock_query' => $xpathStock,
+            'stock_query_type' => 'xpath',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT
         ])
             ->assertSuccessful()
@@ -57,7 +58,7 @@ class CheckTest extends TestCase
                 'debug' => [
                     'value_inner_text' => 'CDN$ 55.00',
                     'stock_inner_text' => 'Out of Stock',
-                    'stock_html' => '<span id="stock">Out of Stock</span>'
+                    'stock_outer_html' => '<span id="stock">Out of Stock</span>'
                 ]
             ]);
     }

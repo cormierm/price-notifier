@@ -45,7 +45,7 @@ class UpdateWatcher implements ShouldQueue
             $html = $fetcher->fetchHtml($this->watcher->url, $this->watcher->user->user_agent);
             $parser = new HtmlParser($html);
 
-            $this->rawPrice = $parser->queryHtml($this->watcher->price_query, $this->watcher->price_query_type);
+            $this->rawPrice = $parser->queryInnerHtml($this->watcher->price_query, $this->watcher->price_query_type);
             $this->price = PriceHelper::numbersFromText($this->rawPrice);
 
             $this->hasStock = $this->calculateStock($parser);
@@ -172,13 +172,13 @@ class UpdateWatcher implements ShouldQueue
 
     private function calculateStock(HtmlParser $parser)
     {
-        if ($this->watcher->xpath_stock && $this->watcher->stock_text) {
+        if ($this->watcher->stock_query && $this->watcher->stock_query_type && $this->watcher->stock_text) {
             $this->rawStock = in_array(
                 $this->watcher->stock_condition,
                 [Watcher::STOCK_CONDITION_CONTAINS_TEXT, Watcher::STOCK_CONDITION_MISSING_TEXT]
             )
-                ? $parser->nodeValueByXPathQuery($this->watcher->xpath_stock)
-                : $parser->nodeHtmlByXPathQuery($this->watcher->xpath_stock);
+                ? $parser->queryInnerHtml($this->watcher->stock_query, $this->watcher->stock_query_type)
+                : $parser->queryOuterHtml($this->watcher->stock_query, $this->watcher->stock_query_type);
 
             $containText = in_array(
                 $this->watcher->stock_condition,

@@ -206,9 +206,11 @@ class UpdateWatcherTest extends TestCase
     {
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'xpath_stock' => '//div[@id="stock"]',
+            'stock_query' => '//div[@id="stock"]',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
             'stock_text' => 'In Stock.',
             'stock_alert' => true,
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
@@ -228,15 +230,17 @@ class UpdateWatcherTest extends TestCase
         $this->assertTrue($watcher->fresh()->has_stock);
     }
 
+
     /** @test */
     public function itWillNotSendStockAlertWhenStockAlertSetToFalse(): void
     {
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'xpath_stock' => '//div[@id="stock"]',
-            'stock_text' => 'In Stock.',
+            'stock_query' => 'In Stock.',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
             'stock_alert' => false,
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'has_stock' => false,
@@ -258,9 +262,40 @@ class UpdateWatcherTest extends TestCase
     {
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'xpath_stock' => '//div[@id="stock"]',
+            'stock_query' => '//div[@id="stock"]',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
+            'stock_text' => 'In Stock.',
+            'stock_alert' => false,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
+            'has_stock' => false,
+        ]);
+        $html = '<html><body><div id="stock">In Stock.</div></body></html>';
+
+        $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
+        });
+
+        $this->doesntExpectJobs(SendPushoverMessage::class);
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertTrue($watcher->fresh()->has_stock);
+    }
+
+    /** @test */
+    public function itWillSetHasStockToTrueForTextContainsWithSelectorQuery(): void
+    {
+        $watcher = Watcher::factory()->create([
+            'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
+            'alert_value' => null,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'stock_query' => '#stock',
+            'stock_query_type' => Watcher::QUERY_TYPE_SELECTOR,
             'stock_text' => 'In Stock.',
             'stock_alert' => false,
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
@@ -285,9 +320,11 @@ class UpdateWatcherTest extends TestCase
     {
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'xpath_stock' => '//div[@id="stock"]',
+            'stock_query' => '//div[@id="stock"]',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
             'stock_text' => 'In Stock.',
             'stock_alert' => false,
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
@@ -312,9 +349,11 @@ class UpdateWatcherTest extends TestCase
     {
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'xpath_stock' => '//div[@id="stock"]',
+            'stock_query' => '//div[@id="stock"]',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
             'stock_text' => 'Out of Stock.',
             'stock_alert' => false,
             'stock_condition' => Watcher::STOCK_CONDITION_MISSING_TEXT,
@@ -339,9 +378,11 @@ class UpdateWatcherTest extends TestCase
     {
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
             'alert_value' => null,
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'xpath_stock' => '//div[@id="stock"]',
+            'stock_query' => '//div[@id="stock"]',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
             'stock_text' => 'Out of Stock.',
             'stock_alert' => false,
             'stock_condition' => Watcher::STOCK_CONDITION_MISSING_TEXT,
@@ -427,7 +468,8 @@ class UpdateWatcherTest extends TestCase
 
         $watcher = Watcher::factory()->create([
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
-            'xpath_stock' => '//div[@id="stock"]',
+            'stock_query' => '//div[@id="stock"]',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
             'stock_text' => 'In Stock.',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
         ]);
@@ -467,7 +509,9 @@ class UpdateWatcherTest extends TestCase
         $watcher = Watcher::factory()->create([
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'price_query' => '//span[@class="value"]',
-            'xpath_stock' => '//div[@id="stock"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
+            'stock_query' => '//div[@id="stock"]',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
             'stock_text' => 'In Stock.',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
         ]);

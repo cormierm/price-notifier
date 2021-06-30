@@ -15,7 +15,7 @@ class HtmlParserTest extends TestCase
 
         $parser = new HtmlParser($html);
 
-        $this->assertEquals('149.99', $parser->queryHtml($querySelector, HtmlParser::QUERY_TYPE_SELECTOR));
+        $this->assertEquals('149.99', $parser->queryInnerHtml($querySelector, HtmlParser::QUERY_TYPE_SELECTOR));
     }
 
     /** @test */
@@ -25,7 +25,7 @@ class HtmlParserTest extends TestCase
         $html = '<html><body><div>before$1,800.00after</div></body></html>';
         $parser = new HtmlParser($html);
 
-        $this->assertEquals('$1,800.00', $parser->queryHtml($regex, HtmlParser::QUERY_TYPE_REGEX));
+        $this->assertEquals('$1,800.00', $parser->queryInnerHtml($regex, HtmlParser::QUERY_TYPE_REGEX));
     }
 
     /** @test */

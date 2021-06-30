@@ -20,8 +20,9 @@ class Search extends Controller
             'xpath_name' => $template->xpath_name,
             'price_query' => $template->price_query,
             'price_query_type' => $template->price_query_type,
+            'stock_query' => $template->stock_query,
+            'stock_query_type' => $template->stock_query_type,
             'client' => $template->client,
-            'xpath_stock' => $template->xpath_stock,
             'stock_text' => $template->stock_text,
             'stock_condition' => $template->stock_condition,
         ]);

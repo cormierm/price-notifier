@@ -22,7 +22,8 @@ class StoreTest extends TestCase
             'name' => 'Foobar',
             'price_query' => '//span[id="price"]',
             'price_query_type' => 'regex',
-            'xpath_stock' => '//span[id="stock"]',
+            'stock_query' => '//span[id="stock"]',
+            'stock_query_type' => 'xpath',
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
         ];
         $this->postJson(route('api.watcher.store'), $data, [
@@ -35,7 +36,8 @@ class StoreTest extends TestCase
             'url' => $data['url'],
             'price_query' => $data['price_query'],
             'price_query_type' => $data['price_query_type'],
-            'xpath_stock' => $data['xpath_stock'],
+            'stock_query' => $data['stock_query'],
+            'stock_query_type' => $data['stock_query_type'],
             'client' => $data['client']
         ]);
     }

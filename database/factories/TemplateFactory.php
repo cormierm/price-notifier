@@ -19,7 +19,8 @@ class TemplateFactory extends Factory
             'user_id' => function () {
                 return User::factory()->create()->id;
             },
-            'xpath_stock' => $this->faker->word,
+            'stock_query' => $this->faker->word,
+            'stock_query_type' => \App\Watcher::QUERY_TYPE_XPATH,
             'stock_text' => $this->faker->word,
             'stock_condition' => \App\Watcher::STOCK_CONDITION_CONTAINS_TEXT,
         ];

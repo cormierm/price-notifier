@@ -19,10 +19,11 @@ class Store extends Controller
             'user_id' => $request->user()->id,
             'price_query' => $request->input('price_query'),
             'price_query_type' => $request->input('price_query_type'),
+            'stock_query' => $request->input('stock_query'),
+            'stock_query_type' => $request->input('stock_query_type'),
             'interval_id' => $request->input('interval_id'),
             'alert_value' => $request->input('alert_value'),
             'client' => $request->input('client'),
-            'xpath_stock' => $request->input('xpath_stock'),
             'stock_text' => $request->input('stock_text'),
             'stock_alert' => $request->input('stock_alert'),
             'stock_condition' => $request->input('stock_condition'),
@@ -40,10 +41,11 @@ class Store extends Controller
                 [
                     'price_query' => $request->input('price_query'),
                     'price_query_type' => $request->input('price_query_type'),
-                    'client' => $request->input('client'),
-                    'xpath_stock' => $request->input('xpath_stock'),
+                    'stock_query' => $request->input('stock_query'),
+                    'stock_query_type' => $request->input('stock_query_type'),
                     'stock_text' => $request->input('stock_text'),
                     'stock_condition' => $request->input('stock_condition'),
+                    'client' => $request->input('client'),
                 ]
             );
         }

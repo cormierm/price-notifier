@@ -14,8 +14,11 @@
             <b-table-column field="price_query" label="Price Query" v-slot="props">
                 {{ props.row.price_query }}
             </b-table-column>
-            <b-table-column field="xpath_stock" label="XPath Stock Query" v-slot="props">
-                {{ props.row.xpath_stock }}
+            <b-table-column field="stock_query_type" label="Stock Query Type" v-slot="props">
+                {{ props.row.stock_query_type }}
+            </b-table-column>
+            <b-table-column field="stock_query" label="Stock Query" v-slot="props">
+                {{ props.row.stock_query }}
             </b-table-column>
             <b-table-column field="stock_condition" label="Condition" v-slot="props">
                 {{ props.row.stock_condition }}

@@ -25,7 +25,7 @@ class HtmlParser
         $this->html = $html;
     }
 
-    public function queryHtml(?string $query, ?string $type): string
+    public function queryInnerHtml(?string $query, ?string $type): string
     {
         if (!in_array($type, self::QUERY_TYPES)) {
             return '';
@@ -36,18 +36,39 @@ class HtmlParser
         }
 
         if ($type === self::QUERY_TYPE_SELECTOR) {
-            return $this->querySelector($query);
+            return $this->querySelector($query, 'inner');
         }
 
         return $this->nodeValueByXPathQuery($query);
     }
 
-    public function querySelector(string $selector): string
+    public function queryOuterHtml(?string $query, ?string $type): string
+    {
+        if (!in_array($type, self::QUERY_TYPES)) {
+            return '';
+        }
+
+        if ($type === self::QUERY_TYPE_REGEX) {
+            return $this->regexMatch($query);
+        }
+
+        if ($type === self::QUERY_TYPE_SELECTOR) {
+            return $this->querySelector($query, 'outer');
+        }
+
+        return $this->nodeHtmlByXPathQuery($query);
+    }
+
+    public function querySelector(string $selector, $htmlType = 'inner'): string
     {
         $pq = new PhpQuery;
         $pq->load_str($this->html);
 
-        return $pq->innerHTML($pq->query($selector)[0]);
+        if ($htmlType === 'inner') {
+            return $pq->innerHTML($pq->query($selector)[0]);
+        }
+
+        return $pq->outerHTML($pq->query($selector)[0]);
     }
 
     public function regexMatch(string $regex): string

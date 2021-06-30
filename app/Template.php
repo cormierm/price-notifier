@@ -13,10 +13,11 @@ class Template extends Model
         'domain',
         'price_query',
         'price_query_type',
-        'client',
-        'xpath_stock',
+        'stock_query',
+        'stock_query_type',
         'stock_text',
         'stock_condition',
+        'client',
     ];
 
     public function user()

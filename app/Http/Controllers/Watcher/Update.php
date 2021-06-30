@@ -23,8 +23,9 @@ class Update extends Controller
                 [
                     'price_query' => $watcher->price_query,
                     'price_query_type' => $watcher->price_query_type,
+                    'stock_query' => $watcher->stock_query,
+                    'stock_query_type' => $watcher->stock_query_type,
                     'client' => $watcher->client,
-                    'xpath_stock' => $watcher->xpath_stock,
                     'stock_text' => $watcher->stock_text,
                     'stock_condition' => $watcher->stock_condition,
                 ]

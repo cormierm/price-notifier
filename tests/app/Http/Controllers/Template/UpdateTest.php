@@ -20,7 +20,8 @@ class UpdateTest extends TestCase
             'price_query' => 'some-query-value',
             'price_query_type' => 'regex',
             'client' => 'curl',
-            'xpath_stock' => 'some-stock-query',
+            'price_query' => 'some-stock-query',
+            'price_query_type' => 'xpath',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'stock_text' => 'foobar',
         ];

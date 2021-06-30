@@ -22,16 +22,16 @@ class Check extends Controller
 
             $parser = new HtmlParser($html);
 
-            $rawValue = $parser->queryHtml($request->input('price_query'), $request->input('price_query_type'));
+            $rawValue = $parser->queryInnerHtml($request->input('price_query'), $request->input('price_query_type'));
             $formattedValue = PriceHelper::numbersFromText($rawValue);
 
-            if ($request->input('xpath_stock') && $request->input('stock_text')) {
+            if ($request->input('stock_query') && $request->input('stock_query_type') && $request->input('stock_text')) {
                 $rawStockValue = in_array(
                     $request->input('stock_condition'),
                     [Watcher::STOCK_CONDITION_CONTAINS_TEXT, Watcher::STOCK_CONDITION_MISSING_TEXT]
                 )
-                    ? $parser->nodeValueByXPathQuery($request->input('xpath_stock', ''))
-                    : $parser->nodeHtmlByXPathQuery($request->input('xpath_stock', ''));
+                    ? $parser->queryInnerHtml($request->input('stock_query', ''), $request->input('stock_query_type', ''))
+                    : $parser->queryOuterHtml($request->input('stock_query', ''), $request->input('stock_query_type', ''));
 
                 $contains = in_array(
                     $request->input('stock_condition'),
@@ -48,11 +48,11 @@ class Check extends Controller
                 'has_stock' => $hasStock ?? null,
                 'debug' => [
                     'value_inner_text' => $rawValue,
-                    'stock_inner_text' => $request->input('xpath_stock')
-                        ? $parser->nodeValueByXPathQuery($request->input('xpath_stock', ''))
+                    'stock_inner_text' => $request->input('stock_query')
+                        ?  $parser->queryInnerHtml($request->input('stock_query', ''), $request->input('stock_query_type', ''))
                         : '',
-                    'stock_html' => $request->input('xpath_stock')
-                        ? $parser->nodeHtmlByXPathQuery($request->input('xpath_stock', ''))
+                    'stock_outer_html' => $request->input('stock_query')
+                        ? $parser->queryOuterHtml($request->input('stock_query', ''), $request->input('stock_query_type', ''))
                         : '',
                 ]
             ]);
