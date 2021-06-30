@@ -40,9 +40,11 @@ class Watcher extends Model
     ];
 
     const QUERY_TYPE_REGEX = 'regex';
+    const QUERY_TYPE_SELECTOR = 'selector';
     const QUERY_TYPE_XPATH = 'xpath';
     const QUERY_TYPES = [
         self::QUERY_TYPE_REGEX,
+        self::QUERY_TYPE_SELECTOR,
         self::QUERY_TYPE_XPATH,
     ];
 

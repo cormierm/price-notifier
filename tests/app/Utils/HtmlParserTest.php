@@ -7,6 +7,16 @@ use Tests\TestCase;
 
 class HtmlParserTest extends TestCase
 {
+    /** @test */
+    public function itReturnsInnerHtmlFromQuerySelector(): void
+    {
+        $querySelector = '.value';
+        $html = '<html><body><div id="pull-right-price" class="pull-right "><span class="value">149.99</span><span class="currency">$</span></div></div></body></html>';
+
+        $parser = new HtmlParser($html);
+
+        $this->assertEquals('149.99', $parser->queryHtml($querySelector, HtmlParser::QUERY_TYPE_SELECTOR));
+    }
 
     /** @test */
     public function itReturnsTextFromRegexMatch(): void
@@ -40,7 +50,7 @@ class HtmlParserTest extends TestCase
     }
 
     /** @test */
-    public function itCanGetHtmlFromXpathQuery(): void
+    public function itCanGetOuterHtmlFromXpathQuery(): void
     {
         $html = '<html><body><div id="test-div"><input class="hello"><span>Hi</span></div></div></body></html>';
 

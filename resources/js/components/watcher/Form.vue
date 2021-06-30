@@ -75,6 +75,13 @@
                     <b-radio
                         v-model="priceQueryType"
                         name="price_query_type"
+                        native-value="selector"
+                    >
+                        Query Selector
+                    </b-radio>
+                    <b-radio
+                        v-model="priceQueryType"
+                        name="price_query_type"
                         native-value="regex"
                     >
                         Regex

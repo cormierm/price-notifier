@@ -5,11 +5,18 @@ namespace App\Utils;
 use DOMDocument;
 use DOMNodeList;
 use DOMXPath;
+use PhpQuery\PhpQuery;
 
 class HtmlParser
 {
     const QUERY_TYPE_REGEX = 'regex';
+    const QUERY_TYPE_SELECTOR = 'selector';
     const QUERY_TYPE_XPATH = 'xpath';
+    const QUERY_TYPES = [
+        self::QUERY_TYPE_REGEX,
+        self::QUERY_TYPE_SELECTOR,
+        self::QUERY_TYPE_XPATH
+    ];
 
     private $html;
 
@@ -20,7 +27,7 @@ class HtmlParser
 
     public function queryHtml(?string $query, ?string $type): string
     {
-        if (!$query || !$type) {
+        if (!in_array($type, self::QUERY_TYPES)) {
             return '';
         }
 
@@ -28,7 +35,19 @@ class HtmlParser
             return $this->regexMatch($query);
         }
 
+        if ($type === self::QUERY_TYPE_SELECTOR) {
+            return $this->querySelector($query);
+        }
+
         return $this->nodeValueByXPathQuery($query);
+    }
+
+    public function querySelector(string $selector): string
+    {
+        $pq = new PhpQuery;
+        $pq->load_str($this->html);
+
+        return $pq->innerHTML($pq->query($selector)[0]);
     }
 
     public function regexMatch(string $regex): string
