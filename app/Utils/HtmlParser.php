@@ -27,7 +27,7 @@ class HtmlParser
 
     public function queryInnerHtml(?string $query, ?string $type): string
     {
-        if (!in_array($type, self::QUERY_TYPES)) {
+        if (!in_array($type, self::QUERY_TYPES) || !$query) {
             return '';
         }
 
@@ -44,7 +44,7 @@ class HtmlParser
 
     public function queryOuterHtml(?string $query, ?string $type): string
     {
-        if (!in_array($type, self::QUERY_TYPES)) {
+        if (!in_array($type, self::QUERY_TYPES) || !$query) {
             return '';
         }
 
