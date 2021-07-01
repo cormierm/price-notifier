@@ -159,86 +159,88 @@
                 ></b-input>
             </b-field>
 
-            <b-field
-                label="Alert Price"
-                :type="formErrors['alert_value'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['alert_value']"
-            >
-                <b-input
-                    v-model="alertValue"
-                    type="number"
-                    placeholder="5.00"
-                ></b-input>
-            </b-field>
 
-            <b-field
-                label="Alerts"
-            >
-                <div class="field">
-                    <b-checkbox v-model="stockAlert">Stock</b-checkbox>
-                </div>
-            </b-field>
+            <div class="form-section">
+                <h2 class="subtitle">Notifications</h2>
+                <b-field>
+                    <b-checkbox v-model="stockAlert">Notify When In Stock</b-checkbox>
+                </b-field>
+                <b-field
+                    label="Notify When Price Below"
+                    :type="formErrors['alert_value'] ? 'is-danger' : 'is-default'"
+                    :message="formErrors['alert_value']"
+                >
+                    <b-input
+                        v-model="alertValue"
+                        type="number"
+                        placeholder="5.00"
+                    ></b-input>
+                </b-field>
+            </div>
 
-            <b-field
-                label="Interval"
-                :type="formErrors['interval_id'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['interval_id']"
-            >
-                <b-select placeholder="Select an interval" v-model="interval">
-                    <option
-                        v-for="option in intervals"
-                        :value="option.id"
-                        :key="option.id">
-                        {{ option.name }}
-                    </option>
-                </b-select>
-            </b-field>
+            <div class="form-section">
+                <h2 class="subtitle">Watcher Settings</h2>
+                <b-field
+                    label="Interval"
+                    :type="formErrors['interval_id'] ? 'is-danger' : 'is-default'"
+                    :message="formErrors['interval_id']"
+                >
+                    <b-select placeholder="Select an interval" v-model="interval">
+                        <option
+                            v-for="option in intervals"
+                            :value="option.id"
+                            :key="option.id">
+                            {{ option.name }}
+                        </option>
+                    </b-select>
+                </b-field>
 
-            <b-field
-                label="Html Client"
-                :type="formErrors['client'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['client']"
-            >
-                <div class="block">
-                    <b-radio
-                        v-model="client"
-                        name="client"
-                        native-value="browsershot"
-                    >
-                        Browsershot
-                    </b-radio>
-                    <b-radio
-                        v-model="client"
-                        name="client"
-                        native-value="curl"
-                    >
-                        Curl
-                    </b-radio>
-                    <b-radio
-                        v-model="client"
-                        name="client"
-                        native-value="guzzle"
-                    >
-                        Guzzle
-                    </b-radio>
-                </div>
-            </b-field>
+                <b-field
+                    label="Html Client"
+                    :type="formErrors['client'] ? 'is-danger' : 'is-default'"
+                    :message="formErrors['client']"
+                >
+                    <div class="block">
+                        <b-radio
+                            v-model="client"
+                            name="client"
+                            native-value="browsershot"
+                        >
+                            Browsershot
+                        </b-radio>
+                        <b-radio
+                            v-model="client"
+                            name="client"
+                            native-value="curl"
+                        >
+                            Curl
+                        </b-radio>
+                        <b-radio
+                            v-model="client"
+                            name="client"
+                            native-value="guzzle"
+                        >
+                            Guzzle
+                        </b-radio>
+                    </div>
+                </b-field>
 
-            <b-field
-                label="Region"
-                :type="formErrors['region_id'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['region_id']"
-            >
-                <b-select placeholder="Select a region" v-model="region">
-                    <option value="">None</option>
-                    <option
-                        v-for="option in regions"
-                        :value="option.id"
-                        :key="option.id">
-                        {{ option.label }}
-                    </option>
-                </b-select>
-            </b-field>
+                <b-field
+                    label="Region"
+                    :type="formErrors['region_id'] ? 'is-danger' : 'is-default'"
+                    :message="formErrors['region_id']"
+                >
+                    <b-select placeholder="Select a region" v-model="region">
+                        <option value="">None</option>
+                        <option
+                            v-for="option in regions"
+                            :value="option.id"
+                            :key="option.id">
+                            {{ option.label }}
+                        </option>
+                    </b-select>
+                </b-field>
+            </div>
         </form>
 
         <div class="buttons">
@@ -501,6 +503,10 @@ export default {
 </script>
 
 <style scoped>
+.form-section {
+    margin-bottom: 2rem;
+}
+
 .watcher-form {
     display: flex;
     flex-direction: column;
