@@ -95,7 +95,7 @@
                 <b-input
                     v-model="priceQuery"
                     maxlength="255"
-                    placeholder="//span[@id='price']"
+                    :placeholder="pricePlaceholder"
                     @input="updateQueries = true"
                 ></b-input>
             </b-field>
@@ -136,7 +136,7 @@
                 <b-input
                     v-model="stockQuery"
                     maxlength="255"
-                    placeholder="//span[@id='price']"
+                    :placeholder="stockPlaceholder"
                     @input="updateQueries = true"
                 ></b-input>
             </b-field>
@@ -312,9 +312,9 @@ export default {
             interval: 8,
             region: null,
             alertValue: '',
-            priceQuery: '//span[@id="price"]',
+            priceQuery: '',
             priceQueryType: 'xpath',
-            stockQuery: '//span[@id="stock"]',
+            stockQuery: '',
             stockQueryType: 'xpath',
             url: '',
             formErrors: {},
@@ -336,6 +336,12 @@ export default {
     computed: {
         loadingCheck() {
             return this.loading || this.loadingTemplate;
+        },
+        pricePlaceholder() {
+            return this.queryPlaceholder(this.priceQueryType, 'price');
+        },
+        stockPlaceholder() {
+            return this.queryPlaceholder(this.stockQueryType, 'stock');
         }
     },
     methods: {
@@ -348,8 +354,19 @@ export default {
         autoFillName() {
             this.name = this.testResults.title;
         },
+        queryPlaceholder(queryType, field) {
+            switch (queryType) {
+                case 'regex':
+                    return 'textBefore(.*?)textAfter';
+                case 'selector':
+                    return `.${field} span`;
+                default:
+                    return `//span[@class="${field}"]`;
+            }
+        },
         submit() {
             this.loading = true;
+            this.formErrors = {};
 
             if (this.id) {
                 this.update();
@@ -391,6 +408,7 @@ export default {
             });
         },
         check() {
+            this.formErrors = {};
             this.testResults = null;
             this.loading = true;
             axios.post('/watcher/check', {
@@ -411,7 +429,9 @@ export default {
                     this.alertValue = this.testResults.value;
                 }
             }).catch((err) => {
-                if (err.response.status === 400) {
+                if (err.response.status === 422) {
+                    this.formErrors = err.response.data.errors;
+                } else if (err.response.status === 400) {
                     this.testResults = err.response.data;
                 } else {
                     this.testResults = {
