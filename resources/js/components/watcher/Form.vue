@@ -504,6 +504,7 @@ export default {
 
 <style scoped>
 .form-section {
+    margin-top: 1em;
     margin-bottom: 2rem;
 }
 
