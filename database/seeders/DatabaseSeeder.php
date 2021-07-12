@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(IntervalSeeder::class);
+        $this->call([
+            IntervalSeeder::class
+        ]);
     }
 }
