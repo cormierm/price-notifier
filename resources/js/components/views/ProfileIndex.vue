@@ -38,9 +38,19 @@
                         :message="formErrors['user_agent']"
                     >
                         <b-input
+                            expanded
                             v-model="userAgent"
                             maxlength="255"
                         ></b-input>
+                        <p class="control">
+                            <button
+                                class="button is-primary"
+                                :disabled="disableUpdateUserAgent"
+                                @click="updateUserAgent"
+                            >
+                                Update User Agent
+                            </button>
+                        </p>
                     </b-field>
                     <b-field
                         label="User Api Key (Used for chrome extension)"
@@ -59,7 +69,13 @@
                         </b-field>
                     </b-field>
                     <div class="button-container">
-                        <b-button :loading="loading" @click="updateProfile">Update</b-button>
+                        <b-button
+                            :disabled="disableUpdate"
+                            :loading="loading"
+                            @click="updateProfile"
+                        >
+                            Update
+                        </b-button>
                     </div>
                 </div>
             </div>
@@ -89,9 +105,23 @@ export default {
             formErrors: {}
         }
     },
+    computed: {
+        disableUpdateUserAgent() {
+            return this.userAgent === navigator.userAgent;
+        },
+        disableUpdate() {
+            return this.pushoverApiToken === this.user.pushover_api_token &&
+                this.pushoverUserKey === this.user.pushover_user_key &&
+                this.apiKey === this.user.api_key &&
+                this.userAgent === this.user.user_agent;
+        }
+    },
     methods: {
         generateUUID() {
             this.apiKey = uuidv4();
+        },
+        updateUserAgent() {
+            this.userAgent = navigator.userAgent;
         },
         updateProfile() {
             this.formErrors = {};
