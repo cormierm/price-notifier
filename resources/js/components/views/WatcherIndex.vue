@@ -20,6 +20,11 @@
                         {{ column.title }}
                     </b-checkbox>
                 </div>
+                <div class="control">
+                    <b-checkbox v-model="showInactive" @input="saveColumnSetting('show-inactive', $event)">
+                        Show Inactive
+                    </b-checkbox>
+                </div>
             </b-field>
             <b-table
                 :data="tableData"
@@ -199,10 +204,12 @@ export default {
 
         this.restoreColumnSettings();
         this.hasMobileCards = this.restoreColumnSetting('mobile-cards');
+        this.showInactive = this.restoreColumnSetting('show-inactive');
     },
     data() {
         return {
             hasMobileCards: true,
+            showInactive: true,
             watchersList: [],
             loading: {
                 watchers: {},
@@ -221,14 +228,14 @@ export default {
     },
     computed: {
         tableData() {
-            return this.watchersList.map((watcher) => {
-                return {
+            return this.watchersList
+                .filter((watcher) => this.showInactive || watcher.interval_id !== 1)
+                .map((watcher) => ({
                     ...watcher,
                     created_at: moment.utc(watcher.created_at).fromNow(),
                     last_sync: watcher.last_sync ? moment.utc(watcher.last_sync).fromNow() : 'Never',
                     lowest_at: watcher.lowest_at ? moment.utc(watcher.lowest_at).fromNow() : '',
-                }
-            })
+                }))
         },
     },
     methods: {
