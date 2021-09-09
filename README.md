@@ -1,15 +1,17 @@
 # PriceNotifier
 
-Laravel web application that allows users to track prices and stock on different websites.
+Laravel web application that allows users to track prices and stock on websites.
 
-## Installation Steps for Ubuntu
-#### 1. Install required apt packages (Apache2, Php 7.4, Mysql PHP DB driver, NPM):
+## Installation Steps for Ubuntu 20.04
+#### 1. Install required apt packages (Apache2, PHP 8.0, Mysql PHP Driver, NPM):
 
 ```
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:ondrej/php
+
 sudo apt-get update
-sudo apt install apache2 php7.4 libapache2-mod-php7.4 php7.4-bcmath php7.4-json php7.4-mbstring php7.4-xml php7.4-zip php-curl php-pdo-mysql npm
+sudo apt install apache2 php8.0 libapache2-mod-php8.0 php8.0-bcmath php8.0-mbstring php8.0-xml php8.0-zip php-curl php8.0-mysql npm
 ```
-** Might need to install your php database driver if you are not using mysql as your database.**
 
 
 #### 2. Install composer:
@@ -34,7 +36,11 @@ sudo chmod -R 775 /var/www/price-notifier/storage
 ```
 
 #### 4. Configure .env
-    Requires sql, pusher and aws email credentials.
+Requires configuration for database, pusher and email credentials.
+```
+cp /var/www/price-notifier/.env.example /var/www/price-notifier/.env
+vi /var/www/price-notifier/.env
+```
 
 #### 5. Setup crontab for laravel scheduler:
 ```
@@ -44,8 +50,8 @@ sudo crontab -e
 
 #### 6. Install puppeteer (Required for browsershot client):
 ```
-curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-sudo apt-get install -y nodejs gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget libgbm-dev
+curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt-get install -y nodejs gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget libgbm-dev libxshmfence-dev
 sudo npm install --global --unsafe-perm puppeteer
 sudo chmod -R o+rx /usr/lib/node_modules/puppeteer/.local-chromium
 ```
