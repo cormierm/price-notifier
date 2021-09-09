@@ -1,7 +1,7 @@
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
 
-window.Vue = require('vue');
+window.Vue = require('vue').default;
 
 Vue.component('template-form', require('./components/template/Form.vue').default);
 Vue.component('watcher-form', require('./components/watcher/Form.vue').default);
