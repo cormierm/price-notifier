@@ -38,7 +38,7 @@
                     <div class="name-field">
                         <div>
                             <a :href="`/watcher/${props.row.id}`">{{ props.row.name }}</a>
-                            <a :href="props.row.url">
+                            <a :href="props.row.url" :target="`price-watcher-${props.row.id}`">
                                 <b-icon icon="link"/>
                             </a>
                         </div>
