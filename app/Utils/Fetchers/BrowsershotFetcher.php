@@ -19,6 +19,7 @@ class BrowsershotFetcher extends HtmlFetcher
         ->dismissDialogs()
         ->noSandbox()
         ->waitUntilNetworkIdle()
+        ->windowSize(1920, 1080)
         ->bodyHtml();
 
         if (!$html) {
