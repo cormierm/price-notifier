@@ -8,6 +8,7 @@ class HtmlFetcherFactory
         BrowsershotFetcher::class,
         CurlFetcher::class,
         GuzzleFetcher::class,
+        PuppeteerFetcher::class,
     ];
 
     public function build(string $client): HtmlFetcher

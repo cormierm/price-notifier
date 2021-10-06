@@ -11,6 +11,7 @@ return [
         'delay' => env('FETCHER_DELAY', 30),
         'fetch_null_regions' => env('FETCH_NULL_REGION_WATCHER', false),
         'error_max_length' => env('FETCHER_ERROR_MAX_LENGTH', 2000),
+        'puppeteer_host' => env('FETCHER_PUPPETEER_HOST', 'http://localhost:3000'),
     ],
     'regex' => [
         'price' => '/(\d[\$0-9,]*(\.\d{2})?)/',

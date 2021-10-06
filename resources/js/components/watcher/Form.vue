@@ -222,6 +222,13 @@
                         >
                             Guzzle
                         </b-radio>
+                        <b-radio
+                            v-model="client"
+                            name="client"
+                            native-value="puppeteer"
+                        >
+                            Puppeteer
+                        </b-radio>
                     </div>
                 </b-field>
 
@@ -359,7 +366,7 @@ export default {
         queryPlaceholder(queryType, field) {
             switch (queryType) {
                 case 'regex':
-                    return 'textBefore(.*?)textAfter';
+                    return '/textBefore(.*?)textAfter/';
                 case 'selector':
                     return `.${field} span`;
                 default:
