@@ -216,7 +216,7 @@ class UpdateWatcherTest extends TestCase
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'has_stock' => false,
         ]);
-        $html = '<html><body><div id="stock">In Stock.</div></body></html>';
+        $html = '<html><body><span class="value">55.66</span><div id="stock">In Stock.</div></body></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
@@ -230,6 +230,34 @@ class UpdateWatcherTest extends TestCase
         $this->assertTrue($watcher->fresh()->has_stock);
     }
 
+    /** @test */
+    public function itWillNotSendStockAlertWhenNoPrice(): void
+    {
+        $watcher = Watcher::factory()->create([
+            'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
+            'alert_value' => null,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'stock_query' => '//div[@id="stock"]',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
+            'stock_text' => 'In Stock.',
+            'stock_alert' => true,
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
+            'has_stock' => false,
+        ]);
+        $html = '<html><body><div id="stock">In Stock.</div></body></html>';
+
+        $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
+        });
+
+        $this->doesntExpectJobs(SendPushoverMessage::class);
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertTrue($watcher->fresh()->has_stock);
+    }
 
     /** @test */
     public function itWillNotSendStockAlertWhenStockAlertSetToFalse(): void

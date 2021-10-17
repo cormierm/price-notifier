@@ -111,7 +111,7 @@ class UpdateWatcher implements ShouldQueue
             }
         }
 
-        if ($this->hasStock && $this->watcher->stock_alert && $this->watcher->has_stock === false) {
+        if ($this->price && $this->hasStock && $this->watcher->stock_alert && $this->watcher->has_stock === false) {
             SendPushoverMessage::dispatch(
                 $this->watcher->user,
                 'Stock Alert!',
