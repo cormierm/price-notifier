@@ -25,7 +25,8 @@ class Check extends Controller
             $rawValue = $parser->queryInnerHtml($request->input('price_query'), $request->input('price_query_type'));
             $formattedValue = PriceHelper::numbersFromText($rawValue);
 
-            if ($request->input('stock_query') && $request->input('stock_query_type') && $request->input('stock_text')) {
+            $canUpdateStock = !$request->input('stock_requires_price') || ($request->input('stock_requires_price') && $formattedValue);
+            if ($canUpdateStock && $request->input('stock_query') && $request->input('stock_query_type') && $request->input('stock_text')) {
                 $rawStockValue = in_array(
                     $request->input('stock_condition'),
                     [Watcher::STOCK_CONDITION_CONTAINS_TEXT, Watcher::STOCK_CONDITION_MISSING_TEXT]
