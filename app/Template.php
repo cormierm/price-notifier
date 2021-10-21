@@ -18,6 +18,7 @@ class Template extends Model
         'stock_text',
         'stock_condition',
         'client',
+        'stock_requires_price',
     ];
 
     public function user()

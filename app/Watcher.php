@@ -32,12 +32,14 @@ class Watcher extends Model
         'stock_alert',
         'has_stock',
         'stock_condition',
+        'stock_requires_price',
     ];
 
     protected $casts = [
         'user_id' => 'int',
         'stock_alert' => 'boolean',
         'has_stock' => 'boolean',
+        'stock_requires_price' => 'boolean',
     ];
 
     const QUERY_TYPE_REGEX = 'regex';
