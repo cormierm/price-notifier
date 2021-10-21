@@ -29,6 +29,7 @@ class WatcherFactory extends Factory
                 return Interval::factory()->create()->id;
             },
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'stock_requires_price' => false,
         ];
     }
 

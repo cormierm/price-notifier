@@ -48,7 +48,8 @@ class UpdateWatcher implements ShouldQueue
             $this->rawPrice = $parser->queryInnerHtml($this->watcher->price_query, $this->watcher->price_query_type);
             $this->price = PriceHelper::numbersFromText($this->rawPrice);
 
-            $this->hasStock = $this->calculateStock($parser);
+            $canUpdateStock = !$this->watcher->stock_requires_price || ($this->watcher->stock_requires_price && $this->price);
+            $this->hasStock = $canUpdateStock ? $this->calculateStock($parser) : null;
 
             if ($this->price) {
                 $this->setLowestPrice($this->price);
@@ -68,11 +69,18 @@ class UpdateWatcher implements ShouldQueue
             $this->error = $e->getMessage();
         }
 
-        $this->watcher->update([
-            'has_stock' => $this->hasStock,
-            'last_sync' => Carbon::now(),
-            'value' => $this->price,
-        ]);
+        if ($this->hasStock === null) {
+            $this->watcher->update([
+                'last_sync' => Carbon::now(),
+                'value' => $this->price,
+            ]);
+        } else {
+            $this->watcher->update([
+                'has_stock' => $this->hasStock,
+                'last_sync' => Carbon::now(),
+                'value' => $this->price,
+            ]);
+        }
 
         event(new WatcherCreatedOrUpdated(WatcherResource::make($this->watcher)));
 
@@ -111,7 +119,7 @@ class UpdateWatcher implements ShouldQueue
             }
         }
 
-        if ($this->price && $this->hasStock && $this->watcher->stock_alert && $this->watcher->has_stock === false) {
+        if ($this->hasStock && $this->watcher->stock_alert && $this->watcher->has_stock === false) {
             SendPushoverMessage::dispatch(
                 $this->watcher->user,
                 'Stock Alert!',
@@ -155,7 +163,7 @@ class UpdateWatcher implements ShouldQueue
 
     private function updateStockChanges()
     {
-        if ($this->hasStock === null || !$this->price) {
+        if ($this->hasStock === null) {
             return;
         }
 
