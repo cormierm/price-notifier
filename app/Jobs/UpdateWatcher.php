@@ -155,7 +155,7 @@ class UpdateWatcher implements ShouldQueue
 
     private function updateStockChanges()
     {
-        if ($this->hasStock === null) {
+        if ($this->hasStock === null || !$this->price) {
             return;
         }
 

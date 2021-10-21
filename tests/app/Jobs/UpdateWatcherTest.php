@@ -496,6 +496,8 @@ class UpdateWatcherTest extends TestCase
 
         $watcher = Watcher::factory()->create([
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
             'stock_query' => '//div[@id="stock"]',
             'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
             'stock_text' => 'In Stock.',
@@ -506,7 +508,7 @@ class UpdateWatcherTest extends TestCase
             'stock' => true,
             'created_at' => Carbon::now()->subDay(),
         ]);
-        $html = '<html><div id="stock">In Stock.</div></html>';
+        $html = '<html><span class="value">$11.45</span><div id="stock">In Stock.</div></html>';
 
         $this->mock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
             $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
@@ -528,12 +530,11 @@ class UpdateWatcherTest extends TestCase
     }
 
     /** @test */
-    public function itCreatePriceChangeWhenStockHasChanged(): void
+    public function itCreatesStockChangeWhenStockHasChanged(): void
     {
         Event::fake();
         Carbon::setTestNow('now');
 
-        $price = '1119.99';
         $watcher = Watcher::factory()->create([
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'price_query' => '//span[@class="value"]',
@@ -548,7 +549,7 @@ class UpdateWatcherTest extends TestCase
             'stock' => false,
             'created_at' => Carbon::now()->subDay(),
         ]);
-        $html = '<html><span class="value">' . $price . '</span><div id="stock">In Stock.</div></html>';
+        $html = '<html><span class="value">111.00</span><div id="stock">In Stock.</div></html>';
 
         $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
@@ -563,6 +564,43 @@ class UpdateWatcherTest extends TestCase
             'created_at' => Carbon::now(),
         ]);
         $this->assertEquals(2, $watcher->stockChanges()->count());
+    }
+
+    /** @test */
+    public function itWillNotCreateStockChangeWhenNoPriceElement(): void
+    {
+        Event::fake();
+        Carbon::setTestNow('now');
+
+        $watcher = Watcher::factory()->create([
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+            'price_query' => '//span[@class="value"]',
+            'price_query_type' => Watcher::QUERY_TYPE_XPATH,
+            'stock_query' => '//div[@id="stock"]',
+            'stock_query_type' => Watcher::QUERY_TYPE_XPATH,
+            'stock_text' => 'In Stock.',
+            'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
+        ]);
+        StockChange::factory()->create([
+            'watcher_id' => $watcher->id,
+            'stock' => false,
+            'created_at' => Carbon::now()->subDay(),
+        ]);
+        $html = '<html><div id="stock">In Stock.</div></html>';
+
+        $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
+        });
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        $this->assertDatabaseMissing('stock_changes', [
+            'watcher_id' => $watcher->id,
+            'stock' => true,
+            'created_at' => Carbon::now(),
+        ]);
+        $this->assertEquals(1, $watcher->stockChanges()->count());
     }
 
     /** @test */
