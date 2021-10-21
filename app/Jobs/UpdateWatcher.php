@@ -97,9 +97,9 @@ class UpdateWatcher implements ShouldQueue
     private function sendAlerts()
     {
         if ($this->price && $this->watcher->value) {
-            $alertPrice = number_format($this->watcher->alert_value, 2);
-            $oldPrice = number_format($this->watcher->value, 2);
-            $newPrice = number_format($this->price, 2);
+            $alertPrice = number_format($this->watcher->alert_value, 2, '.', '');
+            $oldPrice = number_format($this->watcher->value, 2, '.', '');
+            $newPrice = number_format($this->price, 2, '.', '');
 
             if ($alertPrice && $newPrice && $oldPrice !== $newPrice && $this->price < $this->watcher->alert_value) {
                 SendPushoverMessage::dispatch(
@@ -126,8 +126,8 @@ class UpdateWatcher implements ShouldQueue
 
     private function setLowestPrice(string $formattedValue)
     {
-        $price = number_format($formattedValue, 2);
-        $lowestPrice = number_format($this->watcher->lowest_price, 2);
+        $price = number_format($formattedValue, 2, '.', '');
+        $lowestPrice = number_format($this->watcher->lowest_price, 2, '.', '');
 
         if (!$this->watcher->lowest_price || $price <= $lowestPrice) {
             $this->watcher->update([
