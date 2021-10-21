@@ -24,6 +24,7 @@ class SearchByUrl extends Controller
             'client' => $template->client,
             'stock_text' => $template->stock_text,
             'stock_condition' => $template->stock_condition,
+            'stock_requires_price' => $template->stock_requires_price,
         ]);
     }
 }

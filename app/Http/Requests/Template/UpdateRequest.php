@@ -19,6 +19,7 @@ class UpdateRequest extends FormRequest
             'stock_query_type' => ['nullable', Rule::in(Watcher::QUERY_TYPES)],
             'stock_text' => 'nullable|string|max:255',
             'stock_condition' => ['nullable', Rule::in(Watcher::STOCK_CONDITIONS)],
+            'stock_requires_price' => 'nullable|boolean',
             'client' => 'nullable|in:' . implode(',', HtmlFetcher::CLIENTS),
         ];
     }

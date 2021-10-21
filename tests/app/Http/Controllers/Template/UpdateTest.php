@@ -24,6 +24,7 @@ class UpdateTest extends TestCase
             'price_query_type' => 'xpath',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'stock_text' => 'foobar',
+            'stock_requires_price' => false,
         ];
 
         $this->actingAs($template->user)

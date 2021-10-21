@@ -14,7 +14,7 @@ class AddStockRequiresPriceToWatchers extends Migration
     public function up()
     {
         Schema::table('watchers', function (Blueprint $table) {
-            $table->boolean('stock_requires_price')->default(true);
+            $table->boolean('stock_requires_price')->nullable()->default(true);
         });
     }
 

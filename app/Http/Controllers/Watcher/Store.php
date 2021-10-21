@@ -27,6 +27,7 @@ class Store extends Controller
             'stock_text' => $request->input('stock_text'),
             'stock_alert' => $request->input('stock_alert'),
             'stock_condition' => $request->input('stock_condition'),
+            'stock_requires_price' => $request->input('stock_requires_price'),
             'region_id' => $request->input('region_id'),
         ]);
 
@@ -45,6 +46,7 @@ class Store extends Controller
                     'stock_query_type' => $request->input('stock_query_type'),
                     'stock_text' => $request->input('stock_text'),
                     'stock_condition' => $request->input('stock_condition'),
+                    'stock_requires_price' => $request->input('stock_requires_price'),
                     'client' => $request->input('client'),
                 ]
             );

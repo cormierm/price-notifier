@@ -14,7 +14,7 @@ class AddStockRequiresPriceToTemplates extends Migration
     public function up()
     {
         Schema::table('templates', function (Blueprint $table) {
-            $table->boolean('stock_requires_price')->default(true);
+            $table->boolean('stock_requires_price')->nullable()->default(true);
         });
     }
 

@@ -21,6 +21,10 @@ class Template extends Model
         'stock_requires_price',
     ];
 
+    protected $casts = [
+        'stock_requires_price' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

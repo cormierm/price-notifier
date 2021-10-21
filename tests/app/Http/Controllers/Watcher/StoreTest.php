@@ -32,6 +32,7 @@ class StoreTest extends TestCase
             'stock_text' => 'in stock.',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'stock_alert' => true,
+            'stock_requires_price' => false,
             'region_id' => $region->id,
         ];
 
@@ -67,6 +68,7 @@ class StoreTest extends TestCase
             'stock_text' => 'in stock.',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
             'stock_alert' => true,
+            'stock_requires_price' => false,
             'update_queries' => true,
         ];
 
@@ -82,6 +84,7 @@ class StoreTest extends TestCase
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'stock_text' => 'in stock.',
             'stock_condition' => Watcher::STOCK_CONDITION_CONTAINS_TEXT,
+            'stock_requires_price' => false,
         ]);
     }
 

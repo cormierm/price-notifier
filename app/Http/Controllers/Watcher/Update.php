@@ -28,6 +28,7 @@ class Update extends Controller
                     'client' => $watcher->client,
                     'stock_text' => $watcher->stock_text,
                     'stock_condition' => $watcher->stock_condition,
+                    'stock_requires_price' => $watcher->stock_requires_price,
                 ]
             );
         }
