@@ -25,6 +25,7 @@ class UpdateRequest extends FormRequest
             'client' => 'nullable|in:' . implode(',', HtmlFetcher::CLIENTS),
             'stock_text' => 'nullable|string|max:255',
             'stock_alert' => 'nullable|boolean',
+            'stock_requires_price' => 'nullable|boolean',
             'stock_condition' => ['nullable', Rule::in(Watcher::STOCK_CONDITIONS)],
             'update_queries' => 'nullable|boolean',
         ];

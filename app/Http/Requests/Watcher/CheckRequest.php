@@ -20,6 +20,7 @@ class CheckRequest extends FormRequest
             'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),
             'stock_text' => 'nullable|string|max:255',
             'stock_condition' => ['nullable', Rule::in(Watcher::STOCK_CONDITIONS)],
+            'stock_requires_price' => 'nullable|boolean',
         ];
     }
 }

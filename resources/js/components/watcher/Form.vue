@@ -159,6 +159,10 @@
                 ></b-input>
             </b-field>
 
+            <b-field>
+                <b-checkbox v-model="stockRequiresPrice">Stock updates require price (Helps reduce false positives)</b-checkbox>
+            </b-field>
+
 
             <div class="form-section">
                 <h2 class="subtitle">Notifications</h2>
@@ -307,6 +311,7 @@ export default {
             this.client = this.watcher.client;
             this.stockText = this.watcher.stock_text;
             this.stockAlert = this.watcher.stock_alert === true;
+            this.stockRequiresPrice = this.watcher.stock_requires_price === true;
             this.stockCondition = this.watcher.stock_condition;
             this.updateQueries = false;
         }
@@ -331,6 +336,7 @@ export default {
             client: 'browsershot',
             stockText: '',
             stockAlert: false,
+            stockRequiresPrice: true,
             stockCondition: 'contains_text',
             updateQueries: true,
             stockConditions: [
@@ -400,6 +406,7 @@ export default {
                 stock_text: this.stockText,
                 stock_alert: this.stockAlert,
                 stock_condition: this.stockCondition,
+                stock_requires_price: this.stockRequiresPrice,
                 update_queries: this.updateQueries,
             }).then(() => {
                 window.location = '/home';
@@ -429,6 +436,7 @@ export default {
                 client: this.client,
                 stock_text: this.stockText,
                 stock_condition: this.stockCondition,
+                stock_requires_price: this.stockRequiresPrice,
             }).then(({data}) => {
                 this.testResults = data;
                 if (!this.name) {
@@ -464,6 +472,7 @@ export default {
                 this.client = data.client;
                 this.stockText = data.stock_text;
                 this.stockCondition = data.stock_condition;
+                this.stockRequiresPrice = data.stock_requires_price;
                 this.template = data;
                 this.updateQueries = false;
                 this.check();
@@ -489,6 +498,7 @@ export default {
                 stock_text: this.stockText,
                 stock_alert: this.stockAlert,
                 stock_condition: this.stockCondition,
+                stock_requires_price: this.stockRequiresPrice,
                 update_queries: this.updateQueries,
             }).then(() => {
                 window.location = '/home';
