@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Events\WatcherCreatedOrUpdated;
 use App\Http\Resources\WatcherResource;
+use App\User;
 use App\Utils\Fetchers\HtmlFetcherFactory;
 use App\Utils\HtmlParser;
 use App\Utils\PriceHelper;
@@ -120,12 +121,24 @@ class UpdateWatcher implements ShouldQueue
         }
 
         if ($this->hasStock && $this->watcher->stock_alert && $this->watcher->has_stock === false) {
-            SendPushoverMessage::dispatch(
-                $this->watcher->user,
-                'Stock Alert!',
-                "{$this->watcher->name}\n\${$this->price}",
-                $this->watcher->url
-            );
+            if (env('NOTIFY_ALL_USERS')) {
+                foreach (User::all() as $user) {
+                    SendPushoverMessage::dispatch(
+                        $user,
+                        'Stock Alert!',
+                        "{$this->watcher->name}\n\${$this->price}",
+                        $this->watcher->url
+                    );
+                }
+            } else {
+                SendPushoverMessage::dispatch(
+                    $this->watcher->user,
+                    'Stock Alert!',
+                    "{$this->watcher->name}\n\${$this->price}",
+                    $this->watcher->url
+                );
+            }
+
 //            if (env('SLACK_CHANNEL', false) && env('SLACK_TOKEN', false)) {
 //                SendSlackMessage::dispatch("Stock Alert!\n{$this->watcher->name}\n\${$this->price}\n{$this->watcher->url}");
 //            }
