@@ -82,7 +82,7 @@ export default {
                     label: 'Error',
                 },
             ],
-            limits: [5,10,25,100],
+            limits: [5,10,25,100,250,1000],
             loading: false,
             logs: [],
         }
