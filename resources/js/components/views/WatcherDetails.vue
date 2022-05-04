@@ -14,12 +14,15 @@
         <article class="panel">
             <div class="panel-heading">
                 <strong>{{ watcher.name }}</strong>
-                <div v-if="watcher.value" class="is-pulled-right"><strong>${{watcher.value}}</strong></div>
+                <div v-if="watcher.value" class="is-pulled-right"><strong>${{ watcher.value }}</strong></div>
                 <br>
                 <a class="header-link" :href="watcher.url">{{ watcher.url }}</a>
             </div>
-            <div class="panel-block">
-                <div class="container">
+            <div class="columns">
+                <div class="column is-half" style="display: flex; align-items: flex-start">
+                    <canvas id="myChart" style="padding: 10px; margin: 10px; height: 90%; width: 100%"></canvas>
+                </div>
+                <div class="column" style="margin: 20px">
                     Original Price: {{ watcher.initial_value }} ({{ formatDate(watcher.created_at) }})<br>
                     Current Price: {{ watcher.value }} ({{ formatDate(watcher.last_sync) }})<br>
                     Lowest Price: {{ watcher.lowest_price }} ({{ formatDate(watcher.lowest_at) }})<br><br>
@@ -44,13 +47,15 @@
                         :value="watcher.interval_id"
                         @update="updateWatcher"
                     />
+
                 </div>
+
             </div>
         </article>
 
-        <price-change-table :price-changes="priceChanges" />
+        <price-change-table :price-changes="priceChanges"/>
 
-        <stock-change-table :stock-changes="stockChanges" />
+        <stock-change-table :stock-changes="stockChanges"/>
 
         <watcher-logs :watcher-id="watcher.id"></watcher-logs>
     </div>
@@ -63,10 +68,12 @@ import DeleteButton from "../watcher/DeleteButton";
 import RefreshButton from "../watcher/RefreshButton";
 import PriceChangeTable from "../tables/PriceChangeTable";
 import StockChangeTable from "../tables/StockChangeTable";
+import Chart from 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
 
 export default {
     name: "WatcherDetails",
-    components: { DeleteButton, IntervalSelect, RefreshButton, PriceChangeTable, StockChangeTable },
+    components: {DeleteButton, IntervalSelect, RefreshButton, PriceChangeTable, StockChangeTable},
     props: {
         watcher: {
             type: Object,
@@ -100,26 +107,59 @@ export default {
         formatDate(datetime) {
             return moment.utc(datetime).local().format('lll');
         }
+    },
+    mounted() {
+        const points = [
+            {x: this.watcher.last_sync, y: this.watcher.value},
+            ...this.priceChanges.map((p) => ({x: p.created_at, y: p.price})),
+        ];
+        const ctx = document.getElementById('myChart');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    fill: false,
+                    stepped: 'after',
+                    data: points,
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Price Change History'
+                    },
+                    legend: false
+                },
+                scales: {
+                    x: {
+                        type: 'time',
+                    },
+                }
+            }
+        });
     }
 }
 </script>
 
 <style scoped>
-    .title-header {
-        display: flex;
-        justify-content: space-between;
-    }
+.title-header {
+    display: flex;
+    justify-content: space-between;
+}
 
-    .tool-buttons {
-        display: flex;
-    }
+.tool-buttons {
+    display: flex;
+}
 
-    .header-link {
-        font-size: .7em;
-    }
+.header-link {
+    font-size: .7em;
+}
 
-    .panel-heading {
-        font-size: 1.2em;
-    }
+.panel-heading {
+    font-size: 1.2em;
+}
 
 </style>

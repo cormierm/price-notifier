@@ -24,6 +24,9 @@
     },
     "dependencies": {
         "buefy": "^0.9.8",
+        "chart.js": "^3.7.1",
+        "chartjs-adapter-date-fns": "^2.0.0",
+        "date-fns": "^2.28.0",
         "moment": "^2.29.1",
         "puppeteer": "^8.0.0",
         "pusher-js": "^7.0.3",
