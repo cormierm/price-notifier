@@ -1,6 +1,6 @@
 <template>
     <div class="stock-change-table">
-        <h2>{{ title }}</h2>
+        <h3>{{ title }}</h3>
         <b-table
             :columns="columns"
             :data="tableData"
@@ -31,7 +31,7 @@ export default {
                 return {
                     ...change,
                     stock: change.stock ? 'Yes' : 'No',
-                    created_at_formatted: change.created_at ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
+                    created_at_formatted: change.created_at ? moment.utc(change.created_at).local().format('lll') : '',
                 }
             });
         }
@@ -40,16 +40,16 @@ export default {
         return {
             columns: [
                 {
+                    field: 'stock',
+                    label: 'Status',
+                },
+                {
                     field: 'created_at',
                     visible: false,
                 },
                 {
-                    label: 'Created_at',
+                    label: 'Date',
                     field: 'created_at_formatted',
-                },
-                {
-                    field: 'stock',
-                    label: 'Stock',
                 },
             ],
         }

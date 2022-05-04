@@ -18,44 +18,70 @@
                 <br>
                 <a class="header-link" :href="watcher.url">{{ watcher.url }}</a>
             </div>
-            <div class="columns">
-                <div class="column is-half" style="display: flex; align-items: flex-start">
+            <div class="columns" style="min-height: 500px">
+                <div class="column is-three-fifths" style="display: flex; align-items: flex-start">
                     <canvas id="myChart" style="padding: 10px; margin: 10px; height: 90%; width: 100%"></canvas>
                 </div>
                 <div class="column" style="margin: 20px">
-                    Original Price: {{ watcher.initial_value }} ({{ formatDate(watcher.created_at) }})<br>
-                    Current Price: {{ watcher.value }} ({{ formatDate(watcher.last_sync) }})<br>
-                    Lowest Price: {{ watcher.lowest_price }} ({{ formatDate(watcher.lowest_at) }})<br><br>
+                    <h3>Price History</h3>
+                    <b-table
+                        :columns="[
+                            {field: 'type', label: 'Type'},
+                            {field: 'price', label: 'Price'},
+                            {field: 'date', label: 'Date'},
+                        ]"
+                        :data="[
+                            {type: 'Current', 'price': `$${watcher.value}`, date: formatDate(watcher.last_sync)},
+                            {type: 'Lowest', 'price': `$${watcher.lowest_price}`, date: formatDate(watcher.lowest_at)},
+                            {type: 'Original', 'price': `$${watcher.initial_value}`, date: formatDate(watcher.created_at)},
+                        ]"
+                    ></b-table>
 
-                    Has Stock: {{ watcher.has_stock === true ? 'Yes' : watcher.has_stock === false ? 'No' : 'Unknown' }}<br>
-                    Alert Price: {{ watcher.alert_value }}<br>
-
-                    Price Query: {{ watcher.price_query }}<br>
-                    Price Query Type: {{ watcher.price_query_type }}<br><br>
-
-                    Stock Query: {{ watcher.stock_query }}<br>
-                    Stock Query Type: {{ watcher.stock_query_type }}<br>
-                    Stock condition: {{ watcher.stock_condition }}<br>
-                    Stock text match: {{ watcher.stock_text }}<br>
-                    Stock Requires Price: {{ watcher.stock_requires_price }}<br><br>
-
-                    Region: {{ watcher.region ? watcher.region.label : 'Not Set' }}<br><br>
-                    Interval:
-                    <interval-select
-                        :intervals="intervals"
-                        :watcher-id="watcher.id"
-                        :value="watcher.interval_id"
-                        @update="updateWatcher"
-                    />
-
+                    <br>
+                    <stock-change-table :stock-changes="stockChanges"/>
                 </div>
-
             </div>
         </article>
 
-        <price-change-table :price-changes="priceChanges"/>
-
-        <stock-change-table :stock-changes="stockChanges"/>
+        <div class="columns">
+            <div class="column">
+                <article class="panel">
+                    <div class="panel-heading">
+                        Query
+                    </div>
+                    <div style="margin: 20px">
+                        Price Query: {{ watcher.price_query }}<br>
+                        Price Query Type: {{ watcher.price_query_type }}<br>
+                        Stock Query: {{ watcher.stock_query }}<br>
+                        Stock Query Type: {{ watcher.stock_query_type }}<br>
+                        Stock condition: {{ watcher.stock_condition }}<br>
+                        Stock text match: {{ watcher.stock_text }}<br>
+                        Stock Requires Price: {{ watcher.stock_requires_price }}<br><br>
+                    </div>
+                </article>
+            </div>
+            <div class="column">
+                <article class="panel">
+                    <div class="panel-heading">
+                        Settings
+                    </div>
+                    <div style="margin: 20px">
+                        <div style="display: flex; align-items: center">
+                            Interval:
+                            <interval-select
+                                style="padding-left: 10px"
+                                :intervals="intervals"
+                                :watcher-id="watcher.id"
+                                :value="watcher.interval_id"
+                                @update="updateWatcher"
+                            />
+                        </div>
+                        Region: {{ watcher.region ? watcher.region.label : 'Not Set' }}<br>
+                        Alert Price: {{ watcher.alert_value }}<br>
+                    </div>
+                </article>
+            </div>
+        </div>
 
         <watcher-logs :watcher-id="watcher.id"></watcher-logs>
     </div>
