@@ -12,6 +12,7 @@ class PuppeteerFetcher extends HtmlFetcher
     {
         $response = Http::post(config('pcn.fetcher.puppeteer_host'), [
             'url' => $url,
+            'user_agent' => $userAgent
         ]);
 
         if ($response->status() === 500) {
