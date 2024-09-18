@@ -28,7 +28,7 @@
         "chartjs-adapter-date-fns": "^2.0.0",
         "date-fns": "^2.28.0",
         "moment": "^2.29.1",
-        "puppeteer": "^8.0.0",
+        "puppeteer": "^23.4.0",
         "pusher-js": "^7.0.3",
         "uuid": "^8.3.2"
     }
