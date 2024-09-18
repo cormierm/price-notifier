@@ -13,6 +13,7 @@ use App\Utils\Fetchers\HtmlFetcher;
 use App\Watcher;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
@@ -111,6 +112,7 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itSendsPriceAlertWhenValueIsLessThanAlertValue(): void
     {
+        Bus::fake();
         $rawValue = '950.00';
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
@@ -124,11 +126,11 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->expectsJobs(SendPushoverMessage::class);
-        $this->doesntExpectJobs(SendSlackMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
+
+        Bus::assertDispatched(SendPushoverMessage::class);
+        Bus::assertNotDispatched(SendSlackMessage::class);
     }
 
     /** @test */
@@ -204,6 +206,8 @@ class UpdateWatcherTest extends TestCase
     /** @test */
     public function itWillSendStockAlertWhenChangedHasStockAndStockRequiresPriceIsTrueAndHasPrice(): void
     {
+        Bus::fake();
+
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
             'price_query_type' => Watcher::QUERY_TYPE_XPATH,
@@ -223,17 +227,18 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->expectsJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
         $this->assertTrue($watcher->fresh()->has_stock);
+        Bus::assertDispatched(SendPushoverMessage::class);
     }
 
     /** @test */
     public function itWillSendStockAlertWhenChangedHasStockAndStockRequiresPriceIsFalseAndHasNoPrice(): void
     {
+        Bus::fake();
+
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
             'price_query_type' => Watcher::QUERY_TYPE_XPATH,
@@ -253,17 +258,19 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->expectsJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
         $this->assertTrue($watcher->fresh()->has_stock);
+
+        Bus::assertDispatched(SendPushoverMessage::class);
     }
 
     /** @test */
     public function itWillNotSendStockAlertWhenChangedHasStockAndStockRequiresPriceIsTrueAndHasNoPrice(): void
     {
+        Bus::fake();
+
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
             'price_query_type' => Watcher::QUERY_TYPE_XPATH,
@@ -283,17 +290,18 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->doesntExpectJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
         $this->assertFalse($watcher->fresh()->has_stock);
+        Bus::assertNotDispatched(SendPushoverMessage::class);
     }
 
     /** @test */
     public function itWillNotSendStockAlertWhenStockAlertSetToFalse(): void
     {
+        Bus::fake();
+
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
             'price_query_type' => Watcher::QUERY_TYPE_XPATH,
@@ -312,15 +320,17 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->doesntExpectJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
+
+        Bus::assertNotDispatched(SendPushoverMessage::class);
     }
 
     /** @test */
     public function itWillSetHasStockToTrueForTextContainsTrueWhenTextFound(): void
     {
+        Bus::fake();
+
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
             'price_query_type' => Watcher::QUERY_TYPE_XPATH,
@@ -339,17 +349,18 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->doesntExpectJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
         $this->assertTrue($watcher->fresh()->has_stock);
+        Bus::assertNotDispatched(SendPushoverMessage::class);
     }
 
     /** @test */
     public function itWillSetHasStockToTrueForTextContainsWithSelectorQuery(): void
     {
+        Bus::fake();
+
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
             'price_query_type' => Watcher::QUERY_TYPE_XPATH,
@@ -368,17 +379,18 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->doesntExpectJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
         $this->assertTrue($watcher->fresh()->has_stock);
+        Bus::assertNotDispatched(SendPushoverMessage::class);
     }
 
     /** @test */
     public function itWillSetHasStockToFalseForTextContainsTrue(): void
     {
+        Bus::fake();
+
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
             'price_query_type' => Watcher::QUERY_TYPE_XPATH,
@@ -397,17 +409,18 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->doesntExpectJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
         $this->assertFalse($watcher->fresh()->has_stock);
+        Bus::assertNotDispatched(SendPushoverMessage::class);
     }
 
     /** @test */
     public function itWillSetHasStockToTrueForStockConditionMissingText(): void
     {
+        Bus::fake();
+
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
             'price_query_type' => Watcher::QUERY_TYPE_XPATH,
@@ -426,17 +439,18 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->doesntExpectJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
         $this->assertTrue($watcher->fresh()->has_stock, 'Does not change has_stock to true');
+        Bus::assertNotDispatched(SendPushoverMessage::class);
     }
 
     /** @test */
     public function itWillSetHasStockToFalseForTextContainsFalse(): void
     {
+        Bus::fake();
+
         $watcher = Watcher::factory()->create([
             'price_query' => '//span[@class="value"]',
             'price_query_type' => Watcher::QUERY_TYPE_XPATH,
@@ -455,12 +469,12 @@ class UpdateWatcherTest extends TestCase
             return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
         });
 
-        $this->doesntExpectJobs(SendPushoverMessage::class);
-
         $job = new UpdateWatcher($watcher);
         $job->handle();
 
         $this->assertFalse($watcher->fresh()->has_stock, 'Does not change has_stock to false');
+
+        Bus::assertNotDispatched(SendPushoverMessage::class);
     }
 
     /** @test */

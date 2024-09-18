@@ -10,6 +10,7 @@ use App\Watcher;
 use App\WatcherLog;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
@@ -20,6 +21,8 @@ class UpdateAllWatchersTest extends TestCase
     /** @test */
     public function itUpdatesWatcher(): void
     {
+        Bus::fake();
+
         $minutes = 30;
         $interval = Interval::factory()->create([
             'minutes' => $minutes,
@@ -35,15 +38,17 @@ class UpdateAllWatchersTest extends TestCase
             'watcher_id' => $watcher->id,
             'created_at' => Carbon::now()->subMinutes($minutes + 5)
         ]);
-        $this->expectsJobs(UpdateWatcher::class);
 
         $job = new UpdateAllWatchers;
         $job->handle();
+
+        Bus::assertDispatched(UpdateWatcher::class);
     }
 
     /** @test */
     public function itUpdatesWithNoWatcherLog(): void
     {
+        Bus::fake();
         $minutes = 30;
         $interval = Interval::factory()->create([
             'minutes' => $minutes,
@@ -55,15 +60,17 @@ class UpdateAllWatchersTest extends TestCase
         ]);
         Config::set('pcn.region', $region->name);
 
-        $this->expectsJobs(UpdateWatcher::class);
-
         $job = new UpdateAllWatchers;
         $job->handle();
+
+        Bus::assertDispatched(UpdateWatcher::class);
     }
 
     /** @test */
     public function itDoesNotUpdateWatcherWithNullIntervalMinutes(): void
     {
+        Bus::fake();
+
         $interval = Interval::factory()->create([
             'minutes' => null,
         ]);
@@ -71,75 +78,85 @@ class UpdateAllWatchersTest extends TestCase
             'interval_id' => $interval->id,
         ]);
 
-        $this->doesntExpectJobs(UpdateWatcher::class);
-
         $job = new UpdateAllWatchers;
         $job->handle();
+
+        Bus::assertNotDispatched(UpdateWatcher::class);
     }
 
     /** @test */
     public function itWillFetchWatcherInRegion(): void
     {
+        Bus::fake();
+
         $region = Region::factory()->create();
         Watcher::factory()->create([
             'region_id' => $region->id,
         ]);
         Config::set('pcn.region', $region->name);
 
-        $this->expectsJobs(UpdateWatcher::class);
-
         $job = new UpdateAllWatchers;
         $job->handle();
+
+        Bus::assertDispatched(UpdateWatcher::class);
     }
 
     /** @test */
     public function itWillNotFetchWatcherInAnotherRegion(): void
     {
+        Bus::fake();
+
         $region = Region::factory()->create();
         Watcher::factory()->create([
             'region_id' => $region->id,
         ]);
         Config::set('pcn.region', 'foo-bar-region');
 
-        $this->doesntExpectJobs(UpdateWatcher::class);
-
         $job = new UpdateAllWatchers;
         $job->handle();
+
+        Bus::assertNotDispatched(UpdateWatcher::class);
     }
 
     /** @test */
     public function itWillFetchWatcherWithNullRegion(): void
     {
+        Bus::fake();
+
         Watcher::factory()->create([
             'region_id' => null
         ]);
         Config::set('pcn.region', 'foo-bar-region');
         Config::set('pcn.fetcher.fetch_null_regions', true);
 
-        $this->expectsJobs(UpdateWatcher::class);
-
         $job = new UpdateAllWatchers;
         $job->handle();
+
+        Bus::assertDispatched(UpdateWatcher::class);
     }
 
     /** @test */
     public function itWillNotFetchWatcherWithNullRegion(): void
     {
+        Bus::fake();
+
         Watcher::factory()->create([
             'region_id' => null
         ]);
         Config::set('pcn.region', 'foo-bar-region');
         Config::set('pcn.fetcher.fetch_null_regions', false);
 
-        $this->doesntExpectJobs(UpdateWatcher::class);
-
         $job = new UpdateAllWatchers;
         $job->handle();
+
+        Bus::assertNotDispatched(UpdateWatcher::class);
     }
 
     /** @test */
     public function itWillUpdateWatcherIfIntervalMinutesIsOne(): void
     {
+        Bus::fake();
+
         $minutes = 1;
         $interval = Interval::factory()->create([
             'minutes' => $minutes,
@@ -155,15 +172,18 @@ class UpdateAllWatchersTest extends TestCase
             'watcher_id' => $watcher->id,
             'created_at' => Carbon::now()
         ]);
-        $this->expectsJobs(UpdateWatcher::class);
 
         $job = new UpdateAllWatchers;
         $job->handle();
+
+        Bus::assertDispatched(UpdateWatcher::class);
     }
 
     /** @test */
     public function itWillUpdateWatcherIfRegionIsAll(): void
     {
+        Bus::fake();
+
         $minutes = 1;
         $interval = Interval::factory()->create([
             'minutes' => $minutes,
@@ -180,9 +200,10 @@ class UpdateAllWatchersTest extends TestCase
             'watcher_id' => $watcher->id,
             'created_at' => Carbon::now()->subDay()
         ]);
-        $this->expectsJobs(UpdateWatcher::class);
 
         $job = new UpdateAllWatchers;
         $job->handle();
+
+        Bus::assertDispatched(UpdateWatcher::class);
     }
 }
