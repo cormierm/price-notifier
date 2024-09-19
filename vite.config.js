@@ -5,19 +5,17 @@ import path from 'path';
 
 export default defineConfig({
     plugins: [
-        laravel({
-            input: [
-                'resources/js/app.js',
-                'resources/sass/app.scss',
-                'resources/js/vue.js',
-            ],
-            refresh: true,
-        }),
+        laravel([
+            'resources/js/app.js',
+            'resources/sass/app.scss',
+            'resources/js/vue.js',
+        ]),
         vue(),
     ],
     resolve: {
         alias: {
             '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+            vue: 'vue/dist/vue.esm.js'
         },
     },
     css: {

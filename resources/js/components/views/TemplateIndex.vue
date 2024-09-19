@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import DeleteButton from "../template/DeleteButton";
+import DeleteButton from "../template/DeleteButton.vue";
 
 export default {
     name: "TemplateIndex",

@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import RecentPriceTable from "../tables/RecentPriceTable";
-import RecentStockTable from "../tables/RecentStockTable";
-import DashboardErrorsTable from "../tables/DashboardErrorsTable";
+import RecentPriceTable from "../tables/RecentPriceTable.vue";
+import RecentStockTable from "../tables/RecentStockTable.vue";
+import DashboardErrorsTable from "../tables/DashboardErrorsTable.vue";
 
 export default {
     name: "DashboardIndex",

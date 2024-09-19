@@ -3,7 +3,7 @@
 @section('head')
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.3.45/css/materialdesignicons.min.css">
 
-    <script src="{{ asset('js/vue.js') }}" defer></script>
+    @vite(['resources/js/vue.js'])
 @endsection
 
 @section('navbar')

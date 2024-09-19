@@ -168,11 +168,11 @@
 
 <script>
 import moment from 'moment';
-import IntervalSelect from "../watcher/IntervalSelect";
-import DeleteButton from "../watcher/DeleteButton";
-import RefreshButton from "../watcher/RefreshButton";
+import IntervalSelect from "../watcher/IntervalSelect.vue";
+import DeleteButton from "../watcher/DeleteButton.vue";
+import RefreshButton from "../watcher/RefreshButton.vue";
 import Pusher from 'pusher-js';
-import ChangeColumn from "./ChangeColumn";
+import ChangeColumn from "./ChangeColumn.vue";
 
 export default {
     name: "Home",
@@ -194,8 +194,8 @@ export default {
     mounted() {
         this.watchersList = this.watchers;
 
-        const pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY, {
-            cluster: process.env.MIX_PUSHER_APP_CLUSTER
+        const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
+            cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER
         });
         const channel = pusher.subscribe(`user.${this.userId}.watchers`);
         channel.bind('update', (data) => {

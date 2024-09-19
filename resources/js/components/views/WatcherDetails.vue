@@ -89,11 +89,11 @@
 
 <script>
 import moment from "moment";
-import IntervalSelect from "../watcher/IntervalSelect";
-import DeleteButton from "../watcher/DeleteButton";
-import RefreshButton from "../watcher/RefreshButton";
-import PriceChangeTable from "../tables/PriceChangeTable";
-import StockChangeTable from "../tables/StockChangeTable";
+import IntervalSelect from "../watcher/IntervalSelect.vue";
+import DeleteButton from "../watcher/DeleteButton.vue";
+import RefreshButton from "../watcher/RefreshButton.vue";
+import PriceChangeTable from "../tables/PriceChangeTable.vue";
+import StockChangeTable from "../tables/StockChangeTable.vue";
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 

@@ -1,8 +1,7 @@
 @extends('layouts.base')
 
 @section('head')
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css'])
 @endsection
 
 @section('navbar')

@@ -1,17 +1,26 @@
+import Vue from 'vue';
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
 
-window.Vue = require('vue').default;
+import TemplateForm from './components/template/Form.vue';
+import WatcherForm from './components/watcher/Form.vue';
+import WatcherLogs from './components/watcher/Logs.vue';
+import DashboardIndex from './components/views/DashboardIndex.vue';
+import ProfileIndex from './components/views/ProfileIndex.vue';
+import TemplateIndex from './components/views/TemplateIndex.vue';
+import WatcherIndex from './components/views/WatcherIndex.vue';
+import WatcherDetails from './components/views/WatcherDetails.vue';
+import NavBar from './components/NavBar.vue';
 
-Vue.component('template-form', require('./components/template/Form.vue').default);
-Vue.component('watcher-form', require('./components/watcher/Form.vue').default);
-Vue.component('watcher-logs', require('./components/watcher/Logs.vue').default);
-Vue.component('dashboard-index', require('./components/views/DashboardIndex.vue').default);
-Vue.component('profile-index', require('./components/views/ProfileIndex.vue').default);
-Vue.component('template-index', require('./components/views/TemplateIndex.vue').default);
-Vue.component('watcher-index', require('./components/views/WatcherIndex.vue').default);
-Vue.component('watcher-details', require('./components/views/WatcherDetails.vue').default);
-Vue.component('nav-bar', require('./components/NavBar.vue').default);
+Vue.component('template-form', TemplateForm);
+Vue.component('watcher-form', WatcherForm);
+Vue.component('watcher-logs', WatcherLogs);
+Vue.component('dashboard-index', DashboardIndex);
+Vue.component('profile-index', ProfileIndex);
+Vue.component('template-index', TemplateIndex);
+Vue.component('watcher-index', WatcherIndex);
+Vue.component('watcher-details', WatcherDetails);
+Vue.component('nav-bar', NavBar);
 
 Vue.use(Buefy);
 

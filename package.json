@@ -11,7 +11,6 @@
         "cross-env": "^7.0.3",
         "laravel-vite-plugin": "^1.0.5",
         "lodash": "^4.17.20",
-        "popper.js": "^1.12",
         "resolve-url-loader": "^4.0.0",
         "sass": "^1.79.1",
         "sass-loader": "^8.0.0",
@@ -21,7 +20,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "buefy": "^0.9.8",
+        "buefy": "^0.9.29",
         "chart.js": "^3.7.1",
         "chartjs-adapter-date-fns": "^2.0.0",
         "date-fns": "^2.28.0",
