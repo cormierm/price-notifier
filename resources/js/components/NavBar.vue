@@ -20,9 +20,19 @@
         <template slot="end">
             <b-navbar-dropdown :label="username">
                 <b-navbar-item href="/profile" class="border-bottom">
+                    <b-icon
+                        icon="account"
+                        size="is-small"
+                        class="pr-2"
+                    />
                     Profile
                 </b-navbar-item>
                 <b-navbar-item @click="logout">
+                    <b-icon
+                        icon="logout"
+                        size="is-small"
+                        class="pr-2"
+                    />
                     Logout
                 </b-navbar-item>
             </b-navbar-dropdown>
