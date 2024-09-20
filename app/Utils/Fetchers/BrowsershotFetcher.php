@@ -20,6 +20,7 @@ class BrowsershotFetcher extends HtmlFetcher
         ->noSandbox()
         ->waitUntilNetworkIdle()
         ->windowSize(1920, 1080)
+        ->setChromePath(config('pcn.browsershot.chrome_path'))
         ->bodyHtml();
 
         if (!$html) {
