@@ -93,7 +93,7 @@ class UpdateWatcher implements ShouldQueue
             'watcher_id' => $this->watcher->id,
             'formatted_value' => $this->price ?? null,
             'raw_value' => $this->rawPrice ?? null,
-            'duration' => Carbon::now()->diffInMilliseconds($startTime),
+            'duration' => Carbon::now()->diffInMilliseconds($startTime, true),
             'region' => config('pcn.region'),
             'error' => strlen($this->error) > config('pcn.fetcher.error_max_length')
                 ? substr($this->error, 0, config('pcn.fetcher.error_max_length') - 1)
