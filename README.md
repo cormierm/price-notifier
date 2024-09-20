@@ -10,7 +10,7 @@ sudo apt install software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 
 sudo apt-get update
-sudo apt install apache2 php8.0 libapache2-mod-php8.0 php8.0-bcmath php8.0-mbstring php8.0-xml php8.0-zip php-curl php8.0-mysql npm
+sudo apt install apache2 php8.3 libapache2-mod-php8.3 php8.3-bcmath php8.3-mbstring php8.3-xml php8.3-zip php-curl php8.3-mysql npm
 ```
 
 
@@ -28,7 +28,7 @@ cd price-notifier
 cp .env.example .env
 composer install
 npm install
-npm run production
+npm run build
 cd ~/
 cp ~/price-notifier /var/www
 sudo chgrp -R www-data /var/www/price-notifier
@@ -50,10 +50,10 @@ sudo crontab -e
 
 #### 6. Install puppeteer (Required for browsershot client):
 ```
-curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt-get install -y nodejs gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget libgbm-dev libxshmfence-dev
 sudo npm install --global --unsafe-perm puppeteer
-sudo chmod -R o+rx /usr/lib/node_modules/puppeteer/.local-chromium
+sudo apt-get install chromium-browser
 ```
 
 #### 7. Configure Apache2 and permissions:
