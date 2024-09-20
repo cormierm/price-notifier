@@ -1,8 +1,8 @@
 <?php
 namespace Database\Factories;
 
-use App\PriceChange;
-use App\Watcher;
+use App\Models\PriceChange;
+use App\Models\Watcher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PriceChangeFactory extends Factory

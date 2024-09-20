@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WatcherResource;
-use App\Interval;
+use App\Models\Interval;
 use Illuminate\Http\Request;
 
 class Index extends Controller

@@ -3,7 +3,7 @@
 namespace Tests\Feature\App\Http\Middleware;
 
 use App\Http\Middleware\EmailApiKeyBasicAuth;
-use App\User;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

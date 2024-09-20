@@ -1,24 +1,22 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class WatcherLog extends Model
+class StockChange extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'watcher_id',
-        'formatted_value',
-        'raw_value',
-        'duration',
-        'region',
-        'error',
-        'has_stock',
-        'raw_stock',
+        'stock',
+    ];
+
+    protected $casts = [
+        'stock' => 'boolean',
     ];
 
     public function watcher(): BelongsTo

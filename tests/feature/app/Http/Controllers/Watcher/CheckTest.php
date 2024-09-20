@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\App\Http\Controllers\Watcher;
 
-use App\User;
+use App\Models\User;
+use App\Models\Watcher;
 use App\Utils\Fetchers\BrowsershotFetcher;
 use App\Utils\Fetchers\HtmlFetcher;
-use App\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery\MockInterface;
 use Tests\TestCase;

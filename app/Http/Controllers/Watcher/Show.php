@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WatcherResource;
-use App\Interval;
-use App\Watcher;
+use App\Models\Interval;
+use App\Models\Watcher;
 
 class Show extends Controller
 {

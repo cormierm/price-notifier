@@ -1,16 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Region extends Model
+class Interval extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'label',
-        'name',
-    ];
+    public $timestamps = false;
 }

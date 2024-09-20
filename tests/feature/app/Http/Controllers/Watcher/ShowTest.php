@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\App\Http\Controllers\Watcher;
 
-use App\Http\Controllers\Watcher\Show;
-use App\User;
-use App\Watcher;
+use App\Models\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

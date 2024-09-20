@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Watcher;
 
+use App\Models\Watcher;
 use App\Utils\Fetchers\HtmlFetcher;
-use App\Watcher;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

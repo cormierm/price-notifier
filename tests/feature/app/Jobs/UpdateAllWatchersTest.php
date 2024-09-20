@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\App\Jobs;
 
-use App\Interval;
 use App\Jobs\UpdateAllWatchers;
 use App\Jobs\UpdateWatcher;
-use App\Region;
-use App\Watcher;
-use App\WatcherLog;
+use App\Models\Interval;
+use App\Models\Region;
+use App\Models\Watcher;
+use App\Models\WatcherLog;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
-use App\Watcher;
+use App\Models\Watcher;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

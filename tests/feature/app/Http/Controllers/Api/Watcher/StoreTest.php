@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\App\Http\Controllers\Api\Watcher;
 
-use App\User;
+use App\Models\User;
 use App\Utils\Fetchers\HtmlFetcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

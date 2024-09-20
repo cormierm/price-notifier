@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
-use App\Interval;
-use App\Region;
-use App\Watcher;
+use App\Models\Interval;
+use App\Models\Region;
+use App\Models\Watcher;
 
 class Edit extends Controller
 {

@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Watcher;
-use App\WatcherLog;
+use App\Models\Watcher;
+use App\Models\WatcherLog;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WatcherLogFactory extends Factory

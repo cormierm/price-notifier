@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Template;
 
 use App\Http\Controllers\Controller;
-use App\Template;
+use App\Models\Template;
 
 class Edit extends Controller
 {

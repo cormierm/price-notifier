@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\App\Http\Controllers\Watcher;
 
-use App\Watcher;
-use App\WatcherLog;
+use App\Models\Watcher;
+use App\Models\WatcherLog;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

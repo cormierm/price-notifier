@@ -1,8 +1,8 @@
 <?php
 namespace Database\Factories;
 
-use App\StockChange;
-use App\Watcher;
+use App\Models\StockChange;
+use App\Models\Watcher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StockChangeFactory extends Factory

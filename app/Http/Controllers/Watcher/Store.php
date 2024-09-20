@@ -6,7 +6,7 @@ use App\Events\WatcherCreatedOrUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Watcher\StoreRequest;
 use App\Http\Resources\WatcherResource;
-use App\Watcher;
+use App\Models\Watcher;
 use Illuminate\Http\JsonResponse;
 
 class Store extends Controller

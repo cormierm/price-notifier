@@ -5,11 +5,14 @@ import path from 'path';
 
 export default defineConfig({
     plugins: [
-        laravel([
-            'resources/js/app.js',
-            'resources/sass/app.scss',
-            'resources/js/vue.js',
-        ]),
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'resources/js/vue.js',
+            ],
+            refresh: true,
+        }),
         vue(),
     ],
     resolve: {
@@ -17,12 +20,5 @@ export default defineConfig({
             '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
             vue: 'vue/dist/vue.esm.js'
         },
-    },
-    css: {
-        preprocessorOptions: {
-            scss: {
-                additionalData: `@import 'resources/sass/_variables.scss';`,
-            },
-        },
-    },
+    }
 });

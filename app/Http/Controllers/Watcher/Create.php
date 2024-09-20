@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
-use App\Interval;
-use App\Region;
+use App\Models\Interval;
+use App\Models\Region;
 
 class Create extends Controller
 {
