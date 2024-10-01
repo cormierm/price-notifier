@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Buefy from 'buefy';
-import 'buefy/dist/buefy.css';
 
 import TemplateForm from './components/template/Form.vue';
 import WatcherForm from './components/watcher/Form.vue';
