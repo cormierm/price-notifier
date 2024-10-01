@@ -12,6 +12,7 @@ class Index extends Controller
     public function __invoke(Request $request)
     {
         return view('dashboard.index', [
+            'header' => 'Dashboard',
             'errors' => $request->user()->watcherLogs()
                 ->whereNotNull('error')
                 ->with('watcher')

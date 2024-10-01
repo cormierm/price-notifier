@@ -1,19 +1,17 @@
 <template>
-    <div class="container">
-        <recent-price-table class="recent-table" :price-changes="priceChanges"/>
-        <recent-stock-table class="recent-table" :stock-changes="stockChanges"/>
-        <dashboard-errors-table :errors="errors"/>
+    <div class="flex flex-col items-center">
+        <dashboard-table title="Most Recent Price Changes" column="Price" :data="priceChanges"/>
+        <dashboard-table title="Most Stock Price Changes" column="Stock" :data="stockChanges"/>
+        <dashboard-table title="Most Recent Watcher Errors" column="Error" :data="errors"/>
     </div>
 </template>
 
 <script>
-import RecentPriceTable from "../tables/RecentPriceTable.vue";
-import RecentStockTable from "../tables/RecentStockTable.vue";
-import DashboardErrorsTable from "../tables/DashboardErrorsTable.vue";
+import DashboardTable from "../tables/DashboardTable.vue";
 
 export default {
     name: "DashboardIndex",
-    components: { DashboardErrorsTable, RecentPriceTable, RecentStockTable },
+    components: { DashboardTable },
     props: {
         errors: {
             type: Array,
@@ -30,9 +28,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    .recent-table {
-        padding-bottom: 10px;
-    }
-</style>
