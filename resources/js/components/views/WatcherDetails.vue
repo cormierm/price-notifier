@@ -108,7 +108,6 @@
 import moment from "moment";
 import DeleteButton from "@components/watcher/DeleteButton.vue";
 import IntervalSelect from "@components/watcher/IntervalSelect.vue";
-import PriceChangeTable from "@components/tables/PriceChangeTable.vue";
 import RefreshButton from "@components/watcher/RefreshButton.vue";
 import StockChangeTable from "@components/tables/StockChangeTable.vue";
 import Chart from 'chart.js/auto';
@@ -116,7 +115,7 @@ import 'chartjs-adapter-date-fns';
 
 export default {
     name: "WatcherDetails",
-    components: {DeleteButton, IntervalSelect, RefreshButton, PriceChangeTable, StockChangeTable},
+    components: {DeleteButton, IntervalSelect, RefreshButton, StockChangeTable},
     props: {
         watcher: {
             type: Object,
