@@ -29,8 +29,10 @@
 
 <script>
 import moment from "moment";
+import DeleteButton from "@components/template/DeleteButton.vue";
 
 export default {
+    components: {DeleteButton},
     props: {
         data: {
             type: Array,

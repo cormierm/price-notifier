@@ -9,7 +9,6 @@ import ProfileIndex from './components/views/ProfileIndex.vue';
 import TemplateIndex from './components/views/TemplateIndex.vue';
 import WatcherIndex from './components/views/WatcherIndex.vue';
 import WatcherDetails from './components/views/WatcherDetails.vue';
-import NavBar from './components/NavBar.vue';
 
 Vue.component('template-form', TemplateForm);
 Vue.component('watcher-form', WatcherForm);
@@ -19,7 +18,6 @@ Vue.component('profile-index', ProfileIndex);
 Vue.component('template-index', TemplateIndex);
 Vue.component('watcher-index', WatcherIndex);
 Vue.component('watcher-details', WatcherDetails);
-Vue.component('nav-bar', NavBar);
 
 Vue.use(Buefy);
 
