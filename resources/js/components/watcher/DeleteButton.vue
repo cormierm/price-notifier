@@ -1,9 +1,8 @@
 <template>
-    <b-button
-        type="is-danger"
-        icon-right="delete"
+    <button
+        class="w-10 h-10 border rounded text-center bg-red-500 text-white"
         @click="deleteConfirmation"
-    />
+    >🗑</button>
 </template>
 
 <script>

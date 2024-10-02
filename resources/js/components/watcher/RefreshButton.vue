@@ -1,10 +1,9 @@
 <template>
-    <b-button
-        type="is-default"
-        icon-right="refresh"
+    <button
+        class="h-10 w-10 border rounded-md"
         :loading="loading"
         @click="refresh(watcherId)"
-    />
+    >&#8634;</button>
 </template>
 
 <script>

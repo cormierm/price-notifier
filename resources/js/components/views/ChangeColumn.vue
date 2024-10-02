@@ -1,5 +1,5 @@
 <template>
-    <div class="change-column" :class="changeClass">
+    <div class="text-xs" :class="changeClass">
         <div v-if="showChange">{{ changePercentage }}%</div>
         <div v-else>-</div>
     </div>
@@ -20,10 +20,10 @@ export default {
     computed: {
         changeClass() {
             if (this.changePercentage > 0) {
-                return 'font-red';
+                return 'text-red-500';
             }
             if (this.changePercentage < 0) {
-                return 'font-green';
+                return 'text-green-500';
             }
             return '';
         },
@@ -36,17 +36,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.change-column {
-    font-size: 0.9em;
-}
-
-.font-red {
-    color: red;
-}
-
-.font-green {
-    color: green;
-}
-
-</style>

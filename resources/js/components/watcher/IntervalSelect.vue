@@ -1,9 +1,9 @@
 <template>
-    <b-select
-        class="interval-select"
+    <select
+        class="rounded-md"
         placeholder="None"
         :value="value"
-        @input="updateInterval(watcherId, $event)"
+        @input="updateInterval($event.target.value)"
         :loading="loading"
     >
         <option
@@ -12,7 +12,7 @@
             :key="option.id">
             {{ option.name }}
         </option>
-    </b-select>
+    </select>
 </template>
 
 <script>
@@ -28,7 +28,7 @@ export default {
             required: true,
         },
         value: {
-            type: Number,
+            type: Number|String,
             default: null
         }
     },
@@ -38,9 +38,9 @@ export default {
         };
     },
     methods: {
-        updateInterval(watcherId, intervalId) {
+        updateInterval(intervalId) {
             this.loading = true;
-            axios.put(`/watcher/${watcherId}`, {
+            axios.put(`/watcher/${this.watcherId}`, {
                 interval_id: intervalId,
             }).then(({data}) => {
                 this.$emit('update', data.watcher);
@@ -54,7 +54,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -1,167 +1,113 @@
 <template>
-    <div>
-        <div class="container">
-            <div class="title-header">
-                <h1 class="title">Watchers</h1>
-                <a href="/watcher/create">
-                    <b-button icon-left="plus">Add New Watcher</b-button>
-                </a>
+    <div class="w-full p-4 bg-white">
+        <div class="flex justify-between">
+            <h1 class="text-2xl">Watchers</h1>
+            <a href="/watcher/create">
+                <button class="border rounded px-4 py-2">+ Add New Watcher</button>
+            </a>
+        </div>
+
+        <div class="flex gap-4 mt-4">
+            <div v-for="(column, index) in columnsVisible" :key="index" class="flex items-center gap-1">
+                <input class="rounded" type="checkbox" v-model="column.display" @input="saveColumnSettings">
+                <label>{{ column.title }}</label>
             </div>
-            <b-field grouped group-multiline>
-                <div class="control">
-                    <b-checkbox v-model="hasMobileCards" @input="saveColumnSetting('mobile-cards', $event)">
-                        Mobile Cards
-                    </b-checkbox>
-                </div>
-                <div v-for="(column, index) in columnsVisible"
-                     :key="index"
-                     class="control">
-                    <b-checkbox v-model="column.display" @input="saveColumnSettings">
-                        {{ column.title }}
-                    </b-checkbox>
-                </div>
-                <div class="control">
-                    <b-checkbox v-model="showInactive" @input="saveColumnSetting('show-inactive', $event)">
-                        Show Inactive
-                    </b-checkbox>
-                </div>
-            </b-field>
-            <b-table
-                :data="tableData"
-                class="watcher-table"
-                default-sort="name"
-                :row-class="(row) => `is-${row.status}`"
-                :mobile-cards="hasMobileCards"
-            >
-                <b-table-column field="name" label="Name" sortable v-slot="props">
+            <div class="flex items-center gap-1">
+                <input class="rounded" type="checkbox" v-model="showInactive"
+                       @input="saveColumnSetting('show-inactive', $event)">
+                <label>Show Inactive</label>
+            </div>
+        </div>
 
-                    <div class="name-field">
-                        <div>
-                            <a :href="`/watcher/${props.row.id}`">{{ props.row.name }}</a>
-                            <a :href="props.row.url" :target="`price-watcher-${props.row.id}`">
-                                <b-icon icon="link"/>
-                            </a>
+        <div class="relative overflow-x-auto pb-4">
+            <table class="text-gray-600 w-full">
+                <thead class="text-xs uppercase bg-gray-700 text-gray-300">
+                <tr>
+                    <th class="py-2 px-4 text-left">Name</th>
+                    <th v-if="columnsVisible['interval'].display" class="py-2 px-4 w-[100px]">Interval</th>
+                    <th v-if="columnsVisible['initial_value'].display" class="py-2 px-4">Original</th>
+                    <th class="py-2 px-4">Current</th>
+                    <th v-if="columnsVisible['change'].display" class="py-2 px-4">Change</th>
+                    <th v-if="columnsVisible['lowest_price'].display" class="py-2 px-4">Lowest</th>
+                    <th v-if="columnsVisible['has_stock'].display" class="py-2 px-4">Stock</th>
+                    <th v-if="columnsVisible['alert_value'].display" class="py-2 px-4">Alert</th>
+                    <th v-if="columnsVisible['client'].display" class="py-2 px-4">Client</th>
+                    <th v-if="columnsVisible['region'].display" class="py-2 px-4">Region</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="row in tableData" class="bg-white border-b">
+                    <td class="py-2 px-4">
+                        <div class="min-w-96">
+                            <div class="text-blue-600 gap-1 flex items-center">
+                                <a :href="`/watcher/${row.id}`">{{ row.name }}</a>
+                                <a :href="row.url">
+                                    <b-icon icon="link"/>
+                                </a>
+                            </div>
+                            <span class="text-xs text-gray-500">{{ row.url_domain }}</span>
                         </div>
-                        <span>{{ props.row.url_domain }}</span>
-                    </div>
-                </b-table-column>
-
-                <b-table-column
-                    field="interval"
-                    :visible="columnsVisible['interval'].display"
-                    :label="columnsVisible['interval'].title"
-                    v-slot="props"
-                >
-                    <interval-select
-                        :intervals="intervals"
-                        :watcher-id="props.row.id"
-                        :value="props.row.interval_id"
-                        @update="updateWatcherList"
-                    />
-                </b-table-column>
-
-                <b-table-column
-                    field="initial_value"
-                    :visible="columnsVisible['initial_value'].display"
-                    :label="columnsVisible['initial_value'].title"
-                    width="120"
-                    centered
-                    v-slot="props"
-                >
-                    <div class="value-field">
-                        {{ props.row.initial_value ? props.row.initial_value : '-' }}
-                        <span>{{ props.row.created_at }}</span>
-                    </div>
-                </b-table-column>
-
-                <b-table-column field="value" label="Current" width="120" centered v-slot="props">
-                    <div class="value-field">
-                        {{ props.row.value ? props.row.value : '-' }}
-                        <span>{{ props.row.last_sync }}</span>
-                    </div>
-                </b-table-column>
-
-                <b-table-column
-                    field="change"
-                    :visible="columnsVisible['change'].display"
-                    :label="columnsVisible['change'].title"
-                    width="120"
-                    centered
-                    v-slot="props"
-                >
-                    <change-column
-                        :initial-value="props.row.initial_value"
-                        :current-value="props.row.value"
-                    />
-                </b-table-column>
-
-                <b-table-column
-                    field="lowest_price"
-                    :visible="columnsVisible['lowest_price'].display"
-                    :label="columnsVisible['lowest_price'].title"
-                    width="120"
-                    centered
-                    v-slot="props"
-                >
-                    <div class="value-field">
-                        {{ props.row.lowest_price ? props.row.lowest_price : '-' }}
-                        <span>{{ props.row.lowest_at }}</span>
-                    </div>
-                </b-table-column>
-
-                <b-table-column
-                    field="has_stock"
-                    :visible="columnsVisible['has_stock'].display"
-                    :label="columnsVisible['has_stock'].title"
-                    centered
-                    v-slot="props"
-                >
-                    {{ props.row.has_stock === true ? 'Yes' : props.row.has_stock === false ? 'No' : '-' }}
-                </b-table-column>
-
-                <b-table-column
-                    field="alert_value"
-                    :visible="columnsVisible['alert_value'].display"
-                    :label="columnsVisible['alert_value'].title"
-                    centered
-                    v-slot="props"
-                >
-                    {{ props.row.alert_value ? props.row.alert_value : '-' }}
-                </b-table-column>
-
-                <b-table-column
-                    field="client"
-                    :visible="columnsVisible['client'].display"
-                    :label="columnsVisible['client'].title"
-                    centered
-                    v-slot="props"
-                >
-                    {{ props.row.client }}
-                </b-table-column>
-
-                <b-table-column
-                    field="region"
-                    :visible="columnsVisible['region'].display"
-                    :label="columnsVisible['region'].title"
-                    centered
-                    v-slot="props"
-                >
-                    {{ props.row.region ? props.row.region.label : '-' }}
-                </b-table-column>
-
-                <b-table-column field="tools" centered v-slot="props">
-                    <div class="tool-buttons">
-                        <refresh-button :watcher-id="props.row.id" @update="updateWatcherList"></refresh-button>
-                        <a :href="`/watcher/${props.row.id}`">
-                            <b-button type="is-default" icon-right="information-outline"/>
-                        </a>
-                        <a :href="`/watcher/${props.row.id}/edit`">
-                            <b-button type="is-default" icon-right="pencil"/>
-                        </a>
-                        <delete-button :watcher="props.row" @delete="removeWatcherFromList"></delete-button>
-                    </div>
-                </b-table-column>
-            </b-table>
+                    </td>
+                    <td v-if="columnsVisible['interval'].display" class="py-2 px-4">
+                        <interval-select
+                            :intervals="intervals"
+                            :watcher-id="row.id"
+                            :value="row.interval_id"
+                            @update="updateWatcherList"
+                        />
+                    </td>
+                    <td v-if="columnsVisible['initial_value'].display" class="py-2 px-4 w-[120px]">
+                        <div class="flex flex-col items-center text-lg">
+                            {{ row.initial_value ? row.initial_value : '-' }}
+                            <span class="text-xs">{{ row.created_at }}</span>
+                        </div>
+                    </td>
+                    <td class="py-2 px-4 w-[120px]">
+                        <div class="flex flex-col items-center text-lg">
+                            {{ row.value ? row.value : '-' }}
+                            <span class="text-xs">{{ row.last_sync }}</span>
+                        </div>
+                    </td>
+                    <td v-if="columnsVisible['change'].display" class="py-2 px-4 w-[120px] text-center">
+                        <change-column
+                            :initial-value="row.initial_value"
+                            :current-value="row.value"
+                        />
+                    </td>
+                    <td v-if="columnsVisible['lowest_price'].display" class="py-2 px-4 w-[120px]">
+                        <div class="flex flex-col items-center text-lg">
+                            {{ row.lowest_price ? row.lowest_price : '-' }}
+                            <span class="text-xs">{{ row.lowest_at }}</span>
+                        </div>
+                    </td>
+                    <td v-if="columnsVisible['has_stock'].display" class="py-2 px-4 text-center">
+                        {{ row.has_stock === true ? 'Yes' : row.has_stock === false ? 'No' : '-' }}
+                    </td>
+                    <td v-if="columnsVisible['alert_value'].display" class="py-2 px-4 text-center">
+                        {{ row.alert_value ? row.alert_value : '-' }}
+                    </td>
+                    <td v-if="columnsVisible['client'].display" class="py-2 px-4 text-center">
+                        {{ row.client }}
+                    </td>
+                    <td v-if="columnsVisible['region'].display" class="py-2 px-4 text-center">
+                        {{ row.region ? row.region.label : '-' }}
+                    </td>
+                    <td class="py-2 px-4 text-center text-lg font-black">
+                        <div class="flex">
+                            <refresh-button :watcher-id="row.id" @update="updateWatcherList"></refresh-button>
+                            <a :href="`/watcher/${row.id}`">
+                                <button class="w-10 h-10 border rounded text-center">&#9432;</button>
+                            </a>
+                            <a :href="`/watcher/${row.id}/edit`">
+                                <button class="w-10 h-10 border rounded text-center">&#9998;</button>
+                            </a>
+                            <delete-button :watcher="row" @delete="removeWatcherFromList"></delete-button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
@@ -175,7 +121,6 @@ import Pusher from 'pusher-js';
 import ChangeColumn from "./ChangeColumn.vue";
 
 export default {
-    name: "Home",
     components: {ChangeColumn, DeleteButton, IntervalSelect, RefreshButton},
     props: {
         userId: {
@@ -203,12 +148,10 @@ export default {
         });
 
         this.restoreColumnSettings();
-        this.hasMobileCards = this.restoreColumnSetting('mobile-cards');
         this.showInactive = this.restoreColumnSetting('show-inactive');
     },
     data() {
         return {
-            hasMobileCards: true,
             showInactive: true,
             watchersList: [],
             loading: {
@@ -236,6 +179,7 @@ export default {
                     last_sync: watcher.last_sync ? moment.utc(watcher.last_sync).fromNow() : 'Never',
                     lowest_at: watcher.lowest_at ? moment.utc(watcher.lowest_at).fromNow() : '',
                 }))
+                .sort((a, b) => a.name.localeCompare(b.name))
         },
     },
     methods: {
@@ -269,35 +213,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.title-header {
-    display: flex;
-    justify-content: space-between;
-}
-
-.name-field, .value-field {
-    display: flex;
-    flex-direction: column;
-
-    span {
-        color: #666;
-        font-size: 0.7em;
-    }
-}
-
-.tool-buttons {
-    display: flex;
-}
-</style>
-
-<style>
-tr.is-error {
-    background: #ffd4d4;
-}
-
-tr.is-disabled {
-    background: #f6f6f6;
-    color: #4c4c4c;
-}
-</style>
