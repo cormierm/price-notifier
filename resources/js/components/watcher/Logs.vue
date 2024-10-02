@@ -1,37 +1,32 @@
 <template>
     <div>
-        <div class="title-header">
-            <p>Logs</p>
-            <div class="limit-select">
-                Display:
-                <b-select
-                    :value="5"
-                    @input="getLogs($event)"
+        <div class="flex justify-between mt-4 items-center">
+            <h3 class="text-lg">Logs</h3>
+            <div class="flex items-center gap-1">
+                <label for="pagination-select">Display:</label>
+                <select
+                    id="pagination-select"
+                    class="rounded"
+                    :value="limit"
+                    @input="getLogs($event.target.value)"
                     :loading="loading"
                 >
                     <option v-for="option in limits" :value="option" :key="option">
                         {{ option }}
                     </option>
-                </b-select>
+                </select>
             </div>
-
         </div>
-        <b-table
-            :columns="columns"
-            :data="logs"
-            :loading="loading"
-            :row-class="(row) => row.error && 'is-danger'"
-            default-sort="created_at"
-            default-sort-direction="desc"
-        ></b-table>
+
+        <watcher-logs-table class="mt-4" :data="logs"/>
     </div>
 </template>
 
 <script>
-import moment from "moment";
+import WatcherLogsTable from "@components/tables/WatcherLogsTable.vue";
 
 export default {
-    name: "watcher-logs",
+    components: {WatcherLogsTable},
     props: {
         watcherId: {
             type: Number,
@@ -43,62 +38,19 @@ export default {
     },
     data() {
         return {
-            columns: [
-                {
-                    field: 'created_at',
-                    sortable: true,
-                    visible: false
-                },
-                {
-                    field: 'created_at_formatted',
-                    label: 'Created',
-                },
-                {
-                    field: 'formatted_value',
-                    label: 'Formatted Value',
-                },
-                {
-                    field: 'raw_value',
-                    label: 'Raw Value',
-                },
-                {
-                    field: 'has_stock',
-                    label: 'Stock',
-                },
-                {
-                    field: 'raw_stock',
-                    label: 'Raw Stock',
-                },
-                {
-                    field: 'duration',
-                    label: 'Duration (ms)',
-                },
-                {
-                    field: 'region',
-                    label: 'Region',
-                },
-                {
-                    field: 'error',
-                    label: 'Error',
-                },
-            ],
-            limits: [5,10,25,100,250,1000],
+            limit: 5,
+            limits: [5, 10, 25, 100, 250, 1000],
             loading: false,
             logs: [],
         }
     },
     methods: {
         getLogs(limit = 5) {
+            this.limit = limit;
             this.loading = true;
             axios.get(`/watcher/${this.watcherId}/logs?limit=${limit}`)
                 .then(({data}) => {
-                    this.logs = data.map((log) => {
-                        return {
-                            ...log,
-                            created_at_formatted: log.created_at ? moment(log.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
-                            has_stock: log.has_stock === 1 ? 'Yes' : log.has_stock === 0 ? 'No' : '-',
-                        }
-                    })
+                    this.logs = data;
                 })
                 .catch((err) => {
                     console.log(err);
@@ -110,26 +62,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-    .title-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        p {
-            font-weight: bold;
-        }
-    }
-
-    .limit-select {
-        display: flex;
-        align-items: center;
-    }
-</style>
-
-<style>
-    tr.is-danger {
-        background: #ffc4c4;
-        color: #ff0000;
-    }
-</style>

@@ -1,12 +1,21 @@
 <template>
-    <div class="stock-change-table">
-        <h3>{{ title }}</h3>
-        <b-table
-            :columns="columns"
-            :data="tableData"
-            default-sort="created_at"
-            default-sort-direction="desc"
-        ></b-table>
+    <div>
+        <h3 class="text-lg">{{ title }}</h3>
+
+        <table class="text-sm text-gray-600 w-full">
+            <thead class="text-xs uppercase bg-gray-700 text-gray-300">
+            <tr>
+                <th class="py-2 px-4 text-left">Date</th>
+                <th class="py-2 px-4 text-center">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="row in tableData" class="bg-white border-b">
+                <td class="py-2 px-4 text-left">{{ row.created_at_formatted }}</td>
+                <td class="py-2 px-4 text-center">{{ row.stock }}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -14,7 +23,6 @@
 import moment from "moment";
 
 export default {
-    name: "StockChangeTable",
     props: {
         title: {
             type: String,
@@ -36,29 +44,5 @@ export default {
             });
         }
     },
-    data() {
-        return {
-            columns: [
-                {
-                    field: 'stock',
-                    label: 'Status',
-                },
-                {
-                    field: 'created_at',
-                    visible: false,
-                },
-                {
-                    label: 'Date',
-                    field: 'created_at_formatted',
-                },
-            ],
-        }
-    }
 }
 </script>
-
-<style scoped>
-    h2 {
-        font-weight: bold;
-    }
-</style>

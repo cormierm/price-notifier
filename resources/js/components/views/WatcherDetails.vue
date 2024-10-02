@@ -1,55 +1,72 @@
 <template>
-    <div class="container">
-        <div class="title-header">
-            <h1 class="title">Watcher Details</h1>
-            <div class="tool-buttons">
+    <div class="bg-white p-4">
+        <div class="flex justify-between">
+            <h1 class="text-2xl">Watcher Details</h1>
+            <div>
                 <refresh-button :watcher-id="watcher.id" @update="updateWatcher"></refresh-button>
                 <a :href="`/watcher/${watcher.id}/edit`">
-                    <b-button type="is-default" icon-right="pencil"/>
+                    <button class="w-10 h-10 border rounded text-center">&#9998;</button>
                 </a>
                 <delete-button :watcher="watcher" @delete="redirectToWatchers"></delete-button>
             </div>
         </div>
 
-        <article class="panel">
-            <div class="panel-heading">
-                <strong>{{ watcher.name }}</strong>
-                <div v-if="watcher.value" class="is-pulled-right"><strong>${{ watcher.value }}</strong></div>
-                <br>
-                <a class="header-link" :href="watcher.url">{{ watcher.url }}</a>
-            </div>
-            <div class="columns" style="min-height: 500px">
-                <div class="column is-three-fifths" style="display: flex; align-items: flex-start">
-                    <canvas id="myChart" style="padding: 10px; margin: 10px; height: 90%; width: 100%"></canvas>
+        <article class="border rounded mt-4">
+            <div class="p-4 bg-gray-200">
+                <div class="flex justify-between font-bold text-xl">
+                    {{ watcher.name }}
+                    <div v-if="watcher.value">${{ watcher.value }}</div>
                 </div>
-                <div class="column" style="margin: 20px">
-                    <h3>Price History</h3>
-                    <b-table
-                        :columns="[
-                            {field: 'type', label: 'Type'},
-                            {field: 'price', label: 'Price'},
-                            {field: 'date', label: 'Date'},
-                        ]"
-                        :data="[
-                            {type: 'Current', 'price': `$${watcher.value}`, date: formatDate(watcher.last_sync)},
-                            {type: 'Lowest', 'price': `$${watcher.lowest_price}`, date: formatDate(watcher.lowest_at)},
-                            {type: 'Original', 'price': `$${watcher.initial_value}`, date: formatDate(watcher.created_at)},
-                        ]"
-                    ></b-table>
 
-                    <br>
+                <a class="text-blue-500 text-sm" :href="watcher.url">{{ watcher.url }}</a>
+            </div>
+            <div class="flex p-4 gap-8">
+                <div class="w-2/3 m-h-96">
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div class="w-1/3 flex flex-col gap-4">
+                    <div>
+                        <h3 class="text-lg">Price History</h3>
+                        <table class="text-sm text-gray-600 w-full">
+                            <thead class="text-xs text-left uppercase bg-gray-700 text-gray-300">
+                            <tr>
+                                <th class="py-2 px-4">Type</th>
+                                <th class="py-2 px-4">Price</th>
+                                <th class="py-2 px-4">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="bg-white border-b">
+                                <td class="py-2 px-4">Current</td>
+                                <td class="py-2 px-4">${{ watcher.value }}</td>
+                                <td class="py-2 px-4">{{ formatDate(watcher.last_sync) }}</td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="py-2 px-4">Lowest</td>
+                                <td class="py-2 px-4">${{ watcher.lowest_price }}</td>
+                                <td class="py-2 px-4">{{ formatDate(watcher.lowest_at) }}</td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="py-2 px-4">Original</td>
+                                <td class="py-2 px-4">${{ watcher.initial_value }}</td>
+                                <td class="py-2 px-4">{{ formatDate(watcher.created_at) }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <stock-change-table :stock-changes="stockChanges"/>
                 </div>
             </div>
         </article>
 
-        <div class="columns">
-            <div class="column">
-                <article class="panel">
-                    <div class="panel-heading">
+        <div class="flex mt-4 gap-4">
+            <div class="border rounded w-1/2">
+                <article>
+                    <div class="text-lg font-bold p-4 bg-gray-200">
                         Query
                     </div>
-                    <div style="margin: 20px">
+                    <div class="m-4">
                         Price Query: {{ watcher.price_query }}<br>
                         Price Query Type: {{ watcher.price_query_type }}<br>
                         Stock Query: {{ watcher.stock_query }}<br>
@@ -60,13 +77,13 @@
                     </div>
                 </article>
             </div>
-            <div class="column">
-                <article class="panel">
-                    <div class="panel-heading">
+            <div class="border rounded w-1/2">
+                <article class="">
+                    <div class="text-lg font-bold p-4 bg-gray-200">
                         Settings
                     </div>
-                    <div style="margin: 20px">
-                        <div style="display: flex; align-items: center">
+                    <div class="m-4">
+                        <div>
                             Interval:
                             <interval-select
                                 style="padding-left: 10px"
@@ -89,11 +106,11 @@
 
 <script>
 import moment from "moment";
-import IntervalSelect from "../watcher/IntervalSelect.vue";
-import DeleteButton from "../watcher/DeleteButton.vue";
-import RefreshButton from "../watcher/RefreshButton.vue";
-import PriceChangeTable from "../tables/PriceChangeTable.vue";
-import StockChangeTable from "../tables/StockChangeTable.vue";
+import DeleteButton from "@components/watcher/DeleteButton.vue";
+import IntervalSelect from "@components/watcher/IntervalSelect.vue";
+import PriceChangeTable from "@components/tables/PriceChangeTable.vue";
+import RefreshButton from "@components/watcher/RefreshButton.vue";
+import StockChangeTable from "@components/tables/StockChangeTable.vue";
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 
@@ -169,23 +186,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.title-header {
-    display: flex;
-    justify-content: space-between;
-}
-
-.tool-buttons {
-    display: flex;
-}
-
-.header-link {
-    font-size: .7em;
-}
-
-.panel-heading {
-    font-size: 1.2em;
-}
-
-</style>
