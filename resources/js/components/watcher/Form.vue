@@ -1,273 +1,276 @@
 <template>
     <div>
-        <b-message
+        <message-box
             v-if="template && !testResults"
             :title="`Found domain query for ${template.domain}`"
-            type="is-success"
-            aria-close-label="Close message"
         >
             Checking for template and auto-filling form...
-        </b-message>
-        <div v-if="testResults" class="update-checkbox">
-            <b-message v-if="testResults.error" title="Danger" type="is-danger" aria-close-label="Close message">
+        </message-box>
+        <div v-if="testResults">
+            <message-box
+                v-if="testResults.error"
+                title="Danger"
+                colour="red"
+            >
                 {{ testResults.error }}
-            </b-message>
+            </message-box>
             <div v-else>
-                <b-message title="Check Results" type="is-success" aria-close-label="Close message">
-                    {{ testResults.title }}<br><br>
-                    Price: <strong>{{ testResults.value }}</strong>
-                    <b-button v-if="testResults.title !== name" class="is-pulled-right" @click="autoFillName">
+                <message-box title="Results">
+                    <button
+                        v-if="testResults.title !== name"
+                        class="bg-white py-2 px-4 rounded text-black border hover:border-gray-300 float-right"
+                        @click="autoFillName"
+                    >
                         Update Name
-                    </b-button>
-                    <br>
+                    </button>
+                    {{ testResults.title }}<br><br>
+                    Price: <span class="font-bold">{{ testResults.value }}</span><br>
                     Stock: {{ testResults.has_stock }}
-                </b-message>
-                <b-message v-if="showDebug" title="Debug Information" type="is-default"
-                           aria-close-label="Close message">
+                </message-box>
+                <message-box
+                    class="mt-4"
+                    v-if="showDebug"
+                    title="Debug Information"
+                    colour="black"
+                >
                     Price InnerText: <strong>{{ testResults.debug.value_inner_text }}</strong><br><br>
                     Stock InnerText: <strong>{{ testResults.debug.stock_inner_text }}</strong><br><br>
                     Stock OuterHtml: <strong>{{ testResults.debug.stock_outer_html }}</strong>
-                </b-message>
+                </message-box>
             </div>
         </div>
 
-        <form class="watcher-form" action="">
-            <b-field
-                label="Url"
-                :type="formErrors['url'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['url']"
-            >
-                <b-input
-                    type="url"
-                    v-model="url"
-                    maxlength="255"
-                    placeholder="https://www.example.com/product.html"
-                    @input="autoFill"
-                ></b-input>
-            </b-field>
+        <form action="">
+            <div class="flex flex-col mt-4">
+                <label class="flex flex-col">
+                    Url
+                    <input
+                        class="rounded"
+                        :class="{'border-red-500': formErrors['url']}"
+                        id="url"
+                        type="url"
+                        v-model="url"
+                        placeholder="https://www.example.com/product.html"
+                        @input="autoFill"
+                    ></input>
+                </label>
+                <div v-if="formErrors['url']" class="text-sm text-red-500">{{ formErrors['url'][0] }}</div>
+            </div>
 
-            <b-field
+            <form-input
+                class="mt-4"
                 label="Name"
-                :type="formErrors['name'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['name']"
-            >
-                <b-input
-                    v-model="name"
-                    maxlength="255"
-                    placeholder="Product Name"
-                    :loading="loadingTemplate"
-                ></b-input>
-            </b-field>
+                placeholder="Product Name"
+                :errors="formErrors['name']"
+                v-model="name"
+            />
 
-            <b-field label="Price Query"></b-field>
-            <b-field
-                :type="formErrors['price_query_type'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['price_query_type']"
+            <form-input
+                class="mt-4"
+                label="Price Query"
+                :placeholder="pricePlaceholder"
+                :errors="formErrors['price_query']"
+                v-model="priceQuery"
             >
-                <div class="block">
-                    <b-radio
-                        v-model="priceQueryType"
-                        name="price_query_type"
-                        native-value="xpath"
-                    >
+                <div class="flex gap-3 pb-1">
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="priceQueryType"
+                            name="price_query_type"
+                            value="xpath"
+                        />
                         XPath
-                    </b-radio>
-                    <b-radio
-                        v-model="priceQueryType"
-                        name="price_query_type"
-                        native-value="selector"
-                    >
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="priceQueryType"
+                            name="price_query_type"
+                            value="selector"
+                        />
                         Query Selector
-                    </b-radio>
-                    <b-radio
-                        v-model="priceQueryType"
-                        name="price_query_type"
-                        native-value="regex"
-                    >
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="priceQueryType"
+                            name="price_query_type"
+                            value="regex"
+                        />
                         Regex
-                    </b-radio>
+                    </label>
                 </div>
-            </b-field>
-            <b-field
-                :type="formErrors['price_query'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['price_query']"
-            >
-                <b-input
-                    v-model="priceQuery"
-                    maxlength="255"
-                    :placeholder="pricePlaceholder"
-                    @input="updateQueries = true"
-                ></b-input>
-            </b-field>
+            </form-input>
 
-            <b-field label="Stock Query"></b-field>
-            <b-field
-                :type="formErrors['stock_query_type'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['stock_query_type']"
+            <form-input
+                class="mt-4"
+                label="Stock Query"
+                :placeholder="stockPlaceholder"
+                :errors="formErrors['stock_query']"
+                v-model="stockQuery"
             >
-                <div class="block">
-                    <b-radio
-                        v-model="stockQueryType"
-                        name="stock_query_type"
-                        native-value="xpath"
-                    >
+                <div class="flex gap-3 pb-1">
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="stockQueryType"
+                            name="stock_query_type"
+                            value="xpath"
+                        />
                         XPath
-                    </b-radio>
-                    <b-radio
-                        v-model="stockQueryType"
-                        name="stock_query_type"
-                        native-value="selector"
-                    >
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="stockQueryType"
+                            name="stock_query_type"
+                            value="selector"
+                        />
                         Query Selector
-                    </b-radio>
-                    <b-radio
-                        v-model="stockQueryType"
-                        name="stock_query_type"
-                        native-value="regex"
-                    >
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="stockQueryType"
+                            name="stock_query_type"
+                            value="regex"
+                        />
                         Regex
-                    </b-radio>
+                    </label>
                 </div>
-            </b-field>
-            <b-field
-                :type="formErrors['stock_query'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['stock_query']"
-            >
-                <b-input
-                    v-model="stockQuery"
-                    maxlength="255"
-                    :placeholder="stockPlaceholder"
-                    @input="updateQueries = true"
-                ></b-input>
-            </b-field>
+            </form-input>
 
-            <b-field>
-                <b-select placeholder="Select stock condition" v-model="stockCondition">
+            <div class="mt-4 flex items-center">
+                <select class="rounded" placeholder="Select stock condition" v-model="stockCondition">
                     <option
                         v-for="option in stockConditions"
                         :value="option.value"
                         :key="option.value">
                         {{ option.label }}
                     </option>
-                </b-select>
-                <b-input
-                    expanded
-                    v-model="stockText"
-                    maxlength="255"
+                </select>
+                <form-input
+                    class="w-full"
                     placeholder="In Stock."
-                    @input="updateQueries = true"
-                ></b-input>
-            </b-field>
-
-            <b-field>
-                <b-checkbox v-model="stockRequiresPrice">Stock updates require price (Helps reduce false positives)</b-checkbox>
-            </b-field>
-
-
-            <div class="form-section">
-                <h2 class="subtitle">Notifications</h2>
-                <b-field>
-                    <b-checkbox v-model="stockAlert">Notify When In Stock</b-checkbox>
-                </b-field>
-                <b-field
-                    label="Notify When Price Below"
-                    :type="formErrors['alert_value'] ? 'is-danger' : 'is-default'"
-                    :message="formErrors['alert_value']"
-                >
-                    <b-input
-                        v-model="alertValue"
-                        type="number"
-                        placeholder="5.00"
-                    ></b-input>
-                </b-field>
+                    v-model="stockText"
+                />
             </div>
 
-            <div class="form-section">
-                <h2 class="subtitle">Watcher Settings</h2>
-                <b-field
-                    label="Interval"
-                    :type="formErrors['interval_id'] ? 'is-danger' : 'is-default'"
-                    :message="formErrors['interval_id']"
-                >
-                    <b-select placeholder="Select an interval" v-model="interval">
+            <label class="flex items-center gap-2 mt-1">
+                <input
+                    class="rounded"
+                    type="checkbox"
+                    v-model="stockRequiresPrice"
+                />
+                Stock updates require price (Helps reduce false positives)
+            </label>
+
+            <div class="mt-8">
+                <h2 class="text-xl font-bold">Notifications</h2>
+                <label class="flex items-center gap-2 mt-3">
+                    <input class="rounded" type="checkbox" v-model="stockAlert"/>
+                    Notify When In Stock
+                </label>
+
+                <form-input
+                    class="mt-4"
+                    label="Notify When Price Below"
+                    type="number"
+                    placeholder="5.00"
+                    :errors="formErrors['alert_value']"
+                    v-model="alertValue"
+                />
+            </div>
+
+            <div class="mt-8">
+                <h2 class="text-xl font-bold">Watcher Settings</h2>
+                <label class="flex flex-col mt-4">
+                    Interval
+                    <select class="rounded" placeholder="Select an interval" v-model="interval">
                         <option
                             v-for="option in intervals"
                             :value="option.id"
                             :key="option.id">
                             {{ option.name }}
                         </option>
-                    </b-select>
-                </b-field>
+                    </select>
+                </label>
+                <div v-if="formErrors['interval_id']" class="text-sm text-red-500">
+                    {{ formErrors['interval_id'][0] }}
+                </div>
 
-                <b-field
-                    label="Html Client"
-                    :type="formErrors['client'] ? 'is-danger' : 'is-default'"
-                    :message="formErrors['client']"
-                >
-                    <div class="block">
-                        <b-radio
-                            v-model="client"
-                            name="client"
-                            native-value="browsershot"
-                        >
+                <div class="mt-4">
+                    <label>Html Client</label>
+                    <div class="flex gap-3 pb-1">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" v-model="client" name="client" value="browsershot"/>
                             Browsershot
-                        </b-radio>
-                        <b-radio
-                            v-model="client"
-                            name="client"
-                            native-value="curl"
-                        >
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" v-model="client" name="client" value="curl"/>
                             Curl
-                        </b-radio>
-                        <b-radio
-                            v-model="client"
-                            name="client"
-                            native-value="guzzle"
-                        >
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" v-model="client" name="client" value="guzzle"/>
                             Guzzle
-                        </b-radio>
-                        <b-radio
-                            v-model="client"
-                            name="client"
-                            native-value="puppeteer"
-                        >
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" v-model="client" name="client" value="puppeteer"/>
                             Puppeteer
-                        </b-radio>
+                        </label>
                     </div>
-                </b-field>
 
-                <b-field
-                    label="Region"
-                    :type="formErrors['region_id'] ? 'is-danger' : 'is-default'"
-                    :message="formErrors['region_id']"
-                >
-                    <b-select placeholder="Select a region" v-model="region">
-                        <option value="">None</option>
+                    <div v-if="formErrors['client']" class="text-sm text-red-500">
+                        {{ formErrors['client'][0] }}
+                    </div>
+                </div>
+
+                <label class="flex flex-col mt-4">
+                    Region
+                    <select class="rounded" placeholder="Select a region" v-model="region">
+                        <option value="null">None</option>
                         <option
                             v-for="option in regions"
                             :value="option.id"
                             :key="option.id">
                             {{ option.label }}
                         </option>
-                    </b-select>
-                </b-field>
+                    </select>
+
+                </label>
+                <div v-if="formErrors['region_id']" class="text-sm text-red-500">
+                    {{ formErrors['region_id'][0] }}
+                </div>
             </div>
         </form>
 
-        <div class="buttons">
-            <div class="button-group">
-                <b-button :loading="loadingCheck" @click="check">Check</b-button>
-                <b-field>
-                    <b-switch v-model="showDebug" class="switch-margin">
-                        Show Debug
-                    </b-switch>
-                </b-field>
+        <div class="mt-8 flex justify-between">
+            <div class="flex items-center gap-2">
+                <button
+                    class="border rounded px-4 py-2 hover:border-gray-100 w-[100px] h-11 flex items-center justify-center"
+                    :disabled="loadingCheck"
+                    @click="check"
+                >
+                    <spinner v-if="loadingCheck" />
+                    {{ loadingCheck ? '' : 'Check' }}
+                </button>
+                <label>
+                    <input class="rounded" type="checkbox" v-model="showDebug"/>
+                    Show Debug
+                </label>
             </div>
-            <div class="button-group">
-                <b-checkbox v-model="updateQueries" class="switch-margin">
+            <div class="flex items-center gap-2">
+                <label>
+                    <input class="rounded" type="checkbox" v-model="updateQueries"/>
                     Update Domain Query
-                </b-checkbox>
-                <b-button type="is-info" @click="submit">{{ type }}</b-button>
+                </label>
+                <button
+                    class="rounded bg-blue-500 hover:bg-blue-600 py-2 px-4 text-white"
+                    @click="submit"
+                >
+                    {{ type }}
+                </button>
             </div>
         </div>
     </div>
@@ -275,9 +278,13 @@
 
 <script>
 import debounce from 'lodash/debounce';
+import FormInput from "@components/form/FormInput.vue";
+import Spinner from "@components/form/Spinner.vue";
+import MessageBox from "@components/form/MessageBox.vue";
 
 export default {
     name: "watcher-form",
+    components: {MessageBox, Spinner, FormInput},
     props: {
         intervals: {
             type: Array,
@@ -518,30 +525,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.form-section {
-    margin-top: 1em;
-    margin-bottom: 2rem;
-}
-
-.watcher-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.button-group {
-    display: flex;
-    align-items: center;
-}
-
-.switch-margin {
-    margin-bottom: 0.5rem;
-}
-</style>
