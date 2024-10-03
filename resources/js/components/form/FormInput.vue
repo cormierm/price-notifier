@@ -5,10 +5,11 @@
             <slot></slot>
             <input
                 class="rounded"
-                :class="{'border-red-500': errors}"
+                :class="{'border-red-500': errors, 'bg-gray-100 border-gray-100 text-gray-700': disabled}"
                 :type="type"
                 :placeholder="placeholder"
                 :value="value"
+                :disabled="disabled"
                 @input="$emit('input', $event.target.value)"
             ></input>
         </label>
@@ -38,6 +39,10 @@ export default {
         value: {
             type: [String, Number],
             required: true
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         }
     },
 }

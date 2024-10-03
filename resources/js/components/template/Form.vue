@@ -1,131 +1,147 @@
 <template>
-    <div>
-        <form class="template-form" action="">
-            <b-field
+    <div class="bg-white p-4">
+        <h1 class="text-xl">{{type}} Domain Query</h1>
+        <form class="mt-8" action="">
+            <form-input
+                class="mt-4"
                 label="Domain"
-                :type="formErrors['domain'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['domain']"
-            >
-                <b-input
-                    v-model="domain"
-                    readonly
-                    disabled
-                ></b-input>
-            </b-field>
+                placeholder="Product Name"
+                :errors="formErrors['domain']"
+                :disabled="type === 'Update'"
+                v-model="domain"
+            />
 
-            <b-field label="Price Query"></b-field>
-            <b-field
-                :type="formErrors['price_query_type'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['price_query_type']"
+            <form-input
+                class="mt-8"
+                label="Price Query"
+                placeholder="//span[@id='price']"
+                :errors="formErrors['price_query']"
+                v-model="priceQuery"
             >
-                <div class="block">
-                    <b-radio
-                        v-model="priceQueryType"
-                        name="price_query_type"
-                        native-value="xpath"
-                    >
+                <div class="flex gap-3 pb-1">
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="priceQueryType"
+                            name="price_query_type"
+                            value="xpath"
+                        />
                         XPath
-                    </b-radio>
-                    <b-radio
-                        v-model="priceQueryType"
-                        name="price_query_type"
-                        native-value="regex"
-                    >
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="priceQueryType"
+                            name="price_query_type"
+                            value="selector"
+                        />
+                        Query Selector
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="priceQueryType"
+                            name="price_query_type"
+                            value="regex"
+                        />
                         Regex
-                    </b-radio>
+                    </label>
                 </div>
-            </b-field>
-            <b-field
-                :type="formErrors['price_query'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['price_query']"
-            >
-                <b-input
-                    v-model="priceQuery"
-                    maxlength="255"
-                    placeholder="//span[@id='price']"
-                    @input="updateQueries = true"
-                ></b-input>
-            </b-field>
+            </form-input>
 
-            <b-field
-                label="XPath Query for Stock"
-                :type="formErrors['xpath_stock'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['xpath_stock']"
+            <form-input
+                class="mt-8"
+                label="Stock Query"
+                placeholder="//span[@id='stock']"
+                :errors="formErrors['xpath_stock']"
+                v-model="xpathStock"
             >
-                <b-input
-                    v-model="xpathStock"
-                    maxlength="255"
-                    placeholder="//span[@id='stock']"
-                ></b-input>
-            </b-field>
+                <div class="flex gap-3 pb-1">
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="stockQueryType"
+                            name="stock_query_type"
+                            value="xpath"
+                        />
+                        XPath
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="stockQueryType"
+                            name="stock_query_type"
+                            value="selector"
+                        />
+                        Query Selector
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input
+                            type="radio"
+                            v-model="stockQueryType"
+                            name="stock_query_type"
+                            value="regex"
+                        />
+                        Regex
+                    </label>
+                </div>
+            </form-input>
 
-            <b-field
-                label="Stock Condition"
-                :type="formErrors['stock_condition'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['stock_condition']"
-            >
-                <b-select placeholder="Select stock condition" v-model="stockCondition">
+            <div class="mt-4 flex items-center">
+                <select class="rounded" placeholder="Select stock condition" v-model="stockCondition">
                     <option
                         v-for="option in stockConditions"
                         :value="option.value"
                         :key="option.value">
                         {{ option.label }}
                     </option>
-                </b-select>
-            </b-field>
-
-            <b-field
-                label="Stock Text Match"
-                :type="formErrors['stock_text'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['stock_text']"
-            >
-                <b-input
-                    v-model="stockText"
-                    maxlength="255"
+                </select>
+                <form-input
+                    class="w-full"
                     placeholder="In Stock."
-                ></b-input>
-            </b-field>
+                    v-model="stockText"
+                />
+            </div>
 
-            <b-field
-                label="Client"
-                :type="formErrors['client'] ? 'is-danger' : 'is-default'"
-                :message="formErrors['client']"
-            >
-                <div class="block">
-                    <b-radio
-                        v-model="client"
-                        name="client"
-                        native-value="browsershot"
-                    >
+            <div class="mt-8">
+                <label>Html Client</label>
+                <div class="flex gap-3 pb-1">
+                    <label class="flex items-center gap-2">
+                        <input type="radio" v-model="client" name="client" value="browsershot"/>
                         Browsershot
-                    </b-radio>
-                    <b-radio
-                        v-model="client"
-                        name="client"
-                        native-value="curl"
-                    >
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" v-model="client" name="client" value="curl"/>
                         Curl
-                    </b-radio>
-                    <b-radio
-                        v-model="client"
-                        name="client"
-                        native-value="guzzle"
-                    >
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" v-model="client" name="client" value="guzzle"/>
                         Guzzle
-                    </b-radio>
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" v-model="client" name="client" value="puppeteer"/>
+                        Puppeteer
+                    </label>
                 </div>
-            </b-field>
+
+                <div v-if="formErrors['client']" class="text-sm text-red-500">
+                    {{ formErrors['client'][0] }}
+                </div>
+            </div>
         </form>
 
-        <div class="buttons">
-            <b-button type="is-info" @click="submit" :loading="loading">{{ type }}</b-button>
+        <div class="flex justify-end">
+            <button class="border rounded py-2 px-4 hover:border-gray-300" @click="submit">{{ type }}</button>
         </div>
     </div>
 </template>
 
 <script>
+import FormInput from "@components/form/FormInput.vue";
+
 export default {
     name: "template-form",
+    components: {FormInput},
     props: {
         template: {
             type: Object,
@@ -137,13 +153,15 @@ export default {
         }
     },
     mounted() {
+        console.log(this.template)
         if (this.template) {
             this.id = this.template.id;
             this.domain = this.template.domain;
             this.priceQuery = this.template.price_query;
             this.priceQueryType = this.template.price_query_type;
             this.client = this.template.client;
-            this.xpathStock = this.template.xpath_stock;
+            this.xpathStock = this.template.stock_query;
+            this.stockQueryType = this.template.stock_query_type;
             this.stockText = this.template.stock_text;
             this.stockCondition = this.template.stock_condition;
         }
@@ -209,6 +227,7 @@ export default {
                 price_query_type: this.priceQueryType,
                 client: this.client,
                 xpath_stock: this.xpathStock,
+                stock_query_type: this.stockQueryType,
                 stock_text: this.stockText,
                 stock_condition: this.stockCondition,
             }).then(() => {
@@ -229,16 +248,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.template-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-}
-</style>
