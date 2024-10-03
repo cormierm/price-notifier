@@ -30,11 +30,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('dashboard', 'Dashboard\Index')->name('dashboard');
 
-//    Route::prefix('profile')->namespace('Profile')->name('profile.')->group(function () {
-//        Route::get('/', 'Index')->name('index');
-//        Route::put('/', 'Update')->name('update');
-//    });
-
     Route::prefix('template')->namespace('Template')->name('template.')->group(function () {
         Route::get('/', 'Index')->name('index');
         Route::post('search-by-url', 'SearchByUrl')->name('search-by-url');

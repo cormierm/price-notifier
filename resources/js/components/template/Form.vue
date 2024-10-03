@@ -153,7 +153,6 @@ export default {
         }
     },
     mounted() {
-        console.log(this.template)
         if (this.template) {
             this.id = this.template.id;
             this.domain = this.template.domain;
