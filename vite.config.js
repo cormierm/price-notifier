@@ -1,5 +1,5 @@
 import {defineConfig} from 'vite';
-import vue from '@vitejs/plugin-vue2';
+import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import path from 'path';
 
@@ -18,8 +18,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
-            vue: 'vue/dist/vue.esm.js',
-            '@components': path.resolve(__dirname, 'resources/js/components'),
+            '@components': path.resolve(__dirname, 'resources/js/components')
         },
     }
 });

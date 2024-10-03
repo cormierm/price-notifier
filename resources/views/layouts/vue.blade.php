@@ -15,9 +15,8 @@
 
     @yield('head')
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
-
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/vue.js'])
+    @inertiaHead
 </head>
 
 <body class="font-sans antialiased">
@@ -33,9 +32,7 @@
         @endisset
 
         <main>
-            <div id="app">
-                @yield('content')
-            </div>
+            @inertia
         </main>
     </div>
 </body>

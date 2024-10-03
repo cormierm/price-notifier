@@ -5,8 +5,9 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@inertiajs/vue3": "^1.0.0",
         "@tailwindcss/forms": "^0.5.2",
-        "@vitejs/plugin-vue2": "^2.3.1",
+        "@vitejs/plugin-vue": "^5.0.0",
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
         "axios": "^1.7.7",
@@ -16,16 +17,16 @@
         "lodash": "^4.17.20",
         "postcss": "^8.4.31",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.79.1",
-        "sass-loader": "^8.0.0",
         "tailwindcss": "^3.1.0",
         "vite": "^5.4.6",
-        "vue": "^2.6.12",
-        "vue-loader": "^15.9.8",
-        "vue-template-compiler": "^2.6.12"
+        "vue": "^3.4.0"
     },
     "dependencies": {
-        "buefy": "^0.9.29",
+        "@fortawesome/fontawesome-svg-core": "^6.6.0",
+        "@fortawesome/free-brands-svg-icons": "^6.6.0",
+        "@fortawesome/free-regular-svg-icons": "^6.6.0",
+        "@fortawesome/free-solid-svg-icons": "^6.6.0",
+        "@fortawesome/vue-fontawesome": "^3.0.8",
         "chart.js": "^3.7.1",
         "chartjs-adapter-date-fns": "^2.0.0",
         "date-fns": "^2.28.0",

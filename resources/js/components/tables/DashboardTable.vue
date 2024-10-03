@@ -17,13 +17,10 @@
                         <td class="py-2 px-4">{{ row.created_at_formatted }}</td>
                         <td class="py-2 px-4">
                             <div>
-                                <div class="text-blue-600 gap-1 flex items-center">
+                                <div class="text-blue-600 space-x-1">
                                     <a :href="`/watcher/${row.watcher.id}`">{{ row.watcher.name }}</a>
-                                    <a
-
-                                        :href="row.watcher.url"
-                                    >
-                                        <b-icon icon="link"/>
+                                    <a :href="row.watcher.url">
+                                        <FontAwesomeIcon :icon="faLink" />
                                     </a>
                                 </div>
                                 <span class="text-xs text-gray-500">{{ row.watcher.url_domain }}</span>
@@ -39,36 +36,35 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import moment from "moment";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faLink } from '@fortawesome/free-solid-svg-icons';
+import {computed, defineProps} from "vue";
 
-export default {
-    name: "DashboardTable",
-    props: {
-        title: {
-            type: String,
-            required: true,
-        },
-        data: {
-            type: Array,
-            default: () => ([])
-        },
-        column: {
-            type: String,
-            required: true,
-        },
+const props = defineProps({
+    title: {
+        type: String,
+        required: true
     },
-    computed: {
-        tableData() {
-            return this.data.map((change) => {
-                return {
-                    ...change,
-                    created_at_formatted: change.created_at
-                        ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss')
-                        : '',
-                }
-            });
-        },
+    data: {
+        type: Array,
+        default: () => ([])
     },
-}
+    column: {
+        type: String,
+        required: true
+    }
+});
+
+const tableData = computed(() => {
+    return props.data?.map((change) => {
+        return {
+            ...change,
+            created_at_formatted: change.created_at
+                ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss')
+                : '',
+        };
+    });
+});
 </script>
