@@ -7,8 +7,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-import DashboardTable from "@components/tables/DashboardTable.vue";
+import DashboardTable from "@Components/Tables/DashboardTable.vue";
 
 const props = defineProps({
     errors: {

@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import DeleteButton from "@components/template/DeleteButton.vue";
+import DeleteButton from "../template/DeleteButton.vue";
 
 export default {
     components: {DeleteButton},

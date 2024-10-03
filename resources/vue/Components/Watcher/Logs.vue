@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import WatcherLogsTable from "@components/tables/WatcherLogsTable.vue";
+import WatcherLogsTable from "../Tables/WatcherLogsTable.vue";
 
 export default {
     components: {WatcherLogsTable},

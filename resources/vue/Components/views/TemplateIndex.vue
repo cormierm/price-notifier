@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import DomainQueriesTable from "@components/tables/DomainQueriesTable.vue";
+import DomainQueriesTable from "../Tables/DomainQueriesTable.vue";
 
 export default {
     name: "TemplateIndex",

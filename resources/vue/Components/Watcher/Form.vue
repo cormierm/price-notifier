@@ -278,9 +278,9 @@
 
 <script>
 import debounce from 'lodash/debounce';
-import FormInput from "@components/form/FormInput.vue";
-import Spinner from "@components/form/Spinner.vue";
-import MessageBox from "@components/form/MessageBox.vue";
+import FormInput from "../Form/FormInput.vue";
+import Spinner from "../Form/Spinner.vue";
+import MessageBox from "../Form/MessageBox.vue";
 
 export default {
     name: "watcher-form",

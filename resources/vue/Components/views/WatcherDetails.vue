@@ -106,10 +106,10 @@
 
 <script>
 import moment from "moment";
-import DeleteButton from "@components/watcher/DeleteButton.vue";
-import IntervalSelect from "@components/watcher/IntervalSelect.vue";
-import RefreshButton from "@components/watcher/RefreshButton.vue";
-import StockChangeTable from "@components/tables/StockChangeTable.vue";
+import DeleteButton from "../Watcher/DeleteButton.vue";
+import IntervalSelect from "../Watcher/IntervalSelect.vue";
+import RefreshButton from "../Watcher/RefreshButton.vue";
+import StockChangeTable from "../Tables/StockChangeTable.vue";
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 
