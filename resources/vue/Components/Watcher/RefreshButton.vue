@@ -23,13 +23,10 @@ const props = defineProps({
     }
 });
 
-// Emit function
-const emit = defineEmits();
+const emit = defineEmits(['update']);
 
-// Reactive loading state
 const loading = ref(false);
 
-// Function to refresh the watcher
 const refresh = async (id) => {
     loading.value = true;
     try {

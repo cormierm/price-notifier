@@ -105,7 +105,13 @@
                                     <FontAwesomeIcon :icon="faPenToSquare"/>
                                 </button>
                             </a>
-                            <delete-button :watcher="row" @delete="removeWatcherFromList"></delete-button>
+                            <DeleteButton
+                                model-name="Watcher"
+                                path-name="watcher"
+                                :model="row"
+                                :dialog-info="row.name"
+                                @delete="removeWatcherFromList">
+                            </DeleteButton>
                         </div>
                     </td>
                 </tr>
@@ -120,7 +126,7 @@ import {ref, reactive, computed, onMounted} from 'vue';
 import moment from 'moment';
 import Pusher from 'pusher-js';
 import ChangeColumn from "@Components/Watcher/ChangeColumn.vue";
-import DeleteButton from "@Components/Watcher/DeleteButton.vue";
+import DeleteButton from "@Components/Shared/DeleteButton.vue";
 import IntervalSelect from "@Components/Watcher/IntervalSelect.vue";
 import RefreshButton from "@Components/Watcher/RefreshButton.vue";
 import {faLink, faCircleInfo, faPenToSquare} from "@fortawesome/free-solid-svg-icons";

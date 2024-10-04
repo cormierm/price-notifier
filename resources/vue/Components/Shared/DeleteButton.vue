@@ -7,23 +7,35 @@
     </button>
     <DeleteDialog
         v-model:isOpen="isOpen"
-        label="watcher"
-        :info="watcher.name"
-        @confirmed="deleteWatcher"
+        :label="modelName"
+        :info="dialogInfo"
+        @confirmed="deleteModel"
     ></DeleteDialog>
 </template>
 
 <script setup>
-import DeleteDialog from "@Components/Form/DeleteDialog.vue";
+import {ref} from "vue";
+import DeleteDialog from "@Components/Shared/DeleteDialog.vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import {ref} from "vue";
 
 const emit = defineEmits(['delete']);
 
 const props = defineProps({
-    watcher: {
+    modelName: {
+        type: String,
+        required: true
+    },
+    model: {
         type: Object,
+        required: true
+    },
+    dialogInfo: {
+        type: String,
+        required: true
+    },
+    pathName: {
+        type: String,
         required: true
     }
 })
@@ -34,10 +46,10 @@ const deleteConfirmation = () => {
     isOpen.value = true;
 };
 
-const deleteWatcher = () => {
-    axios.delete(`/watcher/${props.watcher.id}`)
+const deleteModel = () => {
+    axios.delete(`/${props.pathName}/${props.model.id}`)
         .then(({data}) => {
-            emit('delete', props.watcher)
+            emit('delete', props.model)
         })
         .catch((err) => {
             console.log(err);

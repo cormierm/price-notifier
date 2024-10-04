@@ -7,7 +7,13 @@
                 <a :href="`/watcher/${watcher.id}/edit`">
                     <button class="w-10 h-10 border rounded text-center">&#9998;</button>
                 </a>
-                <DeleteButton :watcher="watcher" @delete="redirectToWatchers"></DeleteButton>
+                <DeleteButton
+                    model-name="Watcher"
+                    path-name="watcher"
+                    :model="watcher"
+                    :dialog-info="watcher.name"
+                    @delete="redirectToWatchers">
+                </DeleteButton>
             </div>
         </div>
 
@@ -106,7 +112,7 @@
 
 <script setup>
 import moment from "moment";
-import DeleteButton from "@Components/Watcher/DeleteButton.vue";
+import DeleteButton from "@Components/Shared/DeleteButton.vue";
 import IntervalSelect from "@Components/Watcher/IntervalSelect.vue";
 import Logs from "@Components/Watcher/Logs.vue";
 import RefreshButton from "@Components/Watcher/RefreshButton.vue";

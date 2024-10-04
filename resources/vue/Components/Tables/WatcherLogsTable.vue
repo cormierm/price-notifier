@@ -14,41 +14,37 @@
         </thead>
         <tbody>
         <tr v-for="row in tableData" class="bg-white border-b">
-            <td class="py-2 px-4 whitespace-nowrap">{{row.created_at_formatted}}</td>
-            <td class="py-2 px-4">{{row.formatted_value}}</td>
-            <td class="py-2 px-4">{{row.raw_value}}</td>
-            <td class="py-2 px-4">{{row.has_stock}}</td>
-            <td class="py-2 px-4">{{row.raw_stock}}</td>
-            <td class="py-2 px-4">{{row.duration}}</td>
-            <td class="py-2 px-4">{{row.region}}</td>
-            <td class="py-2 px-4">{{row.error}}</td>
+            <td class="py-2 px-4 whitespace-nowrap">{{ row.created_at_formatted }}</td>
+            <td class="py-2 px-4">{{ row.formatted_value }}</td>
+            <td class="py-2 px-4">{{ row.raw_value }}</td>
+            <td class="py-2 px-4">{{ row.has_stock }}</td>
+            <td class="py-2 px-4">{{ row.raw_stock }}</td>
+            <td class="py-2 px-4">{{ row.duration }}</td>
+            <td class="py-2 px-4">{{ row.region }}</td>
+            <td class="py-2 px-4">{{ row.error }}</td>
         </tr>
         </tbody>
     </table>
 </template>
 
-<script>
+<script setup>
 import moment from "moment";
-import DeleteButton from "../Template/DeleteButton.vue";
+import {computed} from "vue";
 
-export default {
-    components: {DeleteButton},
-    props: {
-        data: {
-            type: Array,
-            default: () => ([])
-        },
+const props = defineProps({
+    data: {
+        type: Array,
+        default: () => ([])
     },
-    computed: {
-        tableData() {
-            return this.data.map((log) => {
-                return {
-                    ...log,
-                    created_at_formatted: log.created_at ? moment(log.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
-                    has_stock: log.has_stock === 1 ? 'Yes' : log.has_stock === 0 ? 'No' : '-',
-                }
-            })
+});
+
+const tableData = computed(() => {
+    return this.data.map((log) => {
+        return {
+            ...log,
+            created_at_formatted: log.created_at ? moment(log.created_at).format('YYYY-MM-DD HH:mm:ss') : '',
+            has_stock: log.has_stock === 1 ? 'Yes' : log.has_stock === 0 ? 'No' : '-',
         }
-    },
-}
+    })
+});
 </script>

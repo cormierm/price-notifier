@@ -28,7 +28,13 @@
                     <a :href="`/template/${row.id}/edit`">
                         <button class="w-10 h-10 border rounded text-center"><FontAwesomeIcon :icon="faPenToSquare"/></button>
                     </a>
-                    <DeleteButton :template="row" @delete="reloadPage"></DeleteButton>
+                    <DeleteButton
+                        model-name="Domain Query"
+                        path-name="template"
+                        :model="row"
+                        :dialog-info="row.domain"
+                        @delete="reloadPage">
+                    </DeleteButton>
                 </div>
             </td>
         </tr>
@@ -37,7 +43,7 @@
 </template>
 
 <script setup>
-import DeleteButton from "@Components/Template/DeleteButton.vue";
+import DeleteButton from "@Components/Shared/DeleteButton.vue";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
