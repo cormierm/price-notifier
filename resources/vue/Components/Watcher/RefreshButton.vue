@@ -4,7 +4,7 @@
         :disabled="loading"
         @click="refresh(watcherId)"
     >
-        <Spinner v-if="loading" class="ml-[9px]"/>
+        <Spinner v-if="loading" class="ml-[8px]"/>
         <FontAwesomeIcon v-else :icon="faRotateRight" />
     </button>
 </template>

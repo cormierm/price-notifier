@@ -2,18 +2,16 @@
     <div class="bg-white p-4">
         <div class="flex justify-between">
             <h1 class="text-2xl">Watcher Details</h1>
-            <div>
-                <RefreshButton :watcher-id="watcher.id" @update="updateWatcher"></RefreshButton>
-                <a :href="`/watcher/${watcher.id}/edit`">
-                    <button class="w-10 h-10 border rounded text-center">&#9998;</button>
-                </a>
+            <div class="flex">
+                <RefreshButton :watcher-id="watcher.id" @update="updateWatcher"/>
+                <EditButton :watcher-id="watcher.id"/>
                 <DeleteButton
                     model-name="Watcher"
                     path-name="watcher"
                     :model="watcher"
                     :dialog-info="watcher.name"
-                    @delete="redirectToWatchers">
-                </DeleteButton>
+                    @delete="redirectToWatchers"
+                />
             </div>
         </div>
 
@@ -26,11 +24,11 @@
 
                 <a class="text-blue-500 text-sm" :href="watcher.url">{{ watcher.url }}</a>
             </div>
-            <div class="flex p-4 gap-8">
-                <div class="w-2/3 m-h-96">
+            <div class="flex flex-col md:flex-row p-4 gap-8">
+                <div class="w-full md:w-2/3 m-h-[800px]">
                     <canvas id="myChart"></canvas>
                 </div>
-                <div class="w-1/3 flex flex-col gap-4">
+                <div class="w-full md:w-1/3 flex flex-col gap-4">
                     <div>
                         <h3 class="text-lg">Price History</h3>
                         <table class="text-sm text-gray-600 w-full">
@@ -120,6 +118,7 @@ import StockChangeTable from "@Components/Tables/StockChangeTable.vue";
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import {onMounted, ref} from "vue";
+import EditButton from "@Components/Shared/EditButton.vue";
 
 const props = defineProps({
     watcher: {

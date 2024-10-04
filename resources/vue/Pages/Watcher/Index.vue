@@ -94,24 +94,16 @@
                     </td>
                     <td class="py-2 px-4 text-center text-lg font-black">
                         <div class="flex">
-                            <refresh-button :watcher-id="row.id" @update="updateWatcherList"></refresh-button>
-                            <a :href="`/watcher/${row.id}`">
-                                <button class="w-10 h-10 border rounded text-center">
-                                    <FontAwesomeIcon :icon="faCircleInfo"/>
-                                </button>
-                            </a>
-                            <a :href="`/watcher/${row.id}/edit`">
-                                <button class="w-10 h-10 border rounded text-center">
-                                    <FontAwesomeIcon :icon="faPenToSquare"/>
-                                </button>
-                            </a>
+                            <RefreshButton :watcher-id="row.id" @update="updateWatcherList"/>
+                            <InfoButton :watcher-id="row.id"/>
+                            <EditButton :watcher-id="row.id"/>
                             <DeleteButton
                                 model-name="Watcher"
                                 path-name="watcher"
                                 :model="row"
                                 :dialog-info="row.name"
-                                @delete="removeWatcherFromList">
-                            </DeleteButton>
+                                @delete="removeWatcherFromList"
+                            />
                         </div>
                     </td>
                 </tr>
@@ -131,6 +123,8 @@ import IntervalSelect from "@Components/Watcher/IntervalSelect.vue";
 import RefreshButton from "@Components/Watcher/RefreshButton.vue";
 import {faLink, faCircleInfo, faPenToSquare} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import EditButton from "@Components/Shared/EditButton.vue";
+import InfoButton from "@Components/Shared/InfoButton.vue";
 
 const props = defineProps({
     userId: {
