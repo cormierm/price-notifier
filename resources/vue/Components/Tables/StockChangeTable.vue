@@ -19,30 +19,28 @@
     </div>
 </template>
 
-<script>
-import moment from "moment";
+<script setup>
+import {formatDate} from "@js/utils/date-utils.js";
+import {computed} from "vue";
 
-export default {
-    props: {
-        title: {
-            type: String,
-            default: 'Stock Changes',
-        },
-        stockChanges: {
-            type: Array,
-            default: () => ([])
-        },
+const props = defineProps({
+    title: {
+        type: String,
+        default: 'Stock Changes',
     },
-    computed: {
-        tableData() {
-            return this.stockChanges.map((change) => {
-                return {
-                    ...change,
-                    stock: change.stock ? 'Yes' : 'No',
-                    created_at_formatted: change.created_at ? moment.utc(change.created_at).local().format('lll') : '',
-                }
-            });
+    stockChanges: {
+        type: Array,
+        default: () => ([])
+    },
+});
+
+const tableData = computed(() => {
+    return props.stockChanges.map((change) => {
+        return {
+            ...change,
+            stock: change.stock ? 'Yes' : 'No',
+            created_at_formatted: change.created_at ? formatDate(change.created_at) : '',
         }
-    },
-}
+    });
+});
 </script>

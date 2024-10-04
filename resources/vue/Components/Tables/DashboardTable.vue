@@ -14,7 +14,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="row in tableData" class="bg-white border-b">
-                    <td class="py-2 px-4">{{ row.created_at_formatted }}</td>
+                    <td class="py-2 px-4 whitespace-nowrap">{{ row.created_at_formatted }}</td>
                     <td class="py-2 px-4">
                         <div>
                             <div class="text-blue-600 space-x-1">
@@ -38,10 +38,10 @@
 </template>
 
 <script setup>
-import moment from "moment";
+import {computed} from "vue";
+import {formatDate} from "@js/utils/date-utils.js";
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {faLink} from '@fortawesome/free-solid-svg-icons';
-import {computed} from "vue";
 
 const props = defineProps({
     title: {
@@ -63,7 +63,7 @@ const tableData = computed(() => {
         return {
             ...change,
             created_at_formatted: change.created_at
-                ? moment(change.created_at).format('YYYY-MM-DD HH:mm:ss')
+                ? formatDate(change.created_at)
                 : '',
         };
     });

@@ -34,12 +34,12 @@ import {computed} from "vue";
 const props = defineProps({
     data: {
         type: Array,
-        default: () => ([])
+        default: () => []
     },
 });
 
 const tableData = computed(() => {
-    return this.data.map((log) => {
+    return props.data.map((log) => {
         return {
             ...log,
             created_at_formatted: log.created_at ? moment(log.created_at).format('YYYY-MM-DD HH:mm:ss') : '',

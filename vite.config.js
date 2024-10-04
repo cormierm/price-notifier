@@ -17,8 +17,8 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
-            '@Components': path.resolve(__dirname, 'resources/vue/Components')
+            '@Components': path.resolve(__dirname, 'resources/vue/Components'),
+            '@js': path.resolve(__dirname, 'resources/js')
         },
     }
 });
