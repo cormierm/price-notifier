@@ -370,7 +370,7 @@ const autoFill = debounce(function () {
         testResults.value = null;
         templateSearch();
     }
-}, 300);
+}, 500);
 
 const autoFillName = () => {
     name.value = testResults.value.title;
