@@ -3,7 +3,7 @@
         <div v-if="showChange">
             <span v-if="changePercentage > 0">▲</span>
             <span v-else-if="changePercentage < 0">▼</span>
-            <span>{{ changePercentage }}%</span>
+            <span>{{ Math.abs(changePercentage) }}%</span>
         </div>
         <div v-else>-</div>
     </div>
