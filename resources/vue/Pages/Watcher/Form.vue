@@ -448,7 +448,7 @@ const check = () => {
             name.value = testResults.value.title;
         }
         if (!alertValue.value) {
-            alertValue.value = testResults.value;
+            alertValue.value = testResults.value.value;
         }
     }).catch((err) => {
         if (err.response.status === 422) {

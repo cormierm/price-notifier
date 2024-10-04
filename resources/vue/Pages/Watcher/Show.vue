@@ -3,11 +3,11 @@
         <div class="flex justify-between">
             <h1 class="text-2xl">Watcher Details</h1>
             <div>
-                <refresh-button :watcher-id="watcher.id" @update="updateWatcher"></refresh-button>
+                <RefreshButton :watcher-id="watcher.id" @update="updateWatcher"></RefreshButton>
                 <a :href="`/watcher/${watcher.id}/edit`">
                     <button class="w-10 h-10 border rounded text-center">&#9998;</button>
                 </a>
-                <delete-button :watcher="watcher" @delete="redirectToWatchers"></delete-button>
+                <DeleteButton :watcher="watcher" @delete="redirectToWatchers"></DeleteButton>
             </div>
         </div>
 
@@ -55,7 +55,7 @@
                         </table>
                     </div>
 
-                    <stock-change-table :stock-changes="stockChanges"/>
+                    <StockChangeTable :stock-changes="stockChanges"/>
                 </div>
             </div>
         </article>
@@ -85,7 +85,7 @@
                     <div class="m-4">
                         <div>
                             Interval:
-                            <interval-select
+                            <IntervalSelect
                                 style="padding-left: 10px"
                                 :intervals="intervals"
                                 :watcher-id="watcher.id"
@@ -100,88 +100,85 @@
             </div>
         </div>
 
-        <watcher-logs :watcher-id="watcher.id"></watcher-logs>
+        <Logs :watcher-id="watcher.id"></Logs>
     </div>
 </template>
 
-<script>
+<script setup>
 import moment from "moment";
-import DeleteButton from "../Watcher/DeleteButton.vue";
-import IntervalSelect from "../Watcher/IntervalSelect.vue";
-import RefreshButton from "../Watcher/RefreshButton.vue";
-import StockChangeTable from "../Tables/StockChangeTable.vue";
+import DeleteButton from "@Components/Watcher/DeleteButton.vue";
+import IntervalSelect from "@Components/Watcher/IntervalSelect.vue";
+import Logs from "@Components/Watcher/Logs.vue";
+import RefreshButton from "@Components/Watcher/RefreshButton.vue";
+import StockChangeTable from "@Components/Tables/StockChangeTable.vue";
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
+import {onMounted, ref} from "vue";
 
-export default {
-    name: "WatcherDetails",
-    components: {DeleteButton, IntervalSelect, RefreshButton, StockChangeTable},
-    props: {
-        watcher: {
-            type: Object,
-            required: true
-        },
-        priceChanges: {
-            type: Array,
-            default: () => ([])
-        },
-        stockChanges: {
-            type: Array,
-            default: () => ([])
-        },
-        intervals: {
-            type: Array,
-            required: true
-        }
+const props = defineProps({
+    watcher: {
+        type: Object,
+        required: true
     },
-    data() {
-        return {
-            currentWatcher: this.watcher,
-        }
+    priceChanges: {
+        type: Array,
+        default: () => []
     },
-    methods: {
-        updateWatcher(watcher) {
-            this.currentWatcher = watcher;
-        },
-        redirectToWatchers() {
-            window.location = '/home';
-        },
-        formatDate(datetime) {
-            return moment.utc(datetime).local().format('lll');
-        }
+    stockChanges: {
+        type: Array,
+        default: () => []
     },
-    mounted() {
-        const points = [
-            {x: this.watcher.last_sync, y: this.watcher.value},
-            ...this.priceChanges.map((p) => ({x: p.created_at, y: p.price})),
-        ];
-        const ctx = document.getElementById('myChart');
-        const myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    fill: false,
-                    stepped: 'after',
-                    data: points,
-                }]
-            },
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Price Change History'
-                    },
-                    legend: false
-                },
-                scales: {
-                    x: {
-                        type: 'time',
-                    },
-                }
-            }
-        });
+    intervals: {
+        type: Array,
+        required: true
     }
-}
+});
+
+const currentWatcher = ref(props.watcher.value);
+
+const updateWatcher = (watcher) => {
+    currentWatcher.value = watcher;
+};
+
+const redirectToWatchers = () => {
+    window.location = '/home';
+};
+
+const formatDate = (datetime) => {
+    return moment.utc(datetime).local().format('lll');
+};
+
+onMounted(() => {
+    const points = [
+        {x: props.watcher.last_sync, y: props.watcher.value},
+        ...props.priceChanges.map((p) => ({x: p.created_at, y: p.price})),
+    ];
+    const ctx = document.getElementById('myChart');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                fill: false,
+                stepped: 'after',
+                data: points,
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Price Change History'
+                },
+                legend: false
+            },
+            scales: {
+                x: {
+                    type: 'time',
+                },
+            }
+        }
+    });
+});
 </script>
