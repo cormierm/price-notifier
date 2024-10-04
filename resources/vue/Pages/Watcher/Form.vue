@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="bg-white px-8 py-4">
+        <h1 class="text-2xl mb-4">{{ type }} Watcher</h1>
         <message-box
             v-if="template && !testResults"
             :title="`Found domain query for ${template.domain}`"
@@ -40,36 +41,36 @@
             </div>
         </div>
 
-        <form action="">
-            <div class="flex flex-col mt-4">
+        <form>
+            <div class="flex flex-col mt-8">
                 <label class="flex flex-col">
                     Url
                     <input
                         class="rounded"
-                        :class="{'border-red-500': formErrors['url']}"
+                        :class="{'border-red-500': formErrors.url}"
                         id="url"
                         type="url"
                         v-model="url"
                         placeholder="https://www.example.com/product.html"
                         @input="autoFill"
-                    ></input>
+                    />
                 </label>
-                <div v-if="formErrors['url']" class="text-sm text-red-500">{{ formErrors['url'][0] }}</div>
+                <div v-if="formErrors.url" class="text-sm text-red-500">{{ formErrors.url[0] }}</div>
             </div>
 
             <form-input
-                class="mt-4"
+                class="mt-8"
                 label="Name"
                 placeholder="Product Name"
-                :errors="formErrors['name']"
+                :errors="formErrors.name"
                 v-model="name"
             />
 
             <form-input
-                class="mt-4"
+                class="mt-8"
                 label="Price Query"
                 :placeholder="pricePlaceholder"
-                :errors="formErrors['price_query']"
+                :errors="formErrors.price_query"
                 v-model="priceQuery"
             >
                 <div class="flex gap-3 pb-1">
@@ -104,10 +105,10 @@
             </form-input>
 
             <form-input
-                class="mt-4"
+                class="mt-8"
                 label="Stock Query"
                 :placeholder="stockPlaceholder"
-                :errors="formErrors['stock_query']"
+                :errors="formErrors.stock_query"
                 v-model="stockQuery"
             >
                 <div class="flex gap-3 pb-1">
@@ -142,7 +143,7 @@
             </form-input>
 
             <div class="mt-4 flex items-center">
-                <select class="rounded" placeholder="Select stock condition" v-model="stockCondition">
+                <select class="rounded" v-model="stockCondition">
                     <option
                         v-for="option in stockConditions"
                         :value="option.value"
@@ -200,7 +201,7 @@
                     {{ formErrors['interval_id'][0] }}
                 </div>
 
-                <div class="mt-4">
+                <div class="mt-8">
                     <label>Html Client</label>
                     <div class="flex gap-3 pb-1">
                         <label class="flex items-center gap-2">
@@ -228,7 +229,7 @@
 
                 <label class="flex flex-col mt-4">
                     Region
-                    <select class="rounded" placeholder="Select a region" v-model="region">
+                    <select class="rounded" v-model="region">
                         <option value="null">None</option>
                         <option
                             v-for="option in regions"
@@ -252,7 +253,7 @@
                     :disabled="loadingCheck"
                     @click="check"
                 >
-                    <spinner v-if="loadingCheck" />
+                    <spinner v-if="loadingCheck"/>
                     {{ loadingCheck ? '' : 'Check' }}
                 </button>
                 <label>
@@ -276,252 +277,244 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import {computed, onMounted, ref} from "vue";
 import debounce from 'lodash/debounce';
-import FormInput from "../Form/FormInput.vue";
-import Spinner from "../Form/Spinner.vue";
-import MessageBox from "../Form/MessageBox.vue";
+import FormInput from "@Components/Form/FormInput.vue";
+import Spinner from "@Components/Form/Spinner.vue";
+import MessageBox from "@Components/Form/MessageBox.vue";
 
-export default {
-    name: "watcher-form",
-    components: {MessageBox, Spinner, FormInput},
-    props: {
-        intervals: {
-            type: Array,
-            required: true
-        },
-        regions: {
-            type: Array,
-            required: true
-        },
-        watcher: {
-            type: Object,
-            default: null,
-        },
-        type: {
-            type: String,
-            default: 'Create',
-        }
+const props = defineProps({
+    intervals: {
+        type: Array,
+        required: true
     },
-    mounted() {
-        if (this.watcher) {
-            this.id = this.watcher.id;
-            this.name = this.watcher.name;
-            this.interval = this.watcher.interval_id;
-            this.region = this.watcher.region_id;
-            this.priceQuery = this.watcher.price_query;
-            this.priceQueryType = this.watcher.price_query_type;
-            this.stockQuery = this.watcher.stock_query;
-            this.stockQueryType = this.watcher.stock_query_type;
-            this.url = this.watcher.url;
-            this.alertValue = this.watcher.alert_value;
-            this.client = this.watcher.client;
-            this.stockText = this.watcher.stock_text;
-            this.stockAlert = this.watcher.stock_alert === true;
-            this.stockRequiresPrice = this.watcher.stock_requires_price === true;
-            this.stockCondition = this.watcher.stock_condition;
-            this.updateQueries = false;
-        }
+    regions: {
+        type: Array,
+        required: true
     },
-    data() {
-        return {
-            testResults: null,
-            loading: false,
-            loadingTemplate: false,
-            id: null,
-            name: '',
-            interval: 8,
-            region: null,
-            alertValue: '',
-            priceQuery: '',
-            priceQueryType: 'xpath',
-            stockQuery: '',
-            stockQueryType: 'xpath',
-            url: '',
-            formErrors: {},
-            template: null,
-            client: 'browsershot',
-            stockText: '',
-            stockAlert: false,
-            stockRequiresPrice: true,
-            stockCondition: 'contains_text',
-            updateQueries: true,
-            stockConditions: [
-                {label: 'InnerText Contains', value: 'contains_text'},
-                {label: 'InnerText Missing', value: 'missing_text'},
-                {label: 'OuterHtml Contains', value: 'contains_html'},
-                {label: 'OuterHtml Missing', value: 'missing_html'},
-            ],
-            showDebug: false,
-        };
+    watcher: {
+        type: Object,
+        default: null,
     },
-    computed: {
-        loadingCheck() {
-            return this.loading || this.loadingTemplate;
-        },
-        pricePlaceholder() {
-            return this.queryPlaceholder(this.priceQueryType, 'price');
-        },
-        stockPlaceholder() {
-            return this.queryPlaceholder(this.stockQueryType, 'stock');
-        }
-    },
-    methods: {
-        autoFill: debounce(function () {
-            if (!this.id) {
-                this.testResults = null;
-                this.templateSearch();
-            }
-        }, 300),
-        autoFillName() {
-            this.name = this.testResults.title;
-        },
-        queryPlaceholder(queryType, field) {
-            switch (queryType) {
-                case 'regex':
-                    return '/textBefore(.*?)textAfter/';
-                case 'selector':
-                    return `.${field} span`;
-                default:
-                    return `//span[@class="${field}"]`;
-            }
-        },
-        submit() {
-            this.loading = true;
-            this.formErrors = {};
-
-            if (this.id) {
-                this.update();
-            } else {
-                this.create();
-            }
-
-            this.loading = false;
-        },
-        create() {
-            axios.post('/watcher', {
-                name: this.name,
-                interval_id: this.interval,
-                region_id: this.region,
-                url: this.url,
-                price_query: this.priceQuery,
-                price_query_type: this.priceQueryType,
-                stock_query: this.stockQuery,
-                stock_query_type: this.stockQueryType,
-                alert_value: this.alertValue,
-                client: this.client,
-                stock_text: this.stockText,
-                stock_alert: this.stockAlert,
-                stock_condition: this.stockCondition,
-                stock_requires_price: this.stockRequiresPrice,
-                update_queries: this.updateQueries,
-            }).then(() => {
-                window.location = '/home';
-            }).catch((err) => {
-                if (err.response.status === 422) {
-                    this.formErrors = err.response.data.errors;
-                } else {
-                    this.$buefy.toast.open({
-                        duration: 5000,
-                        message: err,
-                        type: 'is-danger'
-                    });
-                    console.error(err);
-                }
-            });
-        },
-        check() {
-            this.formErrors = {};
-            this.testResults = null;
-            this.loading = true;
-            axios.post('/watcher/check', {
-                url: this.url,
-                price_query: this.priceQuery,
-                price_query_type: this.priceQueryType,
-                stock_query: this.stockQuery,
-                stock_query_type: this.stockQueryType,
-                client: this.client,
-                stock_text: this.stockText,
-                stock_condition: this.stockCondition,
-                stock_requires_price: this.stockRequiresPrice,
-            }).then(({data}) => {
-                this.testResults = data;
-                if (!this.name) {
-                    this.name = this.testResults.title;
-                }
-                if (!this.alertValue) {
-                    this.alertValue = this.testResults.value;
-                }
-            }).catch((err) => {
-                if (err.response.status === 422) {
-                    this.formErrors = err.response.data.errors;
-                } else if (err.response.status === 400) {
-                    this.testResults = err.response.data;
-                } else {
-                    this.testResults = {
-                        error: err,
-                    }
-                }
-            }).finally(() => {
-                this.loading = false;
-            });
-        },
-        templateSearch() {
-            this.loadingTemplate = true;
-            this.template = null;
-            axios.post('/template/search-by-url', {
-                url: this.url,
-            }).then(({data}) => {
-                this.priceQuery = data.price_query;
-                this.priceQueryType = data.price_query_type;
-                this.stockQuery = data.stock_query;
-                this.stockQueryType = data.stock_query_type;
-                this.client = data.client;
-                this.stockText = data.stock_text;
-                this.stockCondition = data.stock_condition;
-                this.stockRequiresPrice = data.stock_requires_price;
-                this.template = data;
-                this.updateQueries = false;
-                this.check();
-            }).catch((err) => {
-                console.log(err);
-            }).finally(() => {
-                this.loadingTemplate = false;
-            });
-        },
-        update() {
-            axios.put(`/watcher/${this.id}`, {
-                id: this.id,
-                name: this.name,
-                interval_id: this.interval,
-                region_id: this.region,
-                url: this.url,
-                price_query: this.priceQuery,
-                price_query_type: this.priceQueryType,
-                stock_query: this.stockQuery,
-                stock_query_type: this.stockQueryType,
-                alert_value: this.alertValue,
-                client: this.client,
-                stock_text: this.stockText,
-                stock_alert: this.stockAlert,
-                stock_condition: this.stockCondition,
-                stock_requires_price: this.stockRequiresPrice,
-                update_queries: this.updateQueries,
-            }).then(() => {
-                window.location = '/home';
-            }).catch((err) => {
-                if (err.response.status === 422) {
-                    this.formErrors = err.response.data.errors;
-                } else {
-                    this.$buefy.toast.open({
-                        duration: 5000,
-                        message: err,
-                        type: 'is-danger'
-                    });
-                    console.error(err);
-                }
-            });
-        }
+    type: {
+        type: String,
+        default: 'Create',
     }
-}
+});
+
+onMounted(() => {
+    if (props.watcher) {
+        id.value = props.watcher.id;
+        name.value = props.watcher.name;
+        interval.value = props.watcher.interval_id;
+        region.value = props.watcher.region_id;
+        priceQuery.value = props.watcher.price_query;
+        priceQueryType.value = props.watcher.price_query_type;
+        stockQuery.value = props.watcher.stock_query;
+        stockQueryType.value = props.watcher.stock_query_type;
+        url.value = props.watcher.url;
+        alertValue.value = props.watcher.alert_value;
+        client.value = props.watcher.client;
+        stockText.value = props.watcher.stock_text;
+        stockAlert.value = props.watcher.stock_alert === true;
+        stockRequiresPrice.value = props.watcher.stock_requires_price === true;
+        stockCondition.value = props.watcher.stock_condition;
+        updateQueries.value = false;
+    }
+});
+
+const testResults = ref(null);
+const loading = ref(false);
+const loadingTemplate = ref(false);
+const id = ref(null);
+const name = ref('');
+const interval = ref(8);
+const region = ref(null);
+const alertValue = ref('');
+const priceQuery = ref('');
+const priceQueryType = ref('xpath');
+const stockQuery = ref('');
+const stockQueryType = ref('xpath');
+const url = ref('');
+const formErrors = ref({});
+const template = ref(null);
+const client = ref('browsershot');
+const stockText = ref('');
+const stockAlert = ref(false);
+const stockRequiresPrice = ref(true);
+const stockCondition = ref('contains_text');
+const updateQueries = ref(true);
+const stockConditions = ref([
+    {label: 'InnerText Contains', value: 'contains_text'},
+    {label: 'InnerText Missing', value: 'missing_text'},
+    {label: 'OuterHtml Contains', value: 'contains_html'},
+    {label: 'OuterHtml Missing', value: 'missing_html'},
+]);
+const showDebug = ref(false);
+
+const loadingCheck = computed(() => {
+    return loading.value || loadingTemplate.value;
+});
+
+const pricePlaceholder = computed(() => {
+    return queryPlaceholder(priceQueryType.value, 'price');
+});
+
+const stockPlaceholder = computed(() => {
+    return queryPlaceholder(stockQueryType.value, 'stock');
+});
+
+const autoFill = debounce(function () {
+    if (!id.value) {
+        testResults.value = null;
+        templateSearch();
+    }
+}, 300);
+
+const autoFillName = () => {
+    name.value = testResults.value.title;
+};
+
+const queryPlaceholder = (queryType, field) => {
+    switch (queryType) {
+        case 'regex':
+            return '/textBefore(.*?)textAfter/';
+        case 'selector':
+            return `.${field} span`;
+        default:
+            return `//span[@class="${field}"]`;
+    }
+};
+
+const submit = () => {
+    loading.value = true;
+    formErrors.value = {};
+
+    if (id.value) {
+        update();
+    } else {
+        create();
+    }
+
+    loading.value = false;
+};
+
+const create = () => {
+    axios.post('/watcher', {
+        name: name.value,
+        interval_id: interval.value,
+        region_id: region.value,
+        url: url.value,
+        price_query: priceQuery.value,
+        price_query_type: priceQueryType.value,
+        stock_query: stockQuery.value,
+        stock_query_type: stockQueryType.value,
+        alert_value: alertValue.value,
+        client: client.value,
+        stock_text: stockText.value,
+        stock_alert: stockAlert.value,
+        stock_condition: stockCondition.value,
+        stock_requires_price: stockRequiresPrice.value,
+        update_queries: updateQueries.value,
+    }).then(() => {
+        window.location = '/home';
+    }).catch((err) => {
+        if (err.response.status === 422) {
+            formErrors.value = err.response.data.errors;
+        } else {
+            console.error(err);
+        }
+    });
+};
+
+const check = () => {
+    formErrors.value = {};
+    testResults.value = null;
+    loading.value = true;
+    axios.post('/watcher/check', {
+        url: url.value,
+        price_query: priceQuery.value,
+        price_query_type: priceQueryType.value,
+        stock_query: stockQuery.value,
+        stock_query_type: stockQueryType.value,
+        client: client.value,
+        stock_text: stockText.value,
+        stock_condition: stockCondition.value,
+        stock_requires_price: stockRequiresPrice.value,
+    }).then(({data}) => {
+        testResults.value = data;
+        if (!name.value) {
+            name.value = testResults.value.title;
+        }
+        if (!alertValue.value) {
+            alertValue.value = testResults.value;
+        }
+    }).catch((err) => {
+        if (err.response.status === 422) {
+            formErrors.value = err.response.data.errors;
+        } else if (err.response.status === 400) {
+            testResults.value = err.response.data;
+        } else {
+            testResults.value = {
+                error: err,
+            }
+        }
+    }).finally(() => {
+        loading.value = false;
+    });
+};
+
+const templateSearch = () => {
+    loadingTemplate.value = true;
+    template.value = null;
+    axios.post('/template/search-by-url', {
+        url: url.value,
+    }).then(({data}) => {
+        priceQuery.value = data.price_query;
+        priceQueryType.value = data.price_query_type;
+        stockQuery.value = data.stock_query;
+        stockQueryType.value = data.stock_query_type;
+        client.value = data.client;
+        stockText.value = data.stock_text;
+        stockCondition.value = data.stock_condition;
+        stockRequiresPrice.value = data.stock_requires_price;
+        template.value = data;
+        updateQueries.value = false;
+        check();
+    }).catch((err) => {
+        console.log(err);
+    }).finally(() => {
+        loadingTemplate.value = false;
+    });
+};
+
+const update = () => {
+    axios.put(`/watcher/${id.value}`, {
+        id: id.value,
+        name: name.value,
+        interval_id: interval.value,
+        region_id: region.value,
+        url: url.value,
+        price_query: priceQuery.value,
+        price_query_type: priceQueryType.value,
+        stock_query: stockQuery.value,
+        stock_query_type: stockQueryType.value,
+        alert_value: alertValue.value,
+        client: client.value,
+        stock_text: stockText.value,
+        stock_alert: stockAlert.value,
+        stock_condition: stockCondition.value,
+        stock_requires_price: stockRequiresPrice.value,
+        update_queries: updateQueries.value,
+    }).then(() => {
+        window.location = '/home';
+    }).catch((err) => {
+        if (err.response.status === 422) {
+            formErrors.value = err.response.data.errors;
+        } else {
+            console.error(err);
+        }
+    });
+};
 </script>

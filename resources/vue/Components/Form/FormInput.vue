@@ -8,42 +8,40 @@
                 :class="{'border-red-500': errors, 'bg-gray-100 border-gray-100 text-gray-700': disabled}"
                 :type="type"
                 :placeholder="placeholder"
-                :value="value"
+                :value="modelValue"
                 :disabled="disabled"
-                @input="$emit('input', $event.target.value)"
-            ></input>
+                @input="$emit('update:modelValue', $event.target.value)"
+            />
         </label>
         <div v-if="errors" class="text-sm text-red-500">{{ errors[0] }}</div>
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        label: {
-            type: String,
-            required: false
-        },
-        type: {
-            type: String,
-            default: 'text'
-        },
-        placeholder: {
-            type: String,
-            default: ''
-        },
-        errors: {
-            type: Array,
-            default: null
-        },
-        value: {
-            type: [String, Number],
-            required: true
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        }
+<script setup>
+const props = defineProps({
+    label: {
+        type: String,
+        required: false
     },
-}
+    type: {
+        type: String,
+        default: 'text'
+    },
+    placeholder: {
+        type: String,
+        default: ''
+    },
+    errors: {
+        type: Array,
+        default: null
+    },
+    modelValue: {
+        type: [String, Number],
+        required: true
+    },
+    disabled: {
+        type: Boolean,
+        default: false
+    }
+});
 </script>
