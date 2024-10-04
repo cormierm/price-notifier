@@ -37,6 +37,7 @@ class Watcher extends Model
 
     protected $casts = [
         'user_id' => 'int',
+        'interval_id' => 'int',
         'stock_alert' => 'boolean',
         'has_stock' => 'boolean',
         'stock_requires_price' => 'boolean',

@@ -96,10 +96,14 @@
                         <div class="flex">
                             <refresh-button :watcher-id="row.id" @update="updateWatcherList"></refresh-button>
                             <a :href="`/watcher/${row.id}`">
-                                <button class="w-10 h-10 border rounded text-center"><FontAwesomeIcon :icon="faCircleInfo"/></button>
+                                <button class="w-10 h-10 border rounded text-center">
+                                    <FontAwesomeIcon :icon="faCircleInfo"/>
+                                </button>
                             </a>
                             <a :href="`/watcher/${row.id}/edit`">
-                                <button class="w-10 h-10 border rounded text-center"><FontAwesomeIcon :icon="faPenToSquare"/></button>
+                                <button class="w-10 h-10 border rounded text-center">
+                                    <FontAwesomeIcon :icon="faPenToSquare"/>
+                                </button>
                             </a>
                             <delete-button :watcher="row" @delete="removeWatcherFromList"></delete-button>
                         </div>
@@ -153,7 +157,6 @@ const columnsVisible = reactive({
     region: {title: 'Region', display: false}
 });
 
-// Computed properties
 const tableData = computed(() => {
     return watchersList.value
         .filter((watcher) => showInactive.value || watcher.interval_id !== 1)
@@ -166,7 +169,6 @@ const tableData = computed(() => {
         .sort((a, b) => a.name.localeCompare(b.name));
 });
 
-// Lifecycle hook
 onMounted(() => {
     watchersList.value = props.watchers;
 
@@ -182,7 +184,6 @@ onMounted(() => {
     showInactive.value = restoreColumnSetting('show-inactive');
 });
 
-// Methods
 const updateWatcherList = (updatedWatcher) => {
     watchersList.value = [
         ...watchersList.value.filter((watcher) => (watcher.id !== updatedWatcher.id)),

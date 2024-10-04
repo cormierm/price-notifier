@@ -44,9 +44,6 @@ const updateInterval = async (intervalId) => {
         });
         emit('update', data.watcher);
     } catch (err) {
-        // Assuming you have a toast notification library similar to Buefy
-        // Use a notification method according to your toast library
-        // e.g., toast.error('Error updating watcher interval!');
         console.error('Error updating watcher interval!', err);
     } finally {
         loading.value = false;

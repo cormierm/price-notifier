@@ -17,7 +17,7 @@
 import DeleteDialog from "@Components/Form/DeleteDialog.vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import {defineEmits, ref} from "vue";
+import {ref} from "vue";
 
 const emit = defineEmits(['delete']);
 
