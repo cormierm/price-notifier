@@ -12,7 +12,7 @@ class Index extends Controller
     {
 
         return Inertia::render('Template/Index', [
-            'templates' => $request->user()->templates->toArray(),
+            'templates' => $request->user()->templates()->orderBy('domain')->get()->toArray(),
         ]);
     }
 }
