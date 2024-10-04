@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import FormInput from "../Form/FormInput.vue";
+import FormInput from "@Components/Form/FormInput.vue";
 
 export default {
     name: "template-form",

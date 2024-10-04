@@ -29,7 +29,7 @@
 
 <script>
 import moment from "moment";
-import DeleteButton from "../template/DeleteButton.vue";
+import DeleteButton from "../Template/DeleteButton.vue";
 
 export default {
     components: {DeleteButton},

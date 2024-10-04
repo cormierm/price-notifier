@@ -14,7 +14,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="row in data" class="bg-white border-b">
+        <tr v-for="row in templates" class="bg-white border-b" :key="row.id">
             <td class="py-2 px-4">{{ row.domain }}</td>
             <td class="py-2 px-4">{{ row.price_query_type }}</td>
             <td class="py-2 px-4">{{ row.price_query }}</td>
@@ -26,9 +26,9 @@
             <td>
                 <div class="flex">
                     <a :href="`/template/${row.id}/edit`">
-                        <button>&#9998;</button>
+                        <button class="w-10 h-10 border rounded text-center"><FontAwesomeIcon :icon="faPenToSquare"/></button>
                     </a>
-                    <delete-button :template="row" @delete="reloadPage"></delete-button>
+                    <DeleteButton :template="row" @delete="reloadPage"></DeleteButton>
                 </div>
             </td>
         </tr>
@@ -36,21 +36,19 @@
     </table>
 </template>
 
-<script>
-import DeleteButton from "../template/DeleteButton.vue";
+<script setup>
+import DeleteButton from "@Components/Template/DeleteButton.vue";
+import {faPenToSquare} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
-export default {
-    components: {DeleteButton},
-    props: {
-        data: {
-            type: Array,
-            default: () => ([])
-        },
+const props = defineProps({
+    templates: {
+        type: Array,
+        default: () => ([])
     },
-    methods: {
-        reloadPage() {
-            location.reload();
-        }
-    }
-}
+});
+
+const reloadPage = () => {
+    location.reload();
+};
 </script>

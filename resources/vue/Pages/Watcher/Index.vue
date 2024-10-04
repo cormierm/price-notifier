@@ -121,9 +121,7 @@ import IntervalSelect from "@Components/Watcher/IntervalSelect.vue";
 import RefreshButton from "@Components/Watcher/RefreshButton.vue";
 import {faLink, faCircleInfo, faPenToSquare} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import DeleteWatcherDialog from "@Components/Watcher/DeleteWatcherDialog.vue";
 
-// Props
 const props = defineProps({
     userId: {
         type: Number,

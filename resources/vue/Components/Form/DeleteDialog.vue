@@ -30,12 +30,12 @@
                             class="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
                         >
                             <DialogTitle as="h3" class="text-xl font-medium leading-6 text-gray-900">
-                                Delete Watcher
+                                Delete {{ label }}
                             </DialogTitle>
                             <div class="mt-2">
                                 <p class="text-gray-500 flex flex-col">
-                                    <span>Are your sure you want to delete this watcher?</span>
-                                    <span class="text-black text-md font-bold">{{ watcher.name}}</span>
+                                    <span>Are your sure you want to delete this {{ label.toLowerCase() }}?</span>
+                                    <span class="text-black text-md font-bold">{{ info }}</span>
                                     <span>This action CANNOT be undone.</span>
                                 </p>
 
@@ -71,8 +71,12 @@ import {Dialog, DialogPanel, DialogTitle, TransitionRoot, TransitionChild} from 
 const emit = defineEmits(['confirmed'])
 
 const props = defineProps({
-    watcher: {
-        type: Object,
+    label: {
+        type: String,
+        default: 'Watcher'
+    },
+    info: {
+        type: String,
         required: true
     }
 })
