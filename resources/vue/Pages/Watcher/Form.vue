@@ -66,43 +66,12 @@
                 v-model="name"
             />
 
-            <form-input
-                class="mt-8"
-                label="Price Query"
-                :placeholder="pricePlaceholder"
+            <PriceQueryInput
+                :query-placeholder="pricePlaceholder"
                 :errors="formErrors.price_query"
-                v-model="priceQuery"
-            >
-                <div class="flex gap-3 pb-1">
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="priceQueryType"
-                            name="price_query_type"
-                            value="xpath"
-                        />
-                        XPath
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="priceQueryType"
-                            name="price_query_type"
-                            value="selector"
-                        />
-                        Query Selector
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="priceQueryType"
-                            name="price_query_type"
-                            value="regex"
-                        />
-                        Regex
-                    </label>
-                </div>
-            </form-input>
+                v-model:query="priceQuery"
+                v-model:query-type="priceQueryType"
+            />
 
             <form-input
                 class="mt-8"
@@ -283,6 +252,7 @@ import debounce from 'lodash/debounce';
 import FormInput from "@Components/Form/FormInput.vue";
 import Spinner from "@Components/Form/Spinner.vue";
 import MessageBox from "@Components/Form/MessageBox.vue";
+import PriceQueryInput from "@Components/Form/PriceQueryInput.vue";
 
 const props = defineProps({
     intervals: {

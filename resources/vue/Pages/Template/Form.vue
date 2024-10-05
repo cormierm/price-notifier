@@ -11,43 +11,12 @@
                 v-model="domain"
             />
 
-            <form-input
-                class="mt-8"
-                label="Price Query"
-                placeholder="//span[@id='price']"
-                :errors="formErrors['price_query']"
-                v-model="priceQuery"
-            >
-                <div class="flex gap-3 pb-1">
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="priceQueryType"
-                            name="price_query_type"
-                            value="xpath"
-                        />
-                        XPath
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="priceQueryType"
-                            name="price_query_type"
-                            value="selector"
-                        />
-                        Query Selector
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="priceQueryType"
-                            name="price_query_type"
-                            value="regex"
-                        />
-                        Regex
-                    </label>
-                </div>
-            </form-input>
+            <PriceQueryInput
+                query-placeholder="//span[@id='price']"
+                :errors="formErrors.price_query"
+                v-model:query="priceQuery"
+                v-model:query-type="priceQueryType"
+            />
 
             <form-input
                 class="mt-8"
@@ -139,6 +108,7 @@
 <script setup>
 import FormInput from "@Components/Form/FormInput.vue";
 import {onMounted, ref} from "vue";
+import PriceQueryInput from "@Components/Form/PriceQueryInput.vue";
 
 const props = defineProps({
     template: {
