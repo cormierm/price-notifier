@@ -3,18 +3,17 @@
         <div class="flex justify-between mt-4 items-center">
             <h3 class="text-lg">Logs</h3>
             <div class="flex items-center gap-1">
-                <label for="pagination-select">Display:</label>
-                <select
-                    id="pagination-select"
-                    class="rounded"
-                    :value="limit"
-                    @input="getLogs($event.target.value)"
-                    :loading="loading"
-                >
-                    <option v-for="option in limits" :value="option" :key="option">
-                        {{ option }}
-                    </option>
-                </select>
+                <label>
+                    Display:
+                    <select
+                        class="rounded dark:bg-gray-900"
+                        v-model="limit"
+                    >
+                        <option v-for="option in limits" :value="option" :key="option">
+                            {{ option }}
+                        </option>
+                    </select>
+                </label>
             </div>
         </div>
 
@@ -22,43 +21,42 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import WatcherLogsTable from "../Tables/WatcherLogsTable.vue";
+import {onMounted, ref, watch} from "vue";
 
-export default {
-    components: {WatcherLogsTable},
-    props: {
-        watcherId: {
-            type: Number,
-            required: true
-        },
+const props = defineProps({
+    watcherId: {
+        type: Number,
+        required: true
     },
-    mounted() {
-        this.getLogs();
-    },
-    data() {
-        return {
-            limit: 5,
-            limits: [5, 10, 25, 100, 250, 1000],
-            loading: false,
-            logs: [],
-        }
-    },
-    methods: {
-        getLogs(limit = 5) {
-            this.limit = limit;
-            this.loading = true;
-            axios.get(`/watcher/${this.watcherId}/logs?limit=${limit}`)
-                .then(({data}) => {
-                    this.logs = data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-        },
-    }
-}
+});
+
+onMounted(() => {
+    getLogs();
+});
+
+const limit = ref(5);
+const limits = ref([5, 10, 25, 100, 250, 1000]);
+const loading = ref(false);
+const logs = ref([]);
+
+watch(limit, () => {
+    getLogs();
+})
+
+const getLogs = () => {
+    loading.value = true;
+
+    axios.get(`/watcher/${props.watcherId}/logs?limit=${limit.value}`)
+        .then(({data}) => {
+            logs.value = data;
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            loading.value = false;
+        });
+};
 </script>
