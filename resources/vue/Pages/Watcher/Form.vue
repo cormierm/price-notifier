@@ -66,50 +66,21 @@
                 v-model="name"
             />
 
-            <PriceQueryInput
-                :query-placeholder="pricePlaceholder"
-                :errors="formErrors.price_query"
+            <QueryInput
+                label="Price Query"
+                :errors="formErrors.price_query || formErrors.price_query_type"
+                radio-buttons-name="price_query_type"
                 v-model:query="priceQuery"
                 v-model:query-type="priceQueryType"
             />
 
-            <form-input
-                class="mt-8"
+            <QueryInput
                 label="Stock Query"
-                :placeholder="stockPlaceholder"
-                :errors="formErrors.stock_query"
-                v-model="stockQuery"
-            >
-                <div class="flex gap-3 pb-1">
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="stockQueryType"
-                            name="stock_query_type"
-                            value="xpath"
-                        />
-                        XPath
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="stockQueryType"
-                            name="stock_query_type"
-                            value="selector"
-                        />
-                        Query Selector
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="stockQueryType"
-                            name="stock_query_type"
-                            value="regex"
-                        />
-                        Regex
-                    </label>
-                </div>
-            </form-input>
+                :errors="formErrors.stock_query || formErrors.stock_query_type"
+                radio-buttons-name="stock_query_type"
+                v-model:query="stockQuery"
+                v-model:query-type="stockQueryType"
+            />
 
             <div class="mt-4 flex items-center">
                 <select class="rounded" v-model="stockCondition">
@@ -157,7 +128,7 @@
                 <h2 class="text-xl font-bold">Watcher Settings</h2>
                 <label class="flex flex-col mt-4">
                     Interval
-                    <select class="rounded" placeholder="Select an interval" v-model="interval">
+                    <select class="rounded" v-model="interval">
                         <option
                             v-for="option in intervals"
                             :value="option.id"
@@ -252,7 +223,7 @@ import debounce from 'lodash/debounce';
 import FormInput from "@Components/Form/FormInput.vue";
 import Spinner from "@Components/Form/Spinner.vue";
 import MessageBox from "@Components/Form/MessageBox.vue";
-import PriceQueryInput from "@Components/Form/PriceQueryInput.vue";
+import QueryInput from "@Components/Form/QueryInput.vue";
 
 const props = defineProps({
     intervals: {
@@ -327,14 +298,6 @@ const loadingCheck = computed(() => {
     return loading.value || loadingTemplate.value;
 });
 
-const pricePlaceholder = computed(() => {
-    return queryPlaceholder(priceQueryType.value, 'price');
-});
-
-const stockPlaceholder = computed(() => {
-    return queryPlaceholder(stockQueryType.value, 'stock');
-});
-
 const autoFill = debounce(function () {
     if (!id.value) {
         testResults.value = null;
@@ -344,17 +307,6 @@ const autoFill = debounce(function () {
 
 const autoFillName = () => {
     name.value = testResults.value.title;
-};
-
-const queryPlaceholder = (queryType, field) => {
-    switch (queryType) {
-        case 'regex':
-            return '/textBefore(.*?)textAfter/';
-        case 'selector':
-            return `.${field} span`;
-        default:
-            return `//span[@class="${field}"]`;
-    }
 };
 
 const submit = () => {

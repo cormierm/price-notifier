@@ -1,8 +1,8 @@
 <template>
     <form-input
         class="mt-8"
-        label="Price Query"
-        :placeholder="pricePlaceholder"
+        :label="label"
+        :placeholder="placeholder"
         :errors="errors"
         v-model="query"
     >
@@ -11,7 +11,7 @@
                 <input
                     type="radio"
                     v-model="queryType"
-                    name="price_query_type"
+                    :name="radioButtonsName"
                     value="xpath"
                 />
                 XPath
@@ -20,7 +20,7 @@
                 <input
                     type="radio"
                     v-model="queryType"
-                    name="price_query_type"
+                    :name="radioButtonsName"
                     value="selector"
                 />
                 Query Selector
@@ -29,7 +29,7 @@
                 <input
                     type="radio"
                     v-model="queryType"
-                    name="price_query_type"
+                    :name="radioButtonsName"
                     value="regex"
                 />
                 Regex
@@ -41,18 +41,35 @@
 <script setup>
 
 import FormInput from "@Components/Form/FormInput.vue";
+import {computed} from "vue";
 
 const props = defineProps({
-    errors: {
-        type: Object,
-        required: true
-    },
-    queryPlaceholder: {
+    label: {
         type: String,
         required: true
+    },
+    errors: {
+        type: Array,
+        required: false
+    },
+    radioButtonsName: {
+        type: String,
+        default: 'price_query_type'
     }
 })
 
 const query = defineModel('query');
-const queryType = defineModel('queryType')
+const queryType = defineModel('queryType', {type: String})
+
+const placeholder = computed(() => {
+    switch (queryType.value) {
+        case 'regex':
+            return '/textBefore(.*?)textAfter/';
+        case 'selector':
+            return `.foobar span`;
+        default:
+            return `//span[@class="foobar"]`;
+    }
+})
+
 </script>

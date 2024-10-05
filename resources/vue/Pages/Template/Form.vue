@@ -6,55 +6,26 @@
                 class="mt-4"
                 label="Domain"
                 placeholder="Product Name"
-                :errors="formErrors['domain']"
+                :errors="formErrors.domain"
                 :disabled="type === 'Update'"
                 v-model="domain"
             />
 
-            <PriceQueryInput
-                query-placeholder="//span[@id='price']"
-                :errors="formErrors.price_query"
+            <QueryInput
+                label="Price Query"
+                :errors="formErrors.price_query || formErrors.price_query_type"
+                radio-buttons-name="price_query_type"
                 v-model:query="priceQuery"
                 v-model:query-type="priceQueryType"
             />
 
-            <form-input
-                class="mt-8"
+            <QueryInput
                 label="Stock Query"
-                placeholder="//span[@id='stock']"
-                :errors="formErrors['xpath_stock']"
-                v-model="stockQuery"
-            >
-                <div class="flex gap-3 pb-1">
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="stockQueryType"
-                            name="stock_query_type"
-                            value="xpath"
-                        />
-                        XPath
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="stockQueryType"
-                            name="stock_query_type"
-                            value="selector"
-                        />
-                        Query Selector
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input
-                            type="radio"
-                            v-model="stockQueryType"
-                            name="stock_query_type"
-                            value="regex"
-                        />
-                        Regex
-                    </label>
-                </div>
-            </form-input>
+                :errors="formErrors.stock_query || formErrors.stock_query_type"
+                radio-buttons-name="stock_query_type"
+                v-model:query="stockQuery"
+                v-model:query-type="stockQueryType"
+            />
 
             <div class="mt-4 flex items-center">
                 <select class="rounded" v-model="stockCondition">
@@ -108,7 +79,7 @@
 <script setup>
 import FormInput from "@Components/Form/FormInput.vue";
 import {onMounted, ref} from "vue";
-import PriceQueryInput from "@Components/Form/PriceQueryInput.vue";
+import QueryInput from "@Components/Form/QueryInput.vue";
 
 const props = defineProps({
     template: {
