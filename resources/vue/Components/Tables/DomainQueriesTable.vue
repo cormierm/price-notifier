@@ -23,8 +23,8 @@
             <td class="py-2 px-4">{{ row.stock_condition }}</td>
             <td class="py-2 px-4">{{ row.stock_text }}</td>
             <td class="py-2 px-4">{{ row.client }}</td>
-            <td>
-                <div class="flex">
+            <td class="py-2 px-4">
+                <div class="flex gap-1">
                     <a :href="`/template/${row.id}/edit`">
                         <button class="w-10 h-10 border rounded text-center"><FontAwesomeIcon :icon="faPenToSquare"/></button>
                     </a>
