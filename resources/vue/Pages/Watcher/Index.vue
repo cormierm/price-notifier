@@ -23,15 +23,15 @@
                 <thead class="text-xs uppercase bg-gray-700 text-gray-300">
                 <tr>
                     <th class="py-2 px-4 text-left">Name</th>
-                    <th v-if="columnsVisible['interval'].display" class="py-2 px-4 w-[100px]">Interval</th>
-                    <th v-if="columnsVisible['initial_value'].display" class="py-2 px-4">Original</th>
+                    <th v-if="columnsVisible.interval.display" class="py-2 px-4 w-[100px]">Interval</th>
+                    <th v-if="columnsVisible.initial_value.display" class="py-2 px-4">Original</th>
                     <th class="py-2 px-4">Current</th>
-                    <th v-if="columnsVisible['change'].display" class="py-2 px-4">Change</th>
-                    <th v-if="columnsVisible['lowest_price'].display" class="py-2 px-4">Lowest</th>
-                    <th v-if="columnsVisible['has_stock'].display" class="py-2 px-4">Stock</th>
-                    <th v-if="columnsVisible['alert_value'].display" class="py-2 px-4">Alert</th>
-                    <th v-if="columnsVisible['client'].display" class="py-2 px-4">Client</th>
-                    <th v-if="columnsVisible['region'].display" class="py-2 px-4">Region</th>
+                    <th v-if="columnsVisible.change.display" class="py-2 px-4">Change</th>
+                    <th v-if="columnsVisible.lowest_price.display" class="py-2 px-4">Lowest</th>
+                    <th v-if="columnsVisible.has_stock.display" class="py-2 px-4">Stock</th>
+                    <th v-if="columnsVisible.alert_value.display" class="py-2 px-4">Alert</th>
+                    <th v-if="columnsVisible.client.display" class="py-2 px-4">Client</th>
+                    <th v-if="columnsVisible.region.display" class="py-2 px-4">Region</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -48,7 +48,7 @@
                             <span class="text-xs text-gray-500">{{ row.url_domain }}</span>
                         </div>
                     </td>
-                    <td v-if="columnsVisible['interval'].display" class="py-2 px-4">
+                    <td v-if="columnsVisibl.interval.display" class="py-2 px-4">
                         <interval-select
                             :intervals="intervals"
                             :watcher-id="row.id"
@@ -56,7 +56,7 @@
                             @update="updateWatcherList"
                         />
                     </td>
-                    <td v-if="columnsVisible['initial_value'].display" class="py-2 px-4 w-[120px]">
+                    <td v-if="columnsVisibl.initial_value.display" class="py-2 px-4 w-[120px]">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.initial_value ? row.initial_value : '-' }}
                             <span class="text-xs">{{ row.created_at }}</span>
@@ -68,28 +68,28 @@
                             <span class="text-xs">{{ row.last_sync }}</span>
                         </div>
                     </td>
-                    <td v-if="columnsVisible['change'].display" class="py-2 px-4 w-[120px] text-center">
+                    <td v-if="columnsVisibl.change.display" class="py-2 px-4 w-[120px] text-center">
                         <change-column
                             :initial-value="row.initial_value"
                             :current-value="row.value"
                         />
                     </td>
-                    <td v-if="columnsVisible['lowest_price'].display" class="py-2 px-4 w-[120px]">
+                    <td v-if="columnsVisible.lowest_price.display" class="py-2 px-4 w-[120px]">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.lowest_price ? row.lowest_price : '-' }}
                             <span class="text-xs">{{ row.lowest_at }}</span>
                         </div>
                     </td>
-                    <td v-if="columnsVisible['has_stock'].display" class="py-2 px-4 text-center">
+                    <td v-if="columnsVisible.has_stock.display" class="py-2 px-4 text-center">
                         {{ row.has_stock === true ? 'Yes' : row.has_stock === false ? 'No' : '-' }}
                     </td>
-                    <td v-if="columnsVisible['alert_value'].display" class="py-2 px-4 text-center">
+                    <td v-if="columnsVisible.alert_value.display" class="py-2 px-4 text-center">
                         {{ row.alert_value ? row.alert_value : '-' }}
                     </td>
-                    <td v-if="columnsVisible['client'].display" class="py-2 px-4 text-center">
+                    <td v-if="columnsVisible.client.display" class="py-2 px-4 text-center">
                         {{ row.client }}
                     </td>
-                    <td v-if="columnsVisible['region'].display" class="py-2 px-4 text-center">
+                    <td v-if="columnsVisible.region.display" class="py-2 px-4 text-center">
                         {{ row.region ? row.region.label : '-' }}
                     </td>
                     <td class="py-2 px-4 text-center text-lg font-black">
@@ -121,7 +121,7 @@ import ChangeColumn from "@Components/Watcher/ChangeColumn.vue";
 import DeleteButton from "@Components/Shared/DeleteButton.vue";
 import IntervalSelect from "@Components/Watcher/IntervalSelect.vue";
 import RefreshButton from "@Components/Watcher/RefreshButton.vue";
-import {faLink, faCircleInfo, faPenToSquare} from "@fortawesome/free-solid-svg-icons";
+import {faLink} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import EditButton from "@Components/Shared/EditButton.vue";
 import InfoButton from "@Components/Shared/InfoButton.vue";
