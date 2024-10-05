@@ -9,17 +9,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="bg-white border-b">
+        <tr class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700">
             <td class="py-2 px-4">Current</td>
             <td class="py-2 px-4">${{ watcher.value }}</td>
             <td class="py-2 px-4">{{ formatDate(watcher.last_sync) }}</td>
         </tr>
-        <tr class="bg-white border-b">
+        <tr class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700">
             <td class="py-2 px-4">Lowest</td>
             <td class="py-2 px-4">${{ watcher.lowest_price }}</td>
             <td class="py-2 px-4">{{ formatDate(watcher.lowest_at) }}</td>
         </tr>
-        <tr class="bg-white border-b">
+        <tr class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700">
             <td class="py-2 px-4">Original</td>
             <td class="py-2 px-4">${{ watcher.initial_value }}</td>
             <td class="py-2 px-4 whitespace-nowrap">{{ formatDate(watcher.created_at) }}</td>

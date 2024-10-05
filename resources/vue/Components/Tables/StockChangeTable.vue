@@ -10,7 +10,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="row in tableData" class="bg-white border-b">
+            <tr v-for="row in tableData" class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700">
                 <td class="py-2 px-4 text-left">{{ row.created_at_formatted }}</td>
                 <td class="py-2 px-4 text-center">{{ row.stock }}</td>
             </tr>
