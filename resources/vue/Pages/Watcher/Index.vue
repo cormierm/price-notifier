@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="relative overflow-x-auto pb-4">
+        <div class="relative overflow-x-auto pb-4 pt-2">
             <table class="text-gray-600 w-full">
                 <thead class="text-xs uppercase bg-gray-700 text-gray-300">
                 <tr>
@@ -45,7 +45,7 @@
                                     <FontAwesomeIcon :icon="faLink"/>
                                 </a>
                             </div>
-                            <span class="text-xs text-gray-500">{{ row.url_domain }}</span>
+                            <span class="text-sm text-gray-500">{{ row.url_domain }}</span>
                         </div>
                     </td>
                     <td v-if="columnsVisible.interval.display" class="py-2 px-4">
@@ -56,25 +56,25 @@
                             @update="updateWatcherList"
                         />
                     </td>
-                    <td v-if="columnsVisible.initial_value.display" class="py-2 px-4 w-[120px]">
+                    <td v-if="columnsVisible.initial_value.display" class="py-2 px-4">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.initial_value ? row.initial_value : '-' }}
                             <span class="text-xs">{{ row.created_at }}</span>
                         </div>
                     </td>
-                    <td class="py-2 px-4 w-[120px]">
+                    <td class="py-2 px-4">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.value ? row.value : '-' }}
                             <span class="text-xs">{{ row.last_sync }}</span>
                         </div>
                     </td>
-                    <td v-if="columnsVisible.change.display" class="py-2 px-4 w-[120px] text-center">
+                    <td v-if="columnsVisible.change.display" class="py-2 px-4 text-center">
                         <change-column
                             :initial-value="row.initial_value"
                             :current-value="row.value"
                         />
                     </td>
-                    <td v-if="columnsVisible.lowest_price.display" class="py-2 px-4 w-[120px]">
+                    <td v-if="columnsVisible.lowest_price.display" class="py-2 px-4">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.lowest_price ? row.lowest_price : '-' }}
                             <span class="text-xs">{{ row.lowest_at }}</span>
