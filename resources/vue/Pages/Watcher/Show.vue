@@ -62,7 +62,6 @@
                         <div>
                             Interval:
                             <IntervalSelect
-                                style="padding-left: 10px"
                                 :intervals="intervals"
                                 :watcher-id="watcher.id"
                                 :value="watcher.interval_id"
@@ -75,8 +74,7 @@
                 </article>
             </div>
         </div>
-
-        <Logs :watcher-id="watcher.id"></Logs>
+        <Logs :watcher-id="watcher.id"/>
     </div>
 </template>
 
