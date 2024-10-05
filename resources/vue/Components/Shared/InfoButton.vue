@@ -12,7 +12,7 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 const props = defineProps({
     watcherId: {
-        type: String,
+        type: [String, Number],
         required: true
     }
 })

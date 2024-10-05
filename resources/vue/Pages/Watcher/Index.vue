@@ -48,7 +48,7 @@
                             <span class="text-xs text-gray-500">{{ row.url_domain }}</span>
                         </div>
                     </td>
-                    <td v-if="columnsVisibl.interval.display" class="py-2 px-4">
+                    <td v-if="columnsVisible.interval.display" class="py-2 px-4">
                         <interval-select
                             :intervals="intervals"
                             :watcher-id="row.id"
@@ -56,7 +56,7 @@
                             @update="updateWatcherList"
                         />
                     </td>
-                    <td v-if="columnsVisibl.initial_value.display" class="py-2 px-4 w-[120px]">
+                    <td v-if="columnsVisible.initial_value.display" class="py-2 px-4 w-[120px]">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.initial_value ? row.initial_value : '-' }}
                             <span class="text-xs">{{ row.created_at }}</span>
@@ -68,7 +68,7 @@
                             <span class="text-xs">{{ row.last_sync }}</span>
                         </div>
                     </td>
-                    <td v-if="columnsVisibl.change.display" class="py-2 px-4 w-[120px] text-center">
+                    <td v-if="columnsVisible.change.display" class="py-2 px-4 w-[120px] text-center">
                         <change-column
                             :initial-value="row.initial_value"
                             :current-value="row.value"
