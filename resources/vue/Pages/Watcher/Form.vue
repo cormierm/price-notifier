@@ -81,21 +81,7 @@
             v-model:query-type="stockQueryType"
         />
 
-        <div class="mt-4 flex items-center">
-            <select class="rounded" v-model="stockCondition">
-                <option
-                    v-for="option in stockConditions"
-                    :value="option.value"
-                    :key="option.value">
-                    {{ option.label }}
-                </option>
-            </select>
-            <FormInput
-                class="w-full"
-                placeholder="In Stock."
-                v-model="stockText"
-            />
-        </div>
+        <StockConditionsInput v-model:condition="stockCondition" v-model:text="stockText"/>
 
         <label class="flex items-center gap-2 mt-1">
             <input
@@ -210,6 +196,7 @@ import Spinner from "@Components/Form/Spinner.vue";
 import MessageBox from "@Components/Form/MessageBox.vue";
 import QueryInput from "@Components/Form/QueryInput.vue";
 import RadioButton from "@Components/Form/RadioButton.vue";
+import StockConditionsInput from "@Components/Form/StockConditionsInput.vue";
 
 const props = defineProps({
     intervals: {
@@ -272,12 +259,6 @@ const stockAlert = ref(false);
 const stockRequiresPrice = ref(true);
 const stockCondition = ref('contains_text');
 const updateQueries = ref(true);
-const stockConditions = ref([
-    {label: 'InnerText Contains', value: 'contains_text'},
-    {label: 'InnerText Missing', value: 'missing_text'},
-    {label: 'OuterHtml Contains', value: 'contains_html'},
-    {label: 'OuterHtml Missing', value: 'missing_html'},
-]);
 const showDebug = ref(false);
 
 const loadingCheck = computed(() => {

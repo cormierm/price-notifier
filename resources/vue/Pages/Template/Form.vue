@@ -27,21 +27,7 @@
                 v-model:query-type="stockQueryType"
             />
 
-            <div class="mt-4 flex items-center">
-                <select class="rounded" v-model="stockCondition">
-                    <option
-                        v-for="option in stockConditions"
-                        :value="option.value"
-                        :key="option.value">
-                        {{ option.label }}
-                    </option>
-                </select>
-                <FormInput
-                    class="w-full"
-                    placeholder="In Stock."
-                    v-model="stockText"
-                />
-            </div>
+            <StockConditionsInput v-model:condition="stockCondition" v-model:text="stockText"/>
 
             <div class="mt-8">
                 <label>Html Client</label>
@@ -80,6 +66,7 @@
 import FormInput from "@Components/Form/FormInput.vue";
 import {onMounted, ref} from "vue";
 import QueryInput from "@Components/Form/QueryInput.vue";
+import StockConditionsInput from "@Components/Form/StockConditionsInput.vue";
 
 const props = defineProps({
     template: {
@@ -117,12 +104,7 @@ const stockQuery = ref('');
 const stockQueryType = ref('xpath');
 const stockCondition = ref('contains_text');
 const stockText = ref('');
-const stockConditions = ref([
-    {label: 'Contains Text', value: 'contains_text'},
-    {label: 'Missing Text', value: 'missing_text'},
-    {label: 'Contains Html', value: 'contains_html'},
-    {label: 'Missing Html', value: 'missing_html'},
-]);
+
 const submit = () => {
     loading.value = true;
 
