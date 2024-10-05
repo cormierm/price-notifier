@@ -41,150 +41,135 @@
             </div>
         </div>
 
-        <form>
-            <div class="flex flex-col mt-8">
-                <label class="flex flex-col">
-                    Url
-                    <input
-                        class="rounded"
-                        :class="{'border-red-500': formErrors.url}"
-                        id="url"
-                        type="url"
-                        v-model="url"
-                        placeholder="https://www.example.com/product.html"
-                        @input="autoFill"
-                    />
-                </label>
-                <div v-if="formErrors.url" class="text-sm text-red-500">{{ formErrors.url[0] }}</div>
+        <div class="flex flex-col mt-8">
+            <label class="flex flex-col">
+                Url
+                <input
+                    class="rounded"
+                    :class="{'border-red-500': formErrors.url}"
+                    id="url"
+                    type="url"
+                    v-model="url"
+                    placeholder="https://www.example.com/product.html"
+                    @input="autoFill"
+                />
+            </label>
+            <div v-if="formErrors.url" class="text-sm text-red-500">{{ formErrors.url[0] }}</div>
+        </div>
+
+        <FormInput
+            class="mt-8"
+            label="Name"
+            placeholder="Product Name"
+            :errors="formErrors.name"
+            v-model="name"
+        />
+
+        <QueryInput
+            label="Price Query"
+            :errors="formErrors.price_query || formErrors.price_query_type"
+            radio-buttons-name="price_query_type"
+            v-model:query="priceQuery"
+            v-model:query-type="priceQueryType"
+        />
+
+        <QueryInput
+            label="Stock Query"
+            :errors="formErrors.stock_query || formErrors.stock_query_type"
+            radio-buttons-name="stock_query_type"
+            v-model:query="stockQuery"
+            v-model:query-type="stockQueryType"
+        />
+
+        <div class="mt-4 flex items-center">
+            <select class="rounded" v-model="stockCondition">
+                <option
+                    v-for="option in stockConditions"
+                    :value="option.value"
+                    :key="option.value">
+                    {{ option.label }}
+                </option>
+            </select>
+            <FormInput
+                class="w-full"
+                placeholder="In Stock."
+                v-model="stockText"
+            />
+        </div>
+
+        <label class="flex items-center gap-2 mt-1">
+            <input
+                class="rounded"
+                type="checkbox"
+                v-model="stockRequiresPrice"
+            />
+            Stock updates require price (Helps reduce false positives)
+        </label>
+
+        <div class="mt-8">
+            <h2 class="text-xl font-bold">Notifications</h2>
+            <label class="flex items-center gap-2 mt-3">
+                <input class="rounded" type="checkbox" v-model="stockAlert"/>
+                Notify When In Stock
+            </label>
+
+            <FormInput
+                class="mt-4"
+                label="Notify When Price Below"
+                type="number"
+                placeholder="5.00"
+                :errors="formErrors['alert_value']"
+                v-model="alertValue"
+            />
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-xl font-bold">Watcher Settings</h2>
+            <label class="flex flex-col mt-4">
+                Interval
+                <select class="rounded" v-model="interval">
+                    <option
+                        v-for="option in intervals"
+                        :value="option.id"
+                        :key="option.id">
+                        {{ option.name }}
+                    </option>
+                </select>
+            </label>
+            <div v-if="formErrors['interval_id']" class="text-sm text-red-500">
+                {{ formErrors['interval_id'][0] }}
             </div>
 
-            <form-input
-                class="mt-8"
-                label="Name"
-                placeholder="Product Name"
-                :errors="formErrors.name"
-                v-model="name"
-            />
+            <div class="mt-8">
+                <label>Html Client</label>
+                <div class="flex gap-3 pb-1">
+                    <RadioButton label="Browsershot" name="client" value="browsershot" v-model="client"/>
+                    <RadioButton label="Curl" name="client" value="curl" v-model="client"/>
+                    <RadioButton label="Guzzle" name="client" value="guzzle" v-model="client"/>
+                    <RadioButton label="Puppeteer" name="client" value="puppeteer" v-model="client"/>
+                </div>
+                <div v-if="formErrors.client" class="text-sm text-red-500">
+                    {{ formErrors.client[0] }}
+                </div>
+            </div>
 
-            <QueryInput
-                label="Price Query"
-                :errors="formErrors.price_query || formErrors.price_query_type"
-                radio-buttons-name="price_query_type"
-                v-model:query="priceQuery"
-                v-model:query-type="priceQueryType"
-            />
-
-            <QueryInput
-                label="Stock Query"
-                :errors="formErrors.stock_query || formErrors.stock_query_type"
-                radio-buttons-name="stock_query_type"
-                v-model:query="stockQuery"
-                v-model:query-type="stockQueryType"
-            />
-
-            <div class="mt-4 flex items-center">
-                <select class="rounded" v-model="stockCondition">
+            <label class="flex flex-col mt-4">
+                Region
+                <select class="rounded" v-model="region">
+                    <option value="null">None</option>
                     <option
-                        v-for="option in stockConditions"
-                        :value="option.value"
-                        :key="option.value">
+                        v-for="option in regions"
+                        :value="option.id"
+                        :key="option.id">
                         {{ option.label }}
                     </option>
                 </select>
-                <form-input
-                    class="w-full"
-                    placeholder="In Stock."
-                    v-model="stockText"
-                />
-            </div>
 
-            <label class="flex items-center gap-2 mt-1">
-                <input
-                    class="rounded"
-                    type="checkbox"
-                    v-model="stockRequiresPrice"
-                />
-                Stock updates require price (Helps reduce false positives)
             </label>
-
-            <div class="mt-8">
-                <h2 class="text-xl font-bold">Notifications</h2>
-                <label class="flex items-center gap-2 mt-3">
-                    <input class="rounded" type="checkbox" v-model="stockAlert"/>
-                    Notify When In Stock
-                </label>
-
-                <form-input
-                    class="mt-4"
-                    label="Notify When Price Below"
-                    type="number"
-                    placeholder="5.00"
-                    :errors="formErrors['alert_value']"
-                    v-model="alertValue"
-                />
+            <div v-if="formErrors['region_id']" class="text-sm text-red-500">
+                {{ formErrors['region_id'][0] }}
             </div>
-
-            <div class="mt-8">
-                <h2 class="text-xl font-bold">Watcher Settings</h2>
-                <label class="flex flex-col mt-4">
-                    Interval
-                    <select class="rounded" v-model="interval">
-                        <option
-                            v-for="option in intervals"
-                            :value="option.id"
-                            :key="option.id">
-                            {{ option.name }}
-                        </option>
-                    </select>
-                </label>
-                <div v-if="formErrors['interval_id']" class="text-sm text-red-500">
-                    {{ formErrors['interval_id'][0] }}
-                </div>
-
-                <div class="mt-8">
-                    <label>Html Client</label>
-                    <div class="flex gap-3 pb-1">
-                        <label class="flex items-center gap-2">
-                            <input type="radio" v-model="client" name="client" value="browsershot"/>
-                            Browsershot
-                        </label>
-                        <label class="flex items-center gap-2">
-                            <input type="radio" v-model="client" name="client" value="curl"/>
-                            Curl
-                        </label>
-                        <label class="flex items-center gap-2">
-                            <input type="radio" v-model="client" name="client" value="guzzle"/>
-                            Guzzle
-                        </label>
-                        <label class="flex items-center gap-2">
-                            <input type="radio" v-model="client" name="client" value="puppeteer"/>
-                            Puppeteer
-                        </label>
-                    </div>
-
-                    <div v-if="formErrors['client']" class="text-sm text-red-500">
-                        {{ formErrors['client'][0] }}
-                    </div>
-                </div>
-
-                <label class="flex flex-col mt-4">
-                    Region
-                    <select class="rounded" v-model="region">
-                        <option value="null">None</option>
-                        <option
-                            v-for="option in regions"
-                            :value="option.id"
-                            :key="option.id">
-                            {{ option.label }}
-                        </option>
-                    </select>
-
-                </label>
-                <div v-if="formErrors['region_id']" class="text-sm text-red-500">
-                    {{ formErrors['region_id'][0] }}
-                </div>
-            </div>
-        </form>
+        </div>
 
         <div class="mt-8 flex justify-between">
             <div class="flex items-center gap-2">
@@ -224,6 +209,7 @@ import FormInput from "@Components/Form/FormInput.vue";
 import Spinner from "@Components/Form/Spinner.vue";
 import MessageBox from "@Components/Form/MessageBox.vue";
 import QueryInput from "@Components/Form/QueryInput.vue";
+import RadioButton from "@Components/Form/RadioButton.vue";
 
 const props = defineProps({
     intervals: {

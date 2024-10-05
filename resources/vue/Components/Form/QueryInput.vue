@@ -7,33 +7,9 @@
         v-model="query"
     >
         <div class="flex gap-3 pb-1">
-            <label class="flex items-center gap-2">
-                <input
-                    type="radio"
-                    v-model="queryType"
-                    :name="radioButtonsName"
-                    value="xpath"
-                />
-                XPath
-            </label>
-            <label class="flex items-center gap-2">
-                <input
-                    type="radio"
-                    v-model="queryType"
-                    :name="radioButtonsName"
-                    value="selector"
-                />
-                Query Selector
-            </label>
-            <label class="flex items-center gap-2">
-                <input
-                    type="radio"
-                    v-model="queryType"
-                    :name="radioButtonsName"
-                    value="regex"
-                />
-                Regex
-            </label>
+            <RadioButton label="XPath" :name="radioButtonsName" value="xpath" v-model="queryType"/>
+            <RadioButton label="Query Selector" :name="radioButtonsName" value="selector" v-model="queryType"/>
+            <RadioButton label="Regex" :name="radioButtonsName" value="regex" v-model="queryType"/>
         </div>
     </form-input>
 </template>
@@ -42,6 +18,7 @@
 
 import FormInput from "@Components/Form/FormInput.vue";
 import {computed} from "vue";
+import RadioButton from "@Components/Form/RadioButton.vue";
 
 const props = defineProps({
     label: {

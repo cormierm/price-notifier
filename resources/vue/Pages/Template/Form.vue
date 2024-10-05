@@ -2,7 +2,7 @@
     <div class="bg-white p-4">
         <h1 class="text-xl">{{ type }} Domain Query</h1>
         <form class="mt-8" action="">
-            <form-input
+            <FormInput
                 class="mt-4"
                 label="Domain"
                 placeholder="Product Name"
@@ -36,7 +36,7 @@
                         {{ option.label }}
                     </option>
                 </select>
-                <form-input
+                <FormInput
                     class="w-full"
                     placeholder="In Stock."
                     v-model="stockText"
