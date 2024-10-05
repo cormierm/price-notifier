@@ -23,9 +23,9 @@ const condition = defineModel('condition')
 const text = defineModel('text')
 
 const stockConditions = [
-    {label: 'Contains Text', value: 'contains_text'},
-    {label: 'Missing Text', value: 'missing_text'},
-    {label: 'Contains Html', value: 'contains_html'},
-    {label: 'Missing Html', value: 'missing_html'},
+    {label: 'InnerText Contains', value: 'contains_text'},
+    {label: 'InnerText Missing', value: 'missing_text'},
+    {label: 'OuterHtml Contains', value: 'contains_html'},
+    {label: 'OuterHtml Missing', value: 'missing_html'},
 ];
 </script>
