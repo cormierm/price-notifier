@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white p-4">
+    <div class="p-4">
         <h1 class="text-xl mb-4">Domain Queries</h1>
 
         <div class="overflow-y-auto">

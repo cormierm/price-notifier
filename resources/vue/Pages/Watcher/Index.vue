@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full p-4 bg-white">
+    <div class="w-full p-4 bg-white dark:bg-black dark:text-gray-200">
         <div class="flex justify-between">
             <h1 class="text-2xl">Watchers</h1>
             <a href="/watcher/create">
@@ -36,20 +36,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="row in tableData" :key="row.id" class="bg-white border-b">
+                <tr v-for="row in tableData" :key="row.id" class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700">
                     <td class="py-2 px-4">
                         <div class="min-w-96">
-                            <div class="text-blue-600 space-x-1">
+                            <div class="text-blue-600 dark:text-blue-300 space-x-1">
                                 <a :href="`/watcher/${row.id}`">{{ row.name }}</a>
                                 <a :href="row.url">
                                     <FontAwesomeIcon :icon="faLink"/>
                                 </a>
                             </div>
-                            <span class="text-sm text-gray-500">{{ row.url_domain }}</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-300">{{ row.url_domain }}</span>
                         </div>
                     </td>
                     <td v-if="columnsVisible.interval.display" class="py-2 px-4">
-                        <interval-select
+                        <IntervalSelect
                             :intervals="intervals"
                             :watcher-id="row.id"
                             :value="row.interval_id"
@@ -59,13 +59,13 @@
                     <td v-if="columnsVisible.initial_value.display" class="py-2 px-4">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.initial_value ? row.initial_value : '-' }}
-                            <span class="text-xs">{{ row.created_at }}</span>
+                            <span class="text-xs text-center">{{ row.created_at }}</span>
                         </div>
                     </td>
                     <td class="py-2 px-4">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.value ? row.value : '-' }}
-                            <span class="text-xs">{{ row.last_sync }}</span>
+                            <span class="text-xs text-center">{{ row.last_sync }}</span>
                         </div>
                     </td>
                     <td v-if="columnsVisible.change.display" class="py-2 px-4 text-center">
@@ -77,7 +77,7 @@
                     <td v-if="columnsVisible.lowest_price.display" class="py-2 px-4">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.lowest_price ? row.lowest_price : '-' }}
-                            <span class="text-xs">{{ row.lowest_at }}</span>
+                            <span class="text-xs text-center">{{ row.lowest_at }}</span>
                         </div>
                     </td>
                     <td v-if="columnsVisible.has_stock.display" class="py-2 px-4 text-center">

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white p-4">
+    <div class="p-4">
         <h1 class="text-xl">{{ type }} Domain Query</h1>
         <form class="mt-8" action="">
             <FormInput

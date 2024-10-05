@@ -1,6 +1,6 @@
 <template>
     <table class="text-sm text-gray-600 w-full">
-        <thead class="text-xs text-left uppercase bg-gray-700 text-gray-300">
+        <thead class="text-xs text-left uppercase bg-gray-700 text-gray-300 dark:text-gray-200">
         <tr>
             <th class="py-2 px-4">Domain</th>
             <th class="py-2 px-4">Price Query Type</th>
@@ -14,7 +14,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="row in templates" class="bg-white border-b" :key="row.id">
+        <tr v-for="row in templates" class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700" :key="row.id">
             <td class="py-2 px-4">{{ row.domain }}</td>
             <td class="py-2 px-4">{{ row.price_query_type }}</td>
             <td class="py-2 px-4">{{ row.price_query }}</td>

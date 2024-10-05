@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white px-8 py-4">
+    <div class="px-8 py-4">
         <h1 class="text-2xl mb-4">{{ type }} Watcher</h1>
         <message-box
             v-if="template && !testResults"
@@ -45,7 +45,7 @@
             <label class="flex flex-col">
                 Url
                 <input
-                    class="rounded"
+                    class="rounded dark:bg-gray-900"
                     :class="{'border-red-500': formErrors.url}"
                     id="url"
                     type="url"
@@ -113,7 +113,7 @@
             <h2 class="text-xl font-bold">Watcher Settings</h2>
             <label class="flex flex-col mt-4">
                 Interval
-                <select class="rounded" v-model="interval">
+                <select class="rounded dark:bg-gray-900" v-model="interval">
                     <option
                         v-for="option in intervals"
                         :value="option.id"
@@ -141,7 +141,7 @@
 
             <label class="flex flex-col mt-4">
                 Region
-                <select class="rounded" v-model="region">
+                <select class="rounded dark:bg-gray-900" v-model="region">
                     <option value="null">None</option>
                     <option
                         v-for="option in regions"

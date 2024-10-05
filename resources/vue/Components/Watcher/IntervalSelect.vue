@@ -1,6 +1,6 @@
 <template>
     <select
-        class="rounded-md"
+        class="rounded-md dark:text-gray-200 dark:bg-gray-900"
         :value="value"
         @input="updateInterval($event.target.value)"
         :disabled="loading"

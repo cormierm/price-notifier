@@ -4,7 +4,7 @@
             {{ label }}
             <slot></slot>
             <input
-                class="rounded"
+                class="rounded dark:bg-gray-900 dark:disabled:text-gray-500"
                 :class="{'border-red-500': errors, 'bg-gray-100 border-gray-100 text-gray-700': disabled}"
                 :type="type"
                 :placeholder="placeholder"

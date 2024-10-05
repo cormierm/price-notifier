@@ -1,6 +1,6 @@
 <template>
     <div class="mt-4 flex items-center">
-        <select class="rounded" v-model="condition">
+        <select class="rounded dark:bg-gray-900" v-model="condition">
             <option
                 v-for="option in stockConditions"
                 :value="option.value"
