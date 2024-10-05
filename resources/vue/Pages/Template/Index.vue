@@ -2,7 +2,9 @@
     <div class="bg-white p-4">
         <h1 class="text-xl mb-4">Domain Queries</h1>
 
-        <DomainQueriesTable :templates="props.templates"/>
+        <div class="overflow-y-auto">
+            <DomainQueriesTable :templates="props.templates"/>
+        </div>
     </div>
 </template>
 
