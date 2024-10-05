@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Models\Watcher;
 use App\Utils\Fetchers\HtmlFetcher;
-use App\Watcher;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

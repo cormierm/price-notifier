@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Watcher\CheckRequest;
+use App\Models\Watcher;
 use App\Utils\Fetchers\HtmlFetcherFactory;
 use App\Utils\HtmlParser;
 use App\Utils\PriceHelper;
-use App\Watcher;
 use Exception;
 use Illuminate\Http\JsonResponse;
 

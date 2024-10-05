@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\App\Http\Controllers\Template;
 
-use App\Template;
-use App\Watcher;
+use App\Models\Template;
+use App\Models\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

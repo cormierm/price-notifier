@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\App;
 
-use App\Watcher;
-use App\WatcherLog;
+use App\Models\Watcher;
+use App\Models\WatcherLog;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

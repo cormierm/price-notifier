@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Interval;
+use App\Models\Interval;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class IntervalFactory extends Factory

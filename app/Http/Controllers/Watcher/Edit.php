@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Watcher;
 
 use App\Http\Controllers\Controller;
-use App\Interval;
-use App\Region;
-use App\Watcher;
+use App\Models\Interval;
+use App\Models\Region;
+use App\Models\Watcher;
+use Inertia\Inertia;
 
 class Edit extends Controller
 {
     public function __invoke(Watcher $watcher)
     {
-        return view('watcher.edit', [
-            'intervals' => Interval::all(),
-            'regions' => Region::all(),
-            'watcher' => $watcher,
+        return Inertia::render('Watcher/Form', [
+            'type' => 'Update',
+            'intervals' => Interval::all()->toArray(),
+            'regions' => Region::all()->toArray(),
+            'watcher' => $watcher->toArray(),
         ]);
     }
 }

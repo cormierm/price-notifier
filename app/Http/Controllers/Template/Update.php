@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Template;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Template\UpdateRequest;
-use App\Template;
+use App\Models\Template;
 use Illuminate\Http\JsonResponse;
 
 class Update extends Controller

@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Interval;
-use App\User;
+use App\Models\Interval;
+use App\Models\User;
+use App\Models\Watcher;
 use App\Utils\Fetchers\HtmlFetcher;
-use App\Watcher;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

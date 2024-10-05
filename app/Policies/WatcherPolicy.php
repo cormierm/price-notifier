@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\User;
-use App\Watcher;
+use App\Models\User;
+use App\Models\Watcher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WatcherPolicy

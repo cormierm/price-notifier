@@ -3,7 +3,7 @@
 namespace Tests\Feature\App\Jobs;
 
 use App\Jobs\SendPushoverMessage;
-use App\User;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

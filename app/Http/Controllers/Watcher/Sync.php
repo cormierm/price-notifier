@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Watcher;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WatcherResource;
 use App\Jobs\UpdateWatcher;
-use App\Watcher;
+use App\Models\Watcher;
 use Illuminate\Http\JsonResponse;
 
 class Sync extends Controller

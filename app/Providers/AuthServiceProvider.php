@@ -2,10 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Watcher;
 use App\Policies\WatcherPolicy;
-use App\Watcher;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {

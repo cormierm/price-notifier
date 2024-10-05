@@ -4,12 +4,12 @@ namespace App\Jobs;
 
 use App\Events\WatcherCreatedOrUpdated;
 use App\Http\Resources\WatcherResource;
-use App\User;
+use App\Models\User;
+use App\Models\Watcher;
+use App\Models\WatcherLog;
 use App\Utils\Fetchers\HtmlFetcherFactory;
 use App\Utils\HtmlParser;
 use App\Utils\PriceHelper;
-use App\Watcher;
-use App\WatcherLog;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Bus\Queueable;
