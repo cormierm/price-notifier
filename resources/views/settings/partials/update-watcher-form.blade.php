@@ -13,7 +13,7 @@
         @csrf
         @method('patch')
 
-        <div>
+        <div x-data="{ userAgent: '{{ old('user_agent', $user->user_agent) }}' }">
             <x-input-label for="user_agent" :value="__('User Agent')" />
             <div class="mt-1 w-full flex">
                 <x-text-input
@@ -21,7 +21,7 @@
                     id="user_agent"
                     name="user_agent"
                     type="text"
-                    :value="old('user_agent', $user->user_agent)"
+                    x-model="userAgent"
                 />
                 <x-primary-button
                     x-on:click.prevent="userAgent = navigator.userAgent"
