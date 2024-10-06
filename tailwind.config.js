@@ -10,6 +10,7 @@ export default {
         './resources/js/**/*.vue',
         './resources/vue/**/*.vue',
     ],
+    darkMode: 'class',
 
     theme: {
         extend: {
