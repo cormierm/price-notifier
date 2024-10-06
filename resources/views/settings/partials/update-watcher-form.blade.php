@@ -16,9 +16,15 @@
         <div>
             <x-input-label for="user_agent" :value="__('User Agent')" />
             <div class="mt-1 w-full flex">
-                <x-text-input class="grow" id="user_agent" name="user_agent" type="text" :value="old('user_agent', $user->user_agent)" />
+                <x-text-input
+                    class="grow"
+                    id="user_agent"
+                    name="user_agent"
+                    type="text"
+                    :value="old('user_agent', $user->user_agent)"
+                />
                 <x-primary-button
-                    x-on:click.prevent="console.log('hello')"
+                    x-on:click.prevent="userAgent = navigator.userAgent"
                 >{{ __('Fetch User Agent') }}</x-primary-button>
             </div>
             <x-input-error class="mt-2" :messages="$errors->get('user_agent')" />
