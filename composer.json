@@ -46,8 +46,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/",
-            "Tests\\Feature\\App\\": "tests/feature/app/"
+            "Tests\\Feature\\App\\": "tests/Feature/app/",
+            "Tests\\": "tests/"
         }
     },
     "prefer-stable": true,
