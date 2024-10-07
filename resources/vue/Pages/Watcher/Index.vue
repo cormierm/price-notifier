@@ -11,11 +11,6 @@
                 <input class="rounded" type="checkbox" v-model="column.display" @input="saveColumnSettings">
                 <label>{{ column.title }}</label>
             </div>
-            <div class="flex items-center gap-1">
-                <input class="rounded" type="checkbox" v-model="showInactive"
-                       @input="saveColumnSetting('show-inactive', $event)">
-                <label>Show Inactive</label>
-            </div>
         </div>
 
         <div class="relative overflow-x-auto pb-4 pt-2">
@@ -24,12 +19,12 @@
                 <tr>
                     <th class="py-2 px-4 text-left">Name</th>
                     <th v-if="columnsVisible.interval.display" class="py-2 px-4 w-[100px]">Interval</th>
-                    <th v-if="columnsVisible.initial_value.display" class="py-2 px-4">Original</th>
+                    <th v-if="columnsVisible.original.display" class="py-2 px-4">Original</th>
                     <th class="py-2 px-4">Current</th>
                     <th v-if="columnsVisible.change.display" class="py-2 px-4">Change</th>
-                    <th v-if="columnsVisible.lowest_price.display" class="py-2 px-4">Lowest</th>
-                    <th v-if="columnsVisible.has_stock.display" class="py-2 px-4">Stock</th>
-                    <th v-if="columnsVisible.alert_value.display" class="py-2 px-4">Alert</th>
+                    <th v-if="columnsVisible.lowestPrice.display" class="py-2 px-4">Lowest</th>
+                    <th v-if="columnsVisible.hasStock.display" class="py-2 px-4">Stock</th>
+                    <th v-if="columnsVisible.alert.display" class="py-2 px-4">Alert</th>
                     <th v-if="columnsVisible.client.display" class="py-2 px-4">Client</th>
                     <th v-if="columnsVisible.region.display" class="py-2 px-4">Region</th>
                     <th></th>
@@ -56,7 +51,7 @@
                             @update="updateWatcherList"
                         />
                     </td>
-                    <td v-if="columnsVisible.initial_value.display" class="py-2 px-4">
+                    <td v-if="columnsVisible.original.display" class="py-2 px-4">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.initial_value ? row.initial_value : '-' }}
                             <span class="text-xs text-center">{{ row.created_at }}</span>
@@ -74,16 +69,16 @@
                             :current-value="row.value"
                         />
                     </td>
-                    <td v-if="columnsVisible.lowest_price.display" class="py-2 px-4">
+                    <td v-if="columnsVisible.lowestPrice.display" class="py-2 px-4">
                         <div class="flex flex-col items-center text-lg">
                             {{ row.lowest_price ? row.lowest_price : '-' }}
                             <span class="text-xs text-center">{{ row.lowest_at }}</span>
                         </div>
                     </td>
-                    <td v-if="columnsVisible.has_stock.display" class="py-2 px-4 text-center">
+                    <td v-if="columnsVisible.hasStock.display" class="py-2 px-4 text-center">
                         {{ row.has_stock === true ? 'Yes' : row.has_stock === false ? 'No' : '-' }}
                     </td>
-                    <td v-if="columnsVisible.alert_value.display" class="py-2 px-4 text-center">
+                    <td v-if="columnsVisible.alert.display" class="py-2 px-4 text-center">
                         {{ row.alert_value ? row.alert_value : '-' }}
                     </td>
                     <td v-if="columnsVisible.client.display" class="py-2 px-4 text-center">
@@ -92,8 +87,8 @@
                     <td v-if="columnsVisible.region.display" class="py-2 px-4 text-center">
                         {{ row.region ? row.region.label : '-' }}
                     </td>
-                    <td class="py-2 px-4 text-center text-lg font-black">
-                        <div class="flex">
+                    <td class="py-2 px-4">
+                        <div class="flex flex-end">
                             <RefreshButton :watcher-id="row.id" @update="updateWatcherList"/>
                             <InfoButton :watcher-id="row.id"/>
                             <EditButton :watcher-id="row.id"/>
@@ -141,25 +136,23 @@ const props = defineProps({
     }
 });
 
-const showInactive = ref(true);
 const watchersList = ref([]);
-const loading = reactive({
-    watchers: {}
-});
+
 const columnsVisible = reactive({
     interval: {title: 'Interval', display: true},
-    initial_value: {title: 'Original', display: true},
+    original: {title: 'Original', display: true},
     change: {title: 'Change', display: true},
-    lowest_price: {title: 'Lowest', display: true},
-    has_stock: {title: 'Stock', display: true},
-    alert_value: {title: 'Alert', display: false},
+    lowestPrice: {title: 'Lowest', display: true},
+    hasStock: {title: 'Stock', display: true},
+    alert: {title: 'Alert', display: false},
     client: {title: 'Client', display: false},
-    region: {title: 'Region', display: false}
+    region: {title: 'Region', display: false},
+    showInactive: {title: 'Show Inactive', display: false}
 });
 
 const tableData = computed(() => {
     return watchersList.value
-        .filter((watcher) => showInactive.value || watcher.interval_id !== 1)
+        .filter((watcher) => columnsVisible.showInactive.display || watcher.interval_id !== 1)
         .map((watcher) => ({
             ...watcher,
             created_at: moment.utc(watcher.created_at).fromNow(),
@@ -181,7 +174,6 @@ onMounted(() => {
     });
 
     restoreColumnSettings();
-    showInactive.value = restoreColumnSetting('show-inactive');
 });
 
 const updateWatcherList = (updatedWatcher) => {
@@ -195,16 +187,8 @@ const removeWatcherFromList = (watcher) => {
     watchersList.value = watchersList.value.filter((w) => (w.id !== watcher.id));
 };
 
-const saveColumnSetting = (column, setting) => {
-    localStorage.setItem(`column-setting-${column}`, setting);
-};
-
 const saveColumnSettings = () => {
     localStorage.setItem('column-settings', JSON.stringify(columnsVisible));
-};
-
-const restoreColumnSetting = (column) => {
-    return localStorage.getItem(`column-setting-${column}`) === 'true';
 };
 
 const restoreColumnSettings = () => {
