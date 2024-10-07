@@ -1,16 +1,14 @@
 <template>
     <div class="w-full p-4 bg-white dark:bg-black dark:text-gray-200">
-        <div class="flex justify-between">
-            <h1 class="text-2xl">Watchers</h1>
-            <a href="/watcher/create">
-                <button class="border rounded px-4 py-2">+ Add New Watcher</button>
-            </a>
-        </div>
-        <div class="flex gap-4 mt-4">
-            <div v-for="(column, index) in columnsVisible" :key="index" class="flex items-center gap-1">
-                <input class="rounded" type="checkbox" v-model="column.display" @input="saveColumnSettings">
-                <label>{{ column.title }}</label>
+        <h1 class="text-2xl">Watchers</h1>
+        <div class="flex justify-between items-center mt-4">
+            <div class="flex gap-4">
+                <div v-for="(column, index) in columnsVisible" :key="index" class="flex items-center gap-1">
+                    <input class="rounded" type="checkbox" v-model="column.display" @input="saveColumnSettings">
+                    <label>{{ column.title }}</label>
+                </div>
             </div>
+            <AddWatcherButton/>
         </div>
 
         <div class="relative overflow-x-auto pb-4 pt-2">
@@ -64,7 +62,7 @@
                         </div>
                     </td>
                     <td v-if="columnsVisible.change.display" class="py-2 px-4 text-center">
-                        <change-column
+                        <ChangeColumn
                             :initial-value="row.initial_value"
                             :current-value="row.value"
                         />
@@ -120,6 +118,7 @@ import {faLink} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import EditButton from "@Components/Shared/EditButton.vue";
 import InfoButton from "@Components/Shared/InfoButton.vue";
+import AddWatcherButton from "@Components/Watcher/AddWatcherButton.vue";
 
 const props = defineProps({
     userId: {
