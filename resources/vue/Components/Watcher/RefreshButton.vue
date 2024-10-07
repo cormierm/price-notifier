@@ -1,6 +1,6 @@
 <template>
     <button
-        class="h-10 w-10 border rounded-md"
+        class="h-10 w-10 border rounded-md hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800"
         :disabled="loading"
         @click="refresh(watcherId)"
     >

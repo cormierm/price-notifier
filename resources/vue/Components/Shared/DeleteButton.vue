@@ -1,6 +1,6 @@
 <template>
     <button
-        class="w-10 h-10 border rounded text-center bg-red-500 text-white"
+        class="w-10 h-10 border rounded text-center bg-red-500 text-white hover:bg-red-600"
         @click="deleteConfirmation"
     >
         <FontAwesomeIcon :icon="faTrash" />
