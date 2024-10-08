@@ -135,13 +135,7 @@ const tableData = computed(() => {
 onMounted(() => {
     watchersList.value = props.watchers;
 
-    const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
-        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER
-    });
-    const channel = pusher.subscribe(`user.${props.userId}.watchers`);
-    channel.bind('update', (data) => {
-        updateWatcherList(data.watcher);
-    });
+    initializePusher();
 
     restoreColumnSettings();
 });
@@ -167,4 +161,14 @@ const restoreColumnSettings = () => {
         Object.assign(columnsVisible, columns);
     }
 };
+
+const initializePusher = () => {
+    const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
+        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER
+    });
+    const channel = pusher.subscribe(`user.${props.userId}.watchers`);
+    channel.bind('update', (data) => {
+        updateWatcherList(data.watcher);
+    });
+}
 </script>
