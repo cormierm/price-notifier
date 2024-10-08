@@ -5,6 +5,7 @@ namespace Tests\Feature\App\Http\Controllers\Watcher;
 use App\Models\User;
 use App\Models\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class EditTest extends TestCase
@@ -21,7 +22,10 @@ class EditTest extends TestCase
 
         $this->actingAs($user)->get(route('watcher.edit', $watcher->id))
             ->assertSuccessful()
-            ->assertViewIs('watcher.edit')
-            ->assertViewHas('watcher', $watcher);
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->component('Watcher/Form')
+                ->has('watcher')
+                ->where('watcher.id', $watcher->id)
+            );
     }
 }

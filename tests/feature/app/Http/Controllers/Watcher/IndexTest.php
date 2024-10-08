@@ -5,6 +5,7 @@ namespace Tests\Feature\App\Http\Controllers\Watcher;
 use App\Models\User;
 use App\Models\Watcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
@@ -19,6 +20,9 @@ class IndexTest extends TestCase
 
         $this->actingAs($user)->get(route('watcher.index'))
             ->assertSuccessful()
-            ->assertViewIs('watcher.index');
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->component('Watcher/Index')
+                ->has('watchers')
+            );
     }
 }

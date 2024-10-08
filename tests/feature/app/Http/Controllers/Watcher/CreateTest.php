@@ -4,6 +4,7 @@ namespace Tests\Feature\App\Http\Controllers\Watcher;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class CreateTest extends TestCase
@@ -17,6 +18,8 @@ class CreateTest extends TestCase
 
         $this->actingAs($user)->get(route('watcher.create'))
             ->assertSuccessful()
-            ->assertViewIs('watcher.create');
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->component('Watcher/Form')
+            );
     }
 }

@@ -22,4 +22,13 @@ class UserFactory extends Factory
             'user_agent' => $this->faker->userAgent,
         ];
     }
+
+    public function unverified()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'email_verified_at' => null,
+            ];
+        });
+    }
 }
