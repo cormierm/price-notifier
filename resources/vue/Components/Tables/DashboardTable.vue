@@ -13,15 +13,7 @@
                 <tbody>
                 <tr v-for="row in tableData" class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700">
                     <td class="py-2 px-4 whitespace-nowrap">{{ row.created_at_formatted }}</td>
-                    <td class="py-2 px-4">
-                        <div class="text-blue-600 dark:text-blue-300 space-x-1">
-                            <a :href="`/watcher/${row.watcher.id}`">{{ row.watcher.name }}</a>
-                            <a :href="row.watcher.url">
-                                <FontAwesomeIcon :icon="faLink"/>
-                            </a>
-                        </div>
-                        <span class="text-xs text-gray-500 dark:text-gray-300">{{ row.watcher.url_domain }}</span>
-                    </td>
+                    <DetailsColumn :watcher="row"/>
                     <td class="py-2 px-4"
                         :class="{'text-red-500': column === 'Error', 'text-right': column !== 'Error'}">
                         {{ row[column.toLowerCase()] }}
@@ -36,8 +28,7 @@
 <script setup>
 import {computed} from "vue";
 import {formatDate} from "@js/utils/date-utils.js";
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {faLink} from '@fortawesome/free-solid-svg-icons';
+import DetailsColumn from "@Components/Watcher/DetailsColumn.vue";
 
 const props = defineProps({
     title: {

@@ -29,18 +29,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="row in tableData" :key="row.id" class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700">
-                    <td class="py-2 px-4">
-                        <div class="min-w-96">
-                            <div class="text-blue-600 dark:text-blue-300 space-x-1">
-                                <a :href="`/watcher/${row.id}`">{{ row.name }}</a>
-                                <a :href="row.url">
-                                    <FontAwesomeIcon :icon="faLink"/>
-                                </a>
-                            </div>
-                            <span class="text-sm text-gray-500 dark:text-gray-300">{{ row.url_domain }}</span>
-                        </div>
-                    </td>
+                <tr v-for="row in tableData"
+                    :key="row.id"
+                    class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700"
+                >
+                    <DetailsColumn :watcher="row"/>
                     <td v-if="columnsVisible.interval.display" class="py-2 px-4">
                         <IntervalSelect
                             :intervals="intervals"
@@ -49,30 +42,15 @@
                             @update="updateWatcherList"
                         />
                     </td>
-                    <td v-if="columnsVisible.original.display" class="py-2 px-4">
-                        <div class="flex flex-col items-center text-lg">
-                            {{ row.initial_value ? row.initial_value : '-' }}
-                            <span class="text-xs text-center">{{ row.created_at }}</span>
-                        </div>
-                    </td>
-                    <td class="py-2 px-4">
-                        <div class="flex flex-col items-center text-lg">
-                            {{ row.value ? row.value : '-' }}
-                            <span class="text-xs text-center">{{ row.last_sync }}</span>
-                        </div>
-                    </td>
+                    <PriceColumn v-if="columnsVisible.original.display" :amount="row.initial_value" :date="row.created_at"/>
+                    <PriceColumn :amount="row.value" :date="row.last_sync"/>
                     <td v-if="columnsVisible.change.display" class="py-2 px-4 text-center">
                         <ChangeColumn
                             :initial-value="row.initial_value"
                             :current-value="row.value"
                         />
                     </td>
-                    <td v-if="columnsVisible.lowestPrice.display" class="py-2 px-4">
-                        <div class="flex flex-col items-center text-lg">
-                            {{ row.lowest_price ? row.lowest_price : '-' }}
-                            <span class="text-xs text-center">{{ row.lowest_at }}</span>
-                        </div>
-                    </td>
+                    <PriceColumn v-if="columnsVisible.lowestPrice.display" :amount="row.lowest_price" :date="row.lowest_at"/>
                     <td v-if="columnsVisible.hasStock.display" class="py-2 px-4 text-center">
                         {{ row.has_stock === true ? 'Yes' : row.has_stock === false ? 'No' : '-' }}
                     </td>
@@ -108,17 +86,16 @@
 
 <script setup>
 import {ref, reactive, computed, onMounted} from 'vue';
-import moment from 'moment';
 import Pusher from 'pusher-js';
 import ChangeColumn from "@Components/Watcher/ChangeColumn.vue";
 import DeleteButton from "@Components/Shared/DeleteButton.vue";
 import IntervalSelect from "@Components/Watcher/IntervalSelect.vue";
 import RefreshButton from "@Components/Watcher/RefreshButton.vue";
-import {faLink} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import EditButton from "@Components/Shared/EditButton.vue";
 import InfoButton from "@Components/Shared/InfoButton.vue";
 import AddWatcherButton from "@Components/Watcher/AddWatcherButton.vue";
+import DetailsColumn from "@Components/Watcher/DetailsColumn.vue";
+import PriceColumn from "@Components/Watcher/PriceColumn.vue";
 
 const props = defineProps({
     userId: {
@@ -152,12 +129,6 @@ const columnsVisible = reactive({
 const tableData = computed(() => {
     return watchersList.value
         .filter((watcher) => columnsVisible.showInactive.display || watcher.interval_id !== 1)
-        .map((watcher) => ({
-            ...watcher,
-            created_at: moment.utc(watcher.created_at).fromNow(),
-            last_sync: watcher.last_sync ? moment.utc(watcher.last_sync).fromNow() : 'Never',
-            lowest_at: watcher.lowest_at ? moment.utc(watcher.lowest_at).fromNow() : '',
-        }))
         .sort((a, b) => a.name.localeCompare(b.name));
 });
 
