@@ -13,7 +13,7 @@
                 <tbody>
                 <tr v-for="row in tableData" class="bg-white border-b dark:bg-gray-800 dark:text-gray-100 dark:border-b-gray-700">
                     <td class="py-2 px-4 whitespace-nowrap">{{ row.created_at_formatted }}</td>
-                    <DetailsColumn :watcher="row"/>
+                    <DetailsColumn :watcher="row.watcher"/>
                     <td class="py-2 px-4"
                         :class="{'text-red-500': column === 'Error', 'text-right': column !== 'Error'}">
                         {{ row[column.toLowerCase()] }}
