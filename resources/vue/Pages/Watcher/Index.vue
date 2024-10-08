@@ -63,7 +63,7 @@
                     <td v-if="columnsVisible.region.display" class="py-2 px-4 text-center">
                         {{ row.region ? row.region.label : '-' }}
                     </td>
-                    <td class="py-2 px-4">
+                    <td class="py-2 px-4 w-[192px]">
                         <div class="flex justify-end">
                             <RefreshButton :watcher-id="row.id" @update="updateWatcherList"/>
                             <InfoButton :watcher-id="row.id"/>
