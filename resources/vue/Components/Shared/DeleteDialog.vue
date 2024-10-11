@@ -27,15 +27,15 @@
                         leave-to="opacity-0 scale-95"
                     >
                         <DialogPanel
-                            class="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+                            class="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-gray-700"
                         >
-                            <DialogTitle as="h3" class="text-xl font-medium leading-6 text-gray-900">
+                            <DialogTitle as="h3" class="text-xl font-medium leading-6 text-gray-900 dark:text-white">
                                 Delete {{ label }}
                             </DialogTitle>
                             <div class="mt-2">
-                                <p class="text-gray-500 flex flex-col">
+                                <p class="text-gray-500 flex flex-col dark:text-gray-100">
                                     <span>Are your sure you want to delete this {{ label.toLowerCase() }}?</span>
-                                    <span class="text-black text-md font-bold">{{ info }}</span>
+                                    <span class="text-black text-md font-bold dark:text-red-500 dark:font-black">{{ info }}</span>
                                     <span>This action CANNOT be undone.</span>
                                 </p>
 
@@ -44,7 +44,7 @@
                             <div class="mt-4 flex justify-between">
                                 <button
                                     type="button"
-                                    class="rounded-md border hover:border-gray-300 px-4 py-2 text-sm font-medium"
+                                    class="rounded-md border hover:border-gray-300 px-4 py-2 text-sm font-medium dark:hover:bg-gray-600"
                                     @click="closeModal"
                                 >
                                     Cancel
