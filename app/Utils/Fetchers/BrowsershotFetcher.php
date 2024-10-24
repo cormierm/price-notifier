@@ -21,6 +21,7 @@ class BrowsershotFetcher extends HtmlFetcher
         ->waitUntilNetworkIdle()
         ->windowSize(1920, 1080)
         ->setChromePath(config('pcn.browsershot.chrome_path'))
+        ->timeout(config('pcn.browsershot.timeout'))
         ->bodyHtml();
 
         if (!$html) {
