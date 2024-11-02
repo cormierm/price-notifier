@@ -25,6 +25,7 @@ class StoreRequest extends FormRequest
             'interval_id' => 'nullable|exists:intervals,id',
             'region_id' => 'nullable|exists:regions,id',
             'alert_value' => 'nullable|numeric',
+            'alert_condition' => ['nullable', Rule::in(Watcher::ALERT_CONDITIONS)],
             'client' => 'required|in:' . implode(',', HtmlFetcher::CLIENTS),
             'update_queries' => 'nullable|boolean',
         ];

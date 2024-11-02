@@ -30,6 +30,7 @@ class WatcherFactory extends Factory
             },
             'client' => HtmlFetcher::CLIENT_BROWERSHOT,
             'stock_requires_price' => false,
+            'alert_condition' => Watcher::ALERT_CONDITION_LESS_THAN,
         ];
     }
 

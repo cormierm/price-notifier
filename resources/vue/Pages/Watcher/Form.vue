@@ -94,19 +94,19 @@
 
         <div class="mt-8">
             <h2 class="text-xl font-bold">Notifications</h2>
+
+            <AlertConditionsInput
+                v-model:condition="alertCondition"
+                v-model:amount="alertValue"
+                :errors="formErrors"
+            />
+
             <label class="flex items-center gap-2 mt-3">
                 <input class="rounded" type="checkbox" v-model="stockAlert"/>
                 Notify When In Stock
             </label>
 
-            <FormInput
-                class="mt-4"
-                label="Notify When Price Below"
-                type="number"
-                placeholder="5.00"
-                :errors="formErrors['alert_value']"
-                v-model="alertValue"
-            />
+            <StockConditionsInput v-model:condition="stockCondition" v-model:text="stockText"/>
         </div>
 
         <div class="mt-8">
@@ -197,6 +197,7 @@ import MessageBox from "@Components/Form/MessageBox.vue";
 import QueryInput from "@Components/Form/QueryInput.vue";
 import RadioButton from "@Components/Form/RadioButton.vue";
 import StockConditionsInput from "@Components/Form/StockConditionsInput.vue";
+import AlertConditionsInput from "@Components/Form/AlertConditionsInput.vue";
 
 const props = defineProps({
     intervals: {
@@ -234,6 +235,7 @@ onMounted(() => {
         stockAlert.value = props.watcher.stock_alert === true;
         stockRequiresPrice.value = props.watcher.stock_requires_price === true;
         stockCondition.value = props.watcher.stock_condition;
+        alertCondition.value = props.watcher.alert_condition;
         updateQueries.value = false;
     }
 });
@@ -246,6 +248,7 @@ const name = ref('');
 const interval = ref(8);
 const region = ref(null);
 const alertValue = ref('');
+const alertCondition = ref('less_than');
 const priceQuery = ref('');
 const priceQueryType = ref('xpath');
 const stockQuery = ref('');
@@ -300,6 +303,7 @@ const create = () => {
         stock_query: stockQuery.value,
         stock_query_type: stockQueryType.value,
         alert_value: alertValue.value,
+        alert_condition: alertCondition.value,
         client: client.value,
         stock_text: stockText.value,
         stock_alert: stockAlert.value,
@@ -390,6 +394,7 @@ const update = () => {
         stock_query: stockQuery.value,
         stock_query_type: stockQueryType.value,
         alert_value: alertValue.value,
+        alert_condition: alertCondition.value,
         client: client.value,
         stock_text: stockText.value,
         stock_alert: stockAlert.value,

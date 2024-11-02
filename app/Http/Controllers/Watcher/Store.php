@@ -23,6 +23,7 @@ class Store extends Controller
             'stock_query_type' => $request->input('stock_query_type'),
             'interval_id' => $request->input('interval_id'),
             'alert_value' => $request->input('alert_value'),
+            'alert_condition' => $request->input('alert_condition'),
             'client' => $request->input('client'),
             'stock_text' => $request->input('stock_text'),
             'stock_alert' => $request->input('stock_alert'),

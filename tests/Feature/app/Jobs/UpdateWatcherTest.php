@@ -134,6 +134,31 @@ class UpdateWatcherTest extends TestCase
     }
 
     /** @test */
+    public function itSendsPriceAlertWhenValueIsGreaterThanAlertValue(): void
+    {
+        Bus::fake();
+        $rawValue = '1950.00';
+        $watcher = Watcher::factory()->create([
+            'price_query' => '//span[@class="value"]',
+            'value' => '1100.00',
+            'alert_value' => '1000.00',
+            'alert_condition' => Watcher::ALERT_CONDITION_GREATER_THAN,
+            'client' => HtmlFetcher::CLIENT_BROWERSHOT,
+        ]);
+        $html = '<html><body><span class="value">' . $rawValue . '</span></body></html>';
+
+        $this->partialMock(BrowsershotFetcher::class, function (MockInterface  $mock) use ($html, $watcher) {
+            return $mock->shouldReceive('fetchHtml')->with($watcher->url, $watcher->user->user_agent)->andReturn($html);
+        });
+
+        $job = new UpdateWatcher($watcher);
+        $job->handle();
+
+        Bus::assertDispatched(SendPushoverMessage::class);
+        Bus::assertNotDispatched(SendSlackMessage::class);
+    }
+
+    /** @test */
     public function itWillSetLowestPriceIfNoneSet(): void
     {
         Event::fake();

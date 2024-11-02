@@ -22,6 +22,7 @@ class UpdateRequest extends FormRequest
             'interval_id' => 'nullable|exists:intervals,id',
             'region_id' => 'nullable|exists:regions,id',
             'alert_value' => 'nullable|numeric',
+            'alert_condition' => ['nullable', Rule::in(Watcher::ALERT_CONDITIONS)],
             'client' => 'nullable|in:' . implode(',', HtmlFetcher::CLIENTS),
             'stock_text' => 'nullable|string|max:255',
             'stock_alert' => 'nullable|boolean',

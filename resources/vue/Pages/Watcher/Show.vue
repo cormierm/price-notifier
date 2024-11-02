@@ -67,6 +67,7 @@
                     </div>
                     Region: {{ watcher.region ? watcher.region.label : 'Not Set' }}<br>
                     Alert Price: {{ watcher.alert_value }}<br>
+                    Alert Condition: {{ watcher.alert_condition }}<br>
                 </div>
             </article>
         </div>

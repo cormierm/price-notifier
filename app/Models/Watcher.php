@@ -24,6 +24,7 @@ class Watcher extends Model
         'interval_id',
         'value',
         'alert_value',
+        'alert_condition',
         'client',
         'lowest_price',
         'lowest_at',
@@ -61,6 +62,13 @@ class Watcher extends Model
         self::STOCK_CONDITION_CONTAINS_TEXT,
         self::STOCK_CONDITION_MISSING_HTML,
         self::STOCK_CONDITION_MISSING_TEXT,
+    ];
+
+    const ALERT_CONDITION_LESS_THAN = 'less_than';
+    const ALERT_CONDITION_GREATER_THAN = 'greater_than';
+    const ALERT_CONDITIONS = [
+        self::ALERT_CONDITION_LESS_THAN,
+        self::ALERT_CONDITION_GREATER_THAN,
     ];
 
     public function user(): BelongsTo
