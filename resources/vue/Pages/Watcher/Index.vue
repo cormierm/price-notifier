@@ -55,7 +55,10 @@
                         {{ row.has_stock === true ? 'Yes' : row.has_stock === false ? 'No' : '-' }}
                     </td>
                     <td v-if="columnsVisible.alert.display" class="py-2 px-4 text-center">
-                        {{ row.alert_value ? row.alert_value : '-' }}
+                        <div class="flex flex-col items-center text-lg">
+                            {{ row.alert_value ? row.alert_value : '-' }}
+                            <span class="text-xs text-center">{{ row.alert_condition.replace('_', ' ') }}</span>
+                        </div>
                     </td>
                     <td v-if="columnsVisible.client.display" class="py-2 px-4 text-center">
                         {{ row.client }}
