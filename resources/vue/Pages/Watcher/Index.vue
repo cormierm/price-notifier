@@ -4,7 +4,7 @@
         <div class="flex justify-between items-center mt-4">
             <div class="flex gap-4">
                 <div v-for="(column, index) in columnsVisible" :key="index" class="flex items-center gap-1">
-                    <input class="rounded" type="checkbox" v-model="column.display" @input="saveColumnSettings">
+                    <input class="rounded" type="checkbox" v-model="column.display">
                     <label>{{ column.title }}</label>
                 </div>
             </div>
@@ -88,7 +88,7 @@
 </template>
 
 <script setup>
-import {ref, reactive, computed, onMounted} from 'vue';
+import {ref, reactive, computed, onMounted, watch} from 'vue';
 import Pusher from 'pusher-js';
 import ChangeColumn from "@Components/Watcher/ChangeColumn.vue";
 import DeleteButton from "@Components/Shared/DeleteButton.vue";
@@ -142,6 +142,10 @@ onMounted(() => {
 
     restoreColumnSettings();
 });
+
+watch(columnsVisible, () => {
+    saveColumnSettings();
+})
 
 const updateWatcherList = (updatedWatcher) => {
     watchersList.value = [
