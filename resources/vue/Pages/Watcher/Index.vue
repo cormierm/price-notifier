@@ -45,10 +45,7 @@
                     <PriceColumn v-if="columnsVisible.original.display" :amount="row.initial_value" :date="row.created_at"/>
                     <PriceColumn :amount="row.value" :date="row.last_sync"/>
                     <td v-if="columnsVisible.change.display" class="py-2 px-4 text-center">
-                        <ChangeColumn
-                            :initial-value="row.initial_value"
-                            :current-value="row.value"
-                        />
+                        <ChangeColumn :watcher="row"/>
                     </td>
                     <PriceColumn v-if="columnsVisible.lowestPrice.display" :amount="row.lowest_price" :date="row.lowest_at"/>
                     <td v-if="columnsVisible.hasStock.display" class="py-2 px-4 text-center">
