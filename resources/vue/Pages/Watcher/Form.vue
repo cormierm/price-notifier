@@ -105,8 +105,6 @@
                 <input class="rounded" type="checkbox" v-model="stockAlert"/>
                 Notify When In Stock
             </label>
-
-            <StockConditionsInput v-model:condition="stockCondition" v-model:text="stockText"/>
         </div>
 
         <div class="mt-8">
